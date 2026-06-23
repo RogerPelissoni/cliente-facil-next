@@ -2,11 +2,15 @@
 
 import {
   ColumnDef,
+  flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
-import { DataTable } from "@/shared/table/DataTable";
+import { Button } from "@/components/ui/button";
+
+import { ConfirmDialog } from "@/shared/feedback/ConfirmDialog";
+import { EmptyState } from "@/shared/feedback/EmptyState";
 
 import { User } from "./user.types";
 
@@ -30,10 +34,11 @@ export function UserTable({ data, onEdit, onDelete }: Props) {
     },
     {
       accessorKey: "email",
-      header: "Email",
+      header: "E-mail",
     },
     {
       id: "actions",
+
       header: "Ações",
 
       cell: ({ row }) => {
@@ -41,9 +46,20 @@ export function UserTable({ data, onEdit, onDelete }: Props) {
 
         return (
           <div className="flex gap-2">
-            <button onClick={() => onEdit(user)}>Editar</button>
+            <Button size="sm" variant="outline" onClick={() => onEdit(user)}>
+              Editar
+            </Button>
 
-            <button onClick={() => onDelete(user)}>Excluir</button>
+            <ConfirmDialog
+              title="Excluir Usuário"
+              description={`Deseja excluir ${user.name}?`}
+              onConfirm={() => onDelete(user)}
+              trigger={
+                <Button size="sm" variant="destructive">
+                  Excluir
+                </Button>
+              }
+            />
           </div>
         );
       },
@@ -56,5 +72,38 @@ export function UserTable({ data, onEdit, onDelete }: Props) {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return <DataTable table={table} />;
+  if (!data.length) {
+    return <EmptyState message="Nenhum usuário encontrado" />;
+  }
+
+  return (
+    <table className="w-full border">
+      <thead>
+        {table.getHeaderGroups().map((group) => (
+          <tr key={group.id}>
+            {group.headers.map((header) => (
+              <th key={header.id} className="border p-2 text-left">
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext(),
+                )}
+              </th>
+            ))}
+          </tr>
+        ))}
+      </thead>
+
+      <tbody>
+        {table.getRowModel().rows.map((row) => (
+          <tr key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <td key={cell.id} className="border p-2">
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
 }

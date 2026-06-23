@@ -12,7 +12,7 @@ export function DataTable({ table }: any) {
               <th key={header.id}>
                 {flexRender(
                   header.column.columnDef.header,
-                  header.getContext()
+                  header.getContext(),
                 )}
               </th>
             ))}
@@ -25,10 +25,7 @@ export function DataTable({ table }: any) {
           <tr key={row.id}>
             {row.getVisibleCells().map((cell: any) => (
               <td key={cell.id}>
-                {flexRender(
-                  cell.column.columnDef.cell,
-                  cell.getContext()
-                )}
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}
           </tr>

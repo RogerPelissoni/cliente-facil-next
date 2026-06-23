@@ -5,6 +5,11 @@ import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { FormActions } from "@/shared/form/FormActions";
+import { FormInput } from "@/shared/form/FormInput";
+
 import { useCreateUser, useUpdateUser } from "./user.api";
 
 import { userSchema } from "./user.schema";
@@ -58,22 +63,33 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <div>
-        <input placeholder="Nome" {...form.register("name")} />
-      </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>{user ? "Editar Usuário" : "Novo Usuário"}</CardTitle>
+      </CardHeader>
 
-      <div>
-        <input placeholder="Email" {...form.register("email")} />
-      </div>
+      <CardContent>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormInput
+            form={form}
+            name="name"
+            label="Nome"
+            placeholder="Digite o nome"
+          />
 
-      <div className="flex gap-2">
-        <button type="submit">Salvar</button>
+          <FormInput
+            form={form}
+            name="email"
+            label="E-mail"
+            placeholder="Digite o e-mail"
+          />
 
-        <button type="button" onClick={onCancel}>
-          Cancelar
-        </button>
-      </div>
-    </form>
+          <FormActions
+            onCancel={onCancel}
+            loading={createUser.isPending || updateUser.isPending}
+          />
+        </form>
+      </CardContent>
+    </Card>
   );
 }
