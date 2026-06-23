@@ -15,10 +15,20 @@ import { useDeleteUser, useUsers } from "@/features/user/user.api";
 import { UserForm } from "@/features/user/UserForm";
 import { UserTable } from "@/features/user/UserTable";
 
-import { User } from "@/features/user/user.types";
+import {
+  User,
+  UserFilters as UserFiltersType,
+} from "@/features/user/user.types";
+import { UserFilters } from "@/features/user/UserFilters";
+import { DataTableToolbar } from "@/shared/table/DataTableToolbar";
 
 export default function UsersPage() {
-  const { data = [], isLoading } = useUsers();
+  const [filters, setFilters] = useState<UserFiltersType>({
+    name: "",
+    email: "",
+  });
+
+  const { data = [], isLoading } = useUsers(filters);
 
   const deleteUser = useDeleteUser();
 
@@ -69,7 +79,13 @@ export default function UsersPage() {
           onSuccess={handleCloseForm}
         />
       ) : (
-        <UserTable data={data} onEdit={handleEdit} onDelete={handleDelete} />
+        <>
+          <DataTableToolbar>
+            <UserFilters filters={filters} onChange={setFilters} />
+          </DataTableToolbar>
+
+          <UserTable data={data} onEdit={handleEdit} onDelete={handleDelete} />
+        </>
       )}
     </PageContainer>
   );

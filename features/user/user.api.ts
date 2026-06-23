@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { User, UserFormData } from "./user.types";
+import { User, UserFilters, UserFormData } from "./user.types";
 
 const USER_QUERY_KEY = ["users"];
 
@@ -16,10 +16,35 @@ let users: User[] = [
     },
 ];
 
-export async function getUsers(): Promise<User[]> {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+export async function getUsers(
+    filters: UserFilters
+): Promise<User[]> {
+    await new Promise((resolve) =>
+        setTimeout(resolve, 300)
+    );
 
-    return [...users];
+    return users.filter((user) => {
+        const matchName =
+            !filters.name ||
+            user.name
+                .toLowerCase()
+                .includes(
+                    filters.name.toLowerCase()
+                );
+
+        const matchEmail =
+            !filters.email ||
+            user.email
+                .toLowerCase()
+                .includes(
+                    filters.email.toLowerCase()
+                );
+
+        return (
+            matchName &&
+            matchEmail
+        );
+    });
 }
 
 export async function getUser(
@@ -77,10 +102,17 @@ export async function deleteUser(
     );
 }
 
-export function useUsers() {
+export function useUsers(
+    filters: UserFilters
+) {
     return useQuery({
-        queryKey: USER_QUERY_KEY,
-        queryFn: getUsers,
+        queryKey: [
+            "users",
+            filters,
+        ],
+
+        queryFn: () =>
+            getUsers(filters),
     });
 }
 

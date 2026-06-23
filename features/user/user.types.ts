@@ -4,4 +4,12 @@ export interface User {
     email: string;
 }
 
-export type UserFormData = Omit<User, "id">;
+export interface UserFormData {
+    name: string;
+    email: string;
+}
+
+export interface UserFilters {
+    name: string;
+    email: string;
+}
