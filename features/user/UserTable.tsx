@@ -88,6 +88,14 @@ export function UserTable({
       },
     },
     {
+      accessorKey: "birthDate",
+      header: () => renderSortableHeader("Data de Nascimento", "birthDate"),
+    },
+    {
+      accessorKey: "lastAccess",
+      header: () => renderSortableHeader("Último Acesso", "lastAccess"),
+    },
+    {
       id: "actions",
 
       header: "Ações",

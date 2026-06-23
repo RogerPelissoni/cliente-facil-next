@@ -8,6 +8,8 @@ export interface User {
     email: string;
     status: UserStatus;
     companyId: number;
+    birthDate: Date;
+    lastAccess: Date;
 }
 
 export interface UserFilters {

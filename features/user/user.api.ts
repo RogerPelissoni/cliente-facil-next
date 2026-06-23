@@ -40,6 +40,8 @@ let users: User[] = Array.from(
         email: `usuario${index + 1}@email.com`,
         status: 'ACTIVE',
         companyId: 1,
+        birthDate: new Date(),
+        lastAccess: new Date(),
     }),
 );
 

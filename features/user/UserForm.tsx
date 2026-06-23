@@ -60,6 +60,8 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
       email: user.email,
       status: user.status,
       companyId: String(user.companyId),
+      birthDate: user.birthDate,
+      lastAccess: user.lastAccess,
     });
   }, [user, form]);
 
