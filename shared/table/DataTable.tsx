@@ -1,15 +1,19 @@
 "use client";
 
-import { flexRender } from "@tanstack/react-table";
+import { flexRender, Table } from "@tanstack/react-table";
 
-export function DataTable({ table }: any) {
+interface Props<TData> {
+  table: Table<TData>;
+}
+
+export function DataTable<TData>({ table }: Props<TData>) {
   return (
-    <table>
+    <table className="w-full border">
       <thead>
-        {table.getHeaderGroups().map((headerGroup: any) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header: any) => (
-              <th key={header.id}>
+        {table.getHeaderGroups().map((group) => (
+          <tr key={group.id}>
+            {group.headers.map((header) => (
+              <th key={header.id} className="border p-2 text-left">
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext(),
@@ -21,10 +25,10 @@ export function DataTable({ table }: any) {
       </thead>
 
       <tbody>
-        {table.getRowModel().rows.map((row: any) => (
+        {table.getRowModel().rows.map((row) => (
           <tr key={row.id}>
-            {row.getVisibleCells().map((cell: any) => (
-              <td key={cell.id}>
+            {row.getVisibleCells().map((cell) => (
+              <td key={cell.id} className="border p-2">
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </td>
             ))}

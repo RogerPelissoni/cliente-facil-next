@@ -2,7 +2,6 @@
 
 import {
   ColumnDef,
-  flexRender,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -12,13 +11,12 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/shared/feedback/ConfirmDialog";
 import { EmptyState } from "@/shared/feedback/EmptyState";
 
+import { DataTable } from "@/shared/table/DataTable";
 import { User } from "./user.types";
 
 interface Props {
   data: User[];
-
   onEdit(user: User): void;
-
   onDelete(user: User): void;
 }
 
@@ -76,34 +74,5 @@ export function UserTable({ data, onEdit, onDelete }: Props) {
     return <EmptyState message="Nenhum usuário encontrado" />;
   }
 
-  return (
-    <table className="w-full border">
-      <thead>
-        {table.getHeaderGroups().map((group) => (
-          <tr key={group.id}>
-            {group.headers.map((header) => (
-              <th key={header.id} className="border p-2 text-left">
-                {flexRender(
-                  header.column.columnDef.header,
-                  header.getContext(),
-                )}
-              </th>
-            ))}
-          </tr>
-        ))}
-      </thead>
-
-      <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id} className="border p-2">
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+  return <DataTable table={table} />;
 }
