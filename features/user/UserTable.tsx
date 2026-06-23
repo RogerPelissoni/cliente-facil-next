@@ -1,29 +1,23 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { ConfirmDialog } from "@/shared/feedback/ConfirmDialog";
+import { EmptyState } from "@/shared/feedback/EmptyState";
+import { DataTable } from "@/shared/table/DataTable";
+import { Sorting } from "@/shared/types/table.types";
 import {
   ColumnDef,
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-import { Button } from "@/components/ui/button";
-
-import { ConfirmDialog } from "@/shared/feedback/ConfirmDialog";
-import { EmptyState } from "@/shared/feedback/EmptyState";
-
-import { DataTable } from "@/shared/table/DataTable";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { User, UserSorting } from "./user.types";
+import { User } from "./user.types";
 
 interface Props {
   data: User[];
-
-  sorting: UserSorting;
-
-  onSortingChange(sorting: UserSorting): void;
-
+  sorting: Sorting;
+  onSortingChange(sorting: Sorting): void;
   onEdit(user: User): void;
-
   onDelete(user: User): void;
 }
 

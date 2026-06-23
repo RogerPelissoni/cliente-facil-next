@@ -1,7 +1,29 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { PageResponse, User, UserFilters, UserFormData, UserSorting } from "./user.types";
+import { Sorting } from "@/shared/types/table.types";
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+} from "@tanstack/react-query";
+import { toast } from "sonner";
+import {
+    PageResponse,
+    User,
+    UserFilters,
+    UserFormData,
+} from "./user.types";
 
-const USER_QUERY_KEY = ["users"];
+export const userKeys = {
+    all: ["users"] as const,
+
+    detail: (id: number) =>
+        ["users", id] as const,
+};
+
+async function delay(ms = 500) {
+    return new Promise((resolve) =>
+        setTimeout(resolve, ms),
+    );
+}
 
 let users: User[] = [
     {
@@ -16,28 +38,28 @@ let users: User[] = [
     },
     {
         id: 3,
-        name: "Administrador",
-        email: "admin@email.com",
+        name: "João Silva",
+        email: "joao@email.com",
     },
     {
         id: 4,
-        name: "Administrador",
-        email: "admin@email.com",
+        name: "Maria Souza",
+        email: "maria@email.com",
     },
     {
         id: 5,
-        name: "Administrador",
-        email: "admin@email.com",
+        name: "Carlos Santos",
+        email: "carlos@email.com",
     },
     {
         id: 6,
-        name: "Administrador",
-        email: "admin@email.com",
+        name: "Ana Oliveira",
+        email: "ana@email.com",
     },
     {
         id: 7,
-        name: "Administrador",
-        email: "admin@email.com",
+        name: "Pedro Lima",
+        email: "pedro@email.com",
     },
 ];
 
@@ -45,84 +67,80 @@ export async function getUsers(
     filters: UserFilters,
     page: number,
     size: number,
-    sorting: UserSorting,
+    sorting: Sorting,
 ): Promise<PageResponse<User>> {
-    await new Promise((resolve) =>
-        setTimeout(resolve, 300),
-    );
+    await delay(300);
 
     const filtered = users.filter((user) => {
         const matchName =
             !filters.name ||
             user.name
                 .toLowerCase()
-                .includes(filters.name.toLowerCase());
+                .includes(
+                    filters.name.toLowerCase(),
+                );
 
         const matchEmail =
             !filters.email ||
             user.email
                 .toLowerCase()
-                .includes(filters.email.toLowerCase());
+                .includes(
+                    filters.email.toLowerCase(),
+                );
 
-        return matchName && matchEmail;
+        return (
+            matchName &&
+            matchEmail
+        );
     });
 
     filtered.sort((a, b) => {
-        const valueA =
-            a[
-            sorting.field as keyof User
-            ];
+        const valueA = a[sorting.field as keyof User];
+        const valueB = b[sorting.field as keyof User];
 
-        const valueB =
-            b[
-            sorting.field as keyof User
-            ];
-
-        if (valueA < valueB) {
-            return sorting.direction === "asc"
-                ? -1
-                : 1;
-        }
-
-        if (valueA > valueB) {
-            return sorting.direction === "asc"
-                ? 1
-                : -1;
-        }
-
+        if (valueA < valueB) return sorting.direction === "asc" ? -1 : 1;
+        if (valueA > valueB) return sorting.direction === "asc" ? 1 : -1;
         return 0;
     });
 
     const start = page * size;
-
     const end = start + size;
 
     return {
-        content: filtered.slice(start, end),
+        content: filtered.slice(start, end,),
         page,
         size,
         totalElements: filtered.length,
-        totalPages: Math.ceil(
-            filtered.length / size,
-        ),
+        totalPages: Math.ceil(filtered.length / size,),
     };
 }
 
 export async function getUser(
-    id: number
-): Promise<User | undefined> {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    id: number,
+): Promise<
+    User | undefined
+> {
+    await delay();
 
-    return users.find((user) => user.id === id);
+    return users.find(
+        (user) => user.id === id,
+    );
 }
 
 export async function createUser(
-    data: UserFormData
+    data: UserFormData,
 ): Promise<User> {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     const user: User = {
-        id: Date.now(),
+        id:
+            Math.max(
+                ...users.map(
+                    (user) => user.id,
+                ),
+                0,
+            ) + 1,
+
         ...data,
     };
 
@@ -133,16 +151,19 @@ export async function createUser(
 
 export async function updateUser(
     id: number,
-    data: UserFormData
+    data: UserFormData,
 ): Promise<User> {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
-    const index = users.findIndex(
-        (user) => user.id === id
-    );
+    const index =
+        users.findIndex(
+            (user) => user.id === id,
+        );
 
     if (index === -1) {
-        throw new Error("Usuário não encontrado");
+        throw new Error(
+            "Usuário não encontrado",
+        );
     }
 
     users[index] = {
@@ -154,12 +175,12 @@ export async function updateUser(
 }
 
 export async function deleteUser(
-    id: number
+    id: number,
 ): Promise<void> {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    await delay();
 
     users = users.filter(
-        (user) => user.id !== id
+        (user) => user.id !== id,
     );
 }
 
@@ -167,11 +188,11 @@ export function useUsers(
     filters: UserFilters,
     page: number,
     size: number,
-    sorting: UserSorting,
+    sorting: Sorting,
 ) {
     return useQuery({
         queryKey: [
-            "users",
+            ...userKeys.all,
             filters,
             page,
             size,
@@ -188,30 +209,49 @@ export function useUsers(
     });
 }
 
-export function useUser(id: number) {
+export function useUser(
+    id: number,
+) {
     return useQuery({
-        queryKey: [...USER_QUERY_KEY, id],
-        queryFn: () => getUser(id),
+        queryKey:
+            userKeys.detail(id),
+
+        queryFn: () =>
+            getUser(id),
+
         enabled: !!id,
     });
 }
 
 export function useCreateUser() {
-    const queryClient = useQueryClient();
+    const queryClient =
+        useQueryClient();
 
     return useMutation({
         mutationFn: createUser,
 
         onSuccess() {
+            toast.success(
+                "Usuário criado com sucesso",
+            );
+
             queryClient.invalidateQueries({
-                queryKey: USER_QUERY_KEY,
+                queryKey:
+                    userKeys.all,
             });
+        },
+
+        onError() {
+            toast.error(
+                "Erro ao criar usuário",
+            );
         },
     });
 }
 
 export function useUpdateUser() {
-    const queryClient = useQueryClient();
+    const queryClient =
+        useQueryClient();
 
     return useMutation({
         mutationFn: ({
@@ -220,26 +260,50 @@ export function useUpdateUser() {
         }: {
             id: number;
             data: UserFormData;
-        }) => updateUser(id, data),
+        }) =>
+            updateUser(id, data),
 
         onSuccess() {
+            toast.success(
+                "Usuário atualizado com sucesso",
+            );
+
             queryClient.invalidateQueries({
-                queryKey: USER_QUERY_KEY,
+                queryKey:
+                    userKeys.all,
             });
+        },
+
+        onError() {
+            toast.error(
+                "Erro ao atualizar usuário",
+            );
         },
     });
 }
 
 export function useDeleteUser() {
-    const queryClient = useQueryClient();
+    const queryClient =
+        useQueryClient();
 
     return useMutation({
         mutationFn: deleteUser,
 
         onSuccess() {
+            toast.success(
+                "Usuário removido com sucesso",
+            );
+
             queryClient.invalidateQueries({
-                queryKey: USER_QUERY_KEY,
+                queryKey:
+                    userKeys.all,
             });
+        },
+
+        onError() {
+            toast.error(
+                "Erro ao remover usuário",
+            );
         },
     });
 }

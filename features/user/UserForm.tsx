@@ -1,17 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 import { FormActions } from "@/shared/form/FormActions";
 import { FormInput } from "@/shared/form/FormInput";
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser } from "./user.api";
-
 import { userSchema } from "./user.schema";
 import { User, UserFormData } from "./user.types";
 

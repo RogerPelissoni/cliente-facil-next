@@ -1,28 +1,22 @@
 "use client";
 
-import { useState } from "react";
-
 import { Button } from "@/components/ui/button";
-
-import { Loading } from "@/shared/feedback/Loading";
-
-import { PageBreadcrumb } from "@/shared/layout/PageBreadcrumb";
-import { PageContainer } from "@/shared/layout/PageContainer";
-import { PageHeader } from "@/shared/layout/PageHeader";
-
 import { useDeleteUser, useUsers } from "@/features/user/user.api";
-
-import { UserForm } from "@/features/user/UserForm";
-import { UserTable } from "@/features/user/UserTable";
-
 import {
   User,
   UserFilters as UserFiltersType,
-  UserSorting,
 } from "@/features/user/user.types";
 import { UserFilters } from "@/features/user/UserFilters";
+import { UserForm } from "@/features/user/UserForm";
+import { UserTable } from "@/features/user/UserTable";
+import { Loading } from "@/shared/feedback/Loading";
+import { PageBreadcrumb } from "@/shared/layout/PageBreadcrumb";
+import { PageContainer } from "@/shared/layout/PageContainer";
+import { PageHeader } from "@/shared/layout/PageHeader";
 import { DataTablePagination } from "@/shared/table/DataTablePagination";
 import { DataTableToolbar } from "@/shared/table/DataTableToolbar";
+import { Sorting } from "@/shared/types/table.types";
+import { useState } from "react";
 
 export default function UsersPage() {
   const [filters, setFilters] = useState<UserFiltersType>({
@@ -33,7 +27,7 @@ export default function UsersPage() {
   const [page, setPage] = useState(0);
   const size = 1;
 
-  const [sorting, setSorting] = useState<UserSorting>({
+  const [sorting, setSorting] = useState<Sorting>({
     field: "id",
     direction: "asc",
   });
