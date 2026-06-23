@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { PageResponse, User, UserFilters, UserFormData } from "./user.types";
+import { PageResponse, User, UserFilters, UserFormData, UserSorting } from "./user.types";
 
 const USER_QUERY_KEY = ["users"];
 
@@ -45,6 +45,7 @@ export async function getUsers(
     filters: UserFilters,
     page: number,
     size: number,
+    sorting: UserSorting,
 ): Promise<PageResponse<User>> {
     await new Promise((resolve) =>
         setTimeout(resolve, 300),
@@ -64,6 +65,32 @@ export async function getUsers(
                 .includes(filters.email.toLowerCase());
 
         return matchName && matchEmail;
+    });
+
+    filtered.sort((a, b) => {
+        const valueA =
+            a[
+            sorting.field as keyof User
+            ];
+
+        const valueB =
+            b[
+            sorting.field as keyof User
+            ];
+
+        if (valueA < valueB) {
+            return sorting.direction === "asc"
+                ? -1
+                : 1;
+        }
+
+        if (valueA > valueB) {
+            return sorting.direction === "asc"
+                ? 1
+                : -1;
+        }
+
+        return 0;
     });
 
     const start = page * size;
@@ -140,6 +167,7 @@ export function useUsers(
     filters: UserFilters,
     page: number,
     size: number,
+    sorting: UserSorting,
 ) {
     return useQuery({
         queryKey: [
@@ -147,6 +175,7 @@ export function useUsers(
             filters,
             page,
             size,
+            sorting,
         ],
 
         queryFn: () =>
@@ -154,6 +183,7 @@ export function useUsers(
                 filters,
                 page,
                 size,
+                sorting,
             ),
     });
 }

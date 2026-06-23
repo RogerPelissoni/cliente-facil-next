@@ -1,23 +1,32 @@
 "use client";
 
 import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination";
 
 interface Props {
   page: number;
+  size: number;
+
   totalPages: number;
+  totalElements: number;
 
   onPageChange(page: number): void;
 }
 
-export function DataTablePagination({ page, totalPages, onPageChange }: Props) {
+export function DataTablePagination({
+  page,
+  size,
+  totalPages,
+  totalElements,
+  onPageChange,
+}: Props) {
   function getPages(): (number | "ellipsis")[] {
     if (totalPages <= 7) {
       return Array.from({ length: totalPages }, (_, index) => index);
@@ -65,8 +74,16 @@ export function DataTablePagination({ page, totalPages, onPageChange }: Props) {
 
   const pages = getPages();
 
+  const start = totalElements === 0 ? 0 : page * size + 1;
+
+  const end = Math.min((page + 1) * size, totalElements);
+
   return (
-    <div className="mt-4 flex justify-center">
+    <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      <div className="text-sm text-muted-foreground">
+        Mostrando {start}-{end} de {totalElements} registros
+      </div>
+
       <Pagination>
         <PaginationContent>
           <PaginationItem>

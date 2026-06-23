@@ -12,27 +12,72 @@ import { ConfirmDialog } from "@/shared/feedback/ConfirmDialog";
 import { EmptyState } from "@/shared/feedback/EmptyState";
 
 import { DataTable } from "@/shared/table/DataTable";
-import { User } from "./user.types";
+import { ArrowDown, ArrowUp } from "lucide-react";
+import { User, UserSorting } from "./user.types";
 
 interface Props {
   data: User[];
+
+  sorting: UserSorting;
+
+  onSortingChange(sorting: UserSorting): void;
+
   onEdit(user: User): void;
+
   onDelete(user: User): void;
 }
 
-export function UserTable({ data, onEdit, onDelete }: Props) {
+export function UserTable({
+  data,
+  sorting,
+  onSortingChange,
+  onEdit,
+  onDelete,
+}: Props) {
+  function renderSortableHeader(label: string, field: string) {
+    return (
+      <Button variant="ghost" onClick={() => handleSort(field)}>
+        {label}
+
+        {sorting.field === field &&
+          (sorting.direction === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ))}
+      </Button>
+    );
+  }
+
+  function handleSort(field: string) {
+    if (sorting.field === field) {
+      onSortingChange({
+        field,
+
+        direction: sorting.direction === "asc" ? "desc" : "asc",
+      });
+
+      return;
+    }
+
+    onSortingChange({
+      field,
+      direction: "asc",
+    });
+  }
+
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: "id",
-      header: "Código",
+      header: () => renderSortableHeader("Código", "id"),
     },
     {
       accessorKey: "name",
-      header: "Nome",
+      header: () => renderSortableHeader("Nome", "name"),
     },
     {
       accessorKey: "email",
-      header: "E-mail",
+      header: () => renderSortableHeader("E-mail", "email"),
     },
     {
       id: "actions",

@@ -18,6 +18,7 @@ import { UserTable } from "@/features/user/UserTable";
 import {
   User,
   UserFilters as UserFiltersType,
+  UserSorting,
 } from "@/features/user/user.types";
 import { UserFilters } from "@/features/user/UserFilters";
 import { DataTablePagination } from "@/shared/table/DataTablePagination";
@@ -32,7 +33,12 @@ export default function UsersPage() {
   const [page, setPage] = useState(0);
   const size = 1;
 
-  const { data, isLoading } = useUsers(filters, page, size);
+  const [sorting, setSorting] = useState<UserSorting>({
+    field: "id",
+    direction: "asc",
+  });
+
+  const { data, isLoading } = useUsers(filters, page, size, sorting);
   const deleteUser = useDeleteUser();
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -93,13 +99,20 @@ export default function UsersPage() {
 
           <UserTable
             data={data?.content ?? []}
+            sorting={sorting}
+            onSortingChange={(value) => {
+              setSorting(value);
+              setPage(0);
+            }}
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
 
           <DataTablePagination
             page={page}
+            size={size}
             totalPages={data?.totalPages ?? 0}
+            totalElements={data?.totalElements ?? 0}
             onPageChange={setPage}
           />
         </>
