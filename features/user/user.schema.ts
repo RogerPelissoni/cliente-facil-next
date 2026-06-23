@@ -1,10 +1,13 @@
 import { z } from "zod";
 
 export const userSchema = z.object({
-    name: z.string().min(3, "Informe o nome"),
-    email: z.email("E-mail inválido"),
+    name: z.string().min(3),
+    email: z.email(),
     status: z.enum(["ACTIVE", "INACTIVE"]),
-    companyId: z.coerce.number().min(1, "Selecione a empresa"),
+    companyId: z.string().min(
+        1,
+        "Selecione uma empresa",
+    )
 });
 
 export type UserFormData = z.infer<typeof userSchema>;

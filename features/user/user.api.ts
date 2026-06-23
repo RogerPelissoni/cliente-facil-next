@@ -25,12 +25,20 @@ async function delay(ms = 500) {
     );
 }
 
+function mapUserFormDataToUser(data: UserFormData): Omit<User, "id"> {
+    return {
+        ...data,
+        companyId: Number(data.companyId),
+    };
+}
+
 let users: User[] = Array.from(
     { length: 100 },
     (_, index) => ({
         id: index + 1,
         name: `Usuário ${index + 1}`,
         email: `usuario${index + 1}@email.com`,
+        status: 'ACTIVE',
         companyId: 1,
     }),
 );
@@ -113,7 +121,7 @@ export async function createUser(
                 0,
             ) + 1,
 
-        ...data,
+        ...mapUserFormDataToUser(data),
     };
 
     users.push(user);
@@ -140,7 +148,7 @@ export async function updateUser(
 
     users[index] = {
         ...users[index],
-        ...data,
+        ...mapUserFormDataToUser(data),
     };
 
     return users[index];
