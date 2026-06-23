@@ -20,6 +20,7 @@ import {
   UserFilters as UserFiltersType,
 } from "@/features/user/user.types";
 import { UserFilters } from "@/features/user/UserFilters";
+import { DataTablePagination } from "@/shared/table/DataTablePagination";
 import { DataTableToolbar } from "@/shared/table/DataTableToolbar";
 
 export default function UsersPage() {
@@ -28,12 +29,12 @@ export default function UsersPage() {
     email: "",
   });
 
-  const { data = [], isLoading } = useUsers(filters);
+  const [page, setPage] = useState(0);
+  const size = 1;
 
+  const { data, isLoading } = useUsers(filters, page, size);
   const deleteUser = useDeleteUser();
-
   const [showForm, setShowForm] = useState(false);
-
   const [editingUser, setEditingUser] = useState<User | null>(null);
 
   function handleCreate() {
@@ -81,10 +82,26 @@ export default function UsersPage() {
       ) : (
         <>
           <DataTableToolbar>
-            <UserFilters filters={filters} onChange={setFilters} />
+            <UserFilters
+              filters={filters}
+              onChange={(value) => {
+                setFilters(value);
+                setPage(0);
+              }}
+            />
           </DataTableToolbar>
 
-          <UserTable data={data} onEdit={handleEdit} onDelete={handleDelete} />
+          <UserTable
+            data={data?.content ?? []}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+
+          <DataTablePagination
+            page={page}
+            totalPages={data?.totalPages ?? 0}
+            onPageChange={setPage}
+          />
         </>
       )}
     </PageContainer>

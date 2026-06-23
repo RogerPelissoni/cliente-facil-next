@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { User, UserFilters, UserFormData } from "./user.types";
+import { PageResponse, User, UserFilters, UserFormData } from "./user.types";
 
 const USER_QUERY_KEY = ["users"];
 
@@ -14,37 +14,71 @@ let users: User[] = [
         name: "Administrador",
         email: "admin@email.com",
     },
+    {
+        id: 3,
+        name: "Administrador",
+        email: "admin@email.com",
+    },
+    {
+        id: 4,
+        name: "Administrador",
+        email: "admin@email.com",
+    },
+    {
+        id: 5,
+        name: "Administrador",
+        email: "admin@email.com",
+    },
+    {
+        id: 6,
+        name: "Administrador",
+        email: "admin@email.com",
+    },
+    {
+        id: 7,
+        name: "Administrador",
+        email: "admin@email.com",
+    },
 ];
 
 export async function getUsers(
-    filters: UserFilters
-): Promise<User[]> {
+    filters: UserFilters,
+    page: number,
+    size: number,
+): Promise<PageResponse<User>> {
     await new Promise((resolve) =>
-        setTimeout(resolve, 300)
+        setTimeout(resolve, 300),
     );
 
-    return users.filter((user) => {
+    const filtered = users.filter((user) => {
         const matchName =
             !filters.name ||
             user.name
                 .toLowerCase()
-                .includes(
-                    filters.name.toLowerCase()
-                );
+                .includes(filters.name.toLowerCase());
 
         const matchEmail =
             !filters.email ||
             user.email
                 .toLowerCase()
-                .includes(
-                    filters.email.toLowerCase()
-                );
+                .includes(filters.email.toLowerCase());
 
-        return (
-            matchName &&
-            matchEmail
-        );
+        return matchName && matchEmail;
     });
+
+    const start = page * size;
+
+    const end = start + size;
+
+    return {
+        content: filtered.slice(start, end),
+        page,
+        size,
+        totalElements: filtered.length,
+        totalPages: Math.ceil(
+            filtered.length / size,
+        ),
+    };
 }
 
 export async function getUser(
@@ -103,16 +137,24 @@ export async function deleteUser(
 }
 
 export function useUsers(
-    filters: UserFilters
+    filters: UserFilters,
+    page: number,
+    size: number,
 ) {
     return useQuery({
         queryKey: [
             "users",
             filters,
+            page,
+            size,
         ],
 
         queryFn: () =>
-            getUsers(filters),
+            getUsers(
+                filters,
+                page,
+                size,
+            ),
     });
 }
 
