@@ -1,18 +1,16 @@
 "use client";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { FormActions } from "@/shared/form/FormActions";
+import { FormDate } from "@/shared/form/FormDate";
+import { FormDateTime } from "@/shared/form/FormDateTime";
+import { FormInput } from "@/shared/form/FormInput";
+import { FormSelect } from "@/shared/form/FormSelect";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
-
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { FormActions } from "@/shared/form/FormActions";
-import { FormInput } from "@/shared/form/FormInput";
-import { FormSelect } from "@/shared/form/FormSelect";
-
 import { useCompaniesSelect } from "../company/company.api";
 import { useCreateUser, useUpdateUser } from "./user.api";
-
 import { UserFormData, userSchema } from "./user.schema";
 import { User } from "./user.types";
 
@@ -147,6 +145,18 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
               value: String(company.id),
               label: company.tradeName,
             }))}
+          />
+
+          <FormDate
+            control={form.control}
+            name="birthDate"
+            label="Data de Nascimento"
+          />
+
+          <FormDateTime
+            control={form.control}
+            name="lastAccess"
+            label="Data/Hora Inicial"
           />
 
           <FormActions

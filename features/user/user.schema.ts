@@ -7,7 +7,9 @@ export const userSchema = z.object({
     companyId: z.string().min(
         1,
         "Selecione uma empresa",
-    )
+    ),
+    birthDate: z.date(),
+    lastAccess: z.date(),
 });
 
 export type UserFormData = z.infer<typeof userSchema>;
