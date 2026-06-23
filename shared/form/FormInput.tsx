@@ -1,22 +1,22 @@
 "use client";
 
-import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
-
 import { Input } from "@/components/ui/input";
 
-interface Props<T extends FieldValues> {
-  form: UseFormReturn<T>;
-  name: FieldPath<T>;
+import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
+
+interface Props<TFieldValues extends FieldValues> {
+  form: UseFormReturn<TFieldValues>;
+  name: FieldPath<TFieldValues>;
   label: string;
   placeholder?: string;
 }
 
-export function FormInput<T extends FieldValues>({
+export function FormInput<TFieldValues extends FieldValues>({
   form,
   name,
   label,
   placeholder,
-}: Props<T>) {
+}: Props<TFieldValues>) {
   return (
     <div className="space-y-2">
       <label className="text-sm font-medium">{label}</label>

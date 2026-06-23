@@ -5,11 +5,11 @@ import {
     useQueryClient,
 } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { UserFormData } from "./user.schema";
 import {
     PageResponse,
     User,
     UserFilters,
-    UserFormData,
 } from "./user.types";
 
 export const userKeys = {
@@ -29,10 +29,9 @@ let users: User[] = Array.from(
     { length: 100 },
     (_, index) => ({
         id: index + 1,
-
         name: `Usuário ${index + 1}`,
-
         email: `usuario${index + 1}@email.com`,
+        companyId: 1,
     }),
 );
 

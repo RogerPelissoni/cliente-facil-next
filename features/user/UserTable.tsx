@@ -11,6 +11,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import { useCompanies } from "../company/company.api";
 import { User } from "./user.types";
 
 interface Props {
@@ -28,6 +29,8 @@ export function UserTable({
   onEdit,
   onDelete,
 }: Props) {
+  const { data: companies = [] } = useCompanies();
+
   function renderSortableHeader(label: string, field: string) {
     return (
       <Button variant="ghost" onClick={() => handleSort(field)}>
@@ -72,6 +75,17 @@ export function UserTable({
     {
       accessorKey: "email",
       header: () => renderSortableHeader("E-mail", "email"),
+    },
+    {
+      accessorKey: "companyId",
+      header: () => renderSortableHeader("Empresa", "companyId"),
+      cell: ({ row }) => {
+        const company = companies.find(
+          (company) => company.id === row.original.companyId,
+        );
+
+        return company?.tradeName ?? "-";
+      },
     },
     {
       id: "actions",

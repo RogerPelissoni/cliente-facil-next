@@ -8,9 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
+import { useCompanies } from "../company/company.api";
 import { useCreateUser, useUpdateUser } from "./user.api";
-import { userSchema } from "./user.schema";
-import { User, UserFormData } from "./user.types";
+import { UserFormData, userSchema } from "./user.schema";
+import { User } from "./user.types";
+import z from "zod";
 
 interface Props {
   user?: User | null;
@@ -19,16 +21,23 @@ interface Props {
 }
 
 export function UserForm({ user, onCancel, onSuccess }: Props) {
+  const { data: companies = [] } = useCompanies();
+
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
 
-  const form = useForm<UserFormData>({
+  const form = useForm<
+    z.input<typeof userSchema>,
+    any,
+    z.output<typeof userSchema>
+  >({
     resolver: zodResolver(userSchema),
 
     defaultValues: {
       name: "",
       email: "",
       status: "ACTIVE",
+      companyId: 0,
     },
   });
 
@@ -40,6 +49,7 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
         name: "",
         email: "",
         status: "ACTIVE",
+        companyId: 0,
       });
 
       return;
@@ -49,6 +59,7 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
       name: user.name,
       email: user.email,
       status: user.status,
+      companyId: user.companyId,
     });
   }, [user, form]);
 
@@ -126,6 +137,16 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
                 label: "Inativo",
               },
             ]}
+          />
+
+          <FormSelect
+            form={form}
+            name="companyId"
+            label="Empresa"
+            options={companies.map((company) => ({
+              value: String(company.id),
+              label: company.tradeName,
+            }))}
           />
 
           <FormActions

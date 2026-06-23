@@ -7,12 +7,7 @@ export interface User {
     name: string;
     email: string;
     status: UserStatus;
-}
-
-export interface UserFormData {
-    name: string;
-    email: string;
-    status: UserStatus;
+    companyId: number;
 }
 
 export interface UserFilters {
