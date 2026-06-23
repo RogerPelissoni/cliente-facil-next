@@ -1,14 +1,24 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-import { useCreateUser } from "./user.api";
-import { userSchema } from "./user.schema";
-import { UserFormData } from "./user.types";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export function UserForm() {
+import { useCreateUser, useUpdateUser } from "./user.api";
+
+import { userSchema } from "./user.schema";
+import { User, UserFormData } from "./user.types";
+
+interface Props {
+  user?: User | null;
+  onCancel: () => void;
+  onSuccess: () => void;
+}
+
+export function UserForm({ user, onCancel, onSuccess }: Props) {
   const createUser = useCreateUser();
+  const updateUser = useUpdateUser();
 
   const form = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
@@ -18,19 +28,52 @@ export function UserForm() {
     },
   });
 
-  async function onSubmit(data: UserFormData) {
-    await createUser.mutateAsync(data);
+  useEffect(() => {
+    if (!user) {
+      form.reset({
+        name: "",
+        email: "",
+      });
 
-    form.reset();
+      return;
+    }
+
+    form.reset({
+      name: user.name,
+      email: user.email,
+    });
+  }, [user, form]);
+
+  async function onSubmit(data: UserFormData) {
+    if (user) {
+      await updateUser.mutateAsync({
+        id: user.id,
+        data,
+      });
+    } else {
+      await createUser.mutateAsync(data);
+    }
+
+    onSuccess();
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <input placeholder="Nome" {...form.register("name")} />
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <div>
+        <input placeholder="Nome" {...form.register("name")} />
+      </div>
 
-      <input placeholder="Email" {...form.register("email")} />
+      <div>
+        <input placeholder="Email" {...form.register("email")} />
+      </div>
 
-      <button type="submit">Salvar</button>
+      <div className="flex gap-2">
+        <button type="submit">Salvar</button>
+
+        <button type="button" onClick={onCancel}>
+          Cancelar
+        </button>
+      </div>
     </form>
   );
 }
