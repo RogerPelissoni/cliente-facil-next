@@ -25,43 +25,16 @@ async function delay(ms = 500) {
     );
 }
 
-let users: User[] = [
-    {
-        id: 1,
-        name: "Roger Pelissoni",
-        email: "roger@email.com",
-    },
-    {
-        id: 2,
-        name: "Administrador",
-        email: "admin@email.com",
-    },
-    {
-        id: 3,
-        name: "João Silva",
-        email: "joao@email.com",
-    },
-    {
-        id: 4,
-        name: "Maria Souza",
-        email: "maria@email.com",
-    },
-    {
-        id: 5,
-        name: "Carlos Santos",
-        email: "carlos@email.com",
-    },
-    {
-        id: 6,
-        name: "Ana Oliveira",
-        email: "ana@email.com",
-    },
-    {
-        id: 7,
-        name: "Pedro Lima",
-        email: "pedro@email.com",
-    },
-];
+let users: User[] = Array.from(
+    { length: 100 },
+    (_, index) => ({
+        id: index + 1,
+
+        name: `Usuário ${index + 1}`,
+
+        email: `usuario${index + 1}@email.com`,
+    }),
+);
 
 export async function getUsers(
     filters: UserFilters,

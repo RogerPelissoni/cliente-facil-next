@@ -9,10 +9,13 @@ import {
 import { UserFilters } from "@/features/user/UserFilters";
 import { UserForm } from "@/features/user/UserForm";
 import { UserTable } from "@/features/user/UserTable";
+import { ErrorState } from "@/shared/feedback/ErrorState";
 import { Loading } from "@/shared/feedback/Loading";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 import { PageBreadcrumb } from "@/shared/layout/PageBreadcrumb";
 import { PageContainer } from "@/shared/layout/PageContainer";
 import { PageHeader } from "@/shared/layout/PageHeader";
+import { DataTablePageSize } from "@/shared/table/DataTablePageSize";
 import { DataTablePagination } from "@/shared/table/DataTablePagination";
 import { DataTableToolbar } from "@/shared/table/DataTableToolbar";
 import { Sorting } from "@/shared/types/table.types";
@@ -25,14 +28,26 @@ export default function UsersPage() {
   });
 
   const [page, setPage] = useState(0);
-  const size = 1;
+  const [size, setSize] = useState(10);
 
   const [sorting, setSorting] = useState<Sorting>({
     field: "id",
     direction: "asc",
   });
 
-  const { data, isLoading } = useUsers(filters, page, size, sorting);
+  const debouncedFilters = useDebounce(filters, 500);
+
+  const { data, isLoading, error, refetch } = useUsers(
+    debouncedFilters,
+    page,
+    size,
+    sorting,
+  );
+
+  if (error) {
+    return <ErrorState onRetry={refetch} />;
+  }
+
   const deleteUser = useDeleteUser();
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -90,6 +105,14 @@ export default function UsersPage() {
               }}
             />
           </DataTableToolbar>
+
+          <DataTablePageSize
+            value={size}
+            onChange={(value) => {
+              setSize(value);
+              setPage(0);
+            }}
+          />
 
           <UserTable
             data={data?.content ?? []}
