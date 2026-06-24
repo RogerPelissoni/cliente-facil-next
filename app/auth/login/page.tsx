@@ -1,34 +1,65 @@
 "use client";
 
+import { LoginFormData, loginSchema } from "@/features/login/login.schema";
+import ButtonComponent from "@/shared/components/ButtonComponent";
+import CardComponent from "@/shared/components/CardComponent";
+import { FormInput } from "@/shared/form/FormInput";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+
 export default function LoginPage() {
-  // const rsLogin = useLoginResource();
+  const router = useRouter();
 
-  // async function onSubmit(formData: FieldValues) {
-  //   const res = await fetch("/api/login", {
-  //     method: "POST",
-  //     body: JSON.stringify(formData),
-  //   });
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  //   if (!res.ok) {
-  //     console.error(await res.json());
-  //     return;
-  //   }
+  async function onSubmit(data: LoginFormData) {
+    const response = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  //   window.location.href = "/dashboard";
-  // }
+    if (!response.ok) {
+      return;
+    }
+
+    router.replace("/dashboard");
+  }
 
   return (
     <div className="flex items-center justify-center min-h-[80vh]">
-      <h2>PAGE LOGIN</h2>
-      {/* <CoreCardComponent
+      <CardComponent
         divClass="w-fit"
         title="Login"
         content={
-          <CoreFormProvider title="Usuários" schema={rsLogin.schema} initialState={rsLogin.formStateInitial} formFields={rsLogin.formFields}>
-            <CoreFormComponent onSubmit={onSubmit} submitButtonText="Entrar" className="my-4" />
-          </CoreFormProvider>
+          <>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormInput
+                form={form}
+                name="email"
+                label="E-mail"
+                placeholder="Digite o e-mail"
+              />
+
+              <FormInput
+                form={form}
+                name="password"
+                label="Senha"
+                placeholder="Digite a senha"
+              />
+
+              <div className="flex justify-end">
+                <ButtonComponent type="submit">Entrar</ButtonComponent>
+              </div>
+            </form>
+          </>
         }
-      /> */}
+      />
     </div>
   );
 }

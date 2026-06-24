@@ -16,7 +16,7 @@ type CoreCardProps = {
   actions?: React.ReactNode;
 };
 
-export default function CoreCardComponent({
+export default function CardComponent({
   title,
   divClass,
   content,

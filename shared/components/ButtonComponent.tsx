@@ -27,7 +27,7 @@ type CoreButtonProps = {
   onClick?: () => void;
 };
 
-export default function CoreButtonComponent({
+export default function ButtonComponent({
   children,
   className,
   size = "sm",
