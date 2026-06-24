@@ -13,10 +13,8 @@ import {
 interface Props {
   page: number;
   size: number;
-
   totalPages: number;
   totalElements: number;
-
   onPageChange(page: number): void;
 }
 
@@ -60,22 +58,17 @@ export function DataTablePagination({
     }
 
     pages.push("ellipsis");
-
     pages.push(page - 1);
     pages.push(page);
     pages.push(page + 1);
-
     pages.push("ellipsis");
-
     pages.push(lastPage);
 
     return pages;
   }
 
   const pages = getPages();
-
   const start = totalElements === 0 ? 0 : page * size + 1;
-
   const end = Math.min((page + 1) * size, totalElements);
 
   return (

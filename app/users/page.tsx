@@ -22,13 +22,13 @@ import { Sorting } from "@/shared/types/table.types";
 import { useState } from "react";
 
 export default function UsersPage() {
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+
   const [filters, setFilters] = useState<UserFiltersType>({
     name: "",
     email: "",
   });
-
-  const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
 
   const [sorting, setSorting] = useState<Sorting>({
     field: "id",
@@ -44,13 +44,13 @@ export default function UsersPage() {
     sorting,
   );
 
-  if (error) {
-    return <ErrorState onRetry={refetch} />;
-  }
-
   const deleteUser = useDeleteUser();
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+
+  if (error) {
+    return <ErrorState onRetry={refetch} />;
+  }
 
   function handleCreate() {
     setEditingUser(null);
@@ -106,14 +106,6 @@ export default function UsersPage() {
             />
           </DataTableToolbar>
 
-          <DataTablePageSize
-            value={size}
-            onChange={(value) => {
-              setSize(value);
-              setPage(0);
-            }}
-          />
-
           <UserTable
             data={data?.content ?? []}
             sorting={sorting}
@@ -125,13 +117,23 @@ export default function UsersPage() {
             onDelete={handleDelete}
           />
 
-          <DataTablePagination
-            page={page}
-            size={size}
-            totalPages={data?.totalPages ?? 0}
-            totalElements={data?.totalElements ?? 0}
-            onPageChange={setPage}
-          />
+          <div className="flex justify-between">
+            <DataTablePageSize
+              value={size}
+              onChange={(value) => {
+                setSize(value);
+                setPage(0);
+              }}
+            />
+
+            <DataTablePagination
+              page={page}
+              size={size}
+              totalPages={data?.totalPages ?? 0}
+              totalElements={data?.totalElements ?? 0}
+              onPageChange={setPage}
+            />
+          </div>
         </>
       )}
     </PageContainer>
