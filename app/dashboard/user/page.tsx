@@ -1,11 +1,9 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useDeleteUser, useUsers } from "@/features/user/user.api";
-import {
-  User,
-  UserFilters as UserFiltersType,
-} from "@/features/user/user.types";
+import { useDeleteUser } from "@/features/user/user.mutation";
+import { useUsers } from "@/features/user/user.query";
+import { User, UserFilters as UserFiltersType } from "@/features/user/user.types";
 import { UserFilters } from "@/features/user/UserFilters";
 import { UserForm } from "@/features/user/UserForm";
 import { UserTable } from "@/features/user/UserTable";
@@ -37,12 +35,12 @@ export default function UsersPage() {
 
   const debouncedFilters = useDebounce(filters, 500);
 
-  const { data, isLoading, error, refetch } = useUsers(
-    debouncedFilters,
+  const { data, isPending, error, refetch } = useUsers({
+    filters: debouncedFilters,
     page,
     size,
     sorting,
-  );
+  });
 
   const deleteUser = useDeleteUser();
   const [showForm, setShowForm] = useState(false);
@@ -71,7 +69,7 @@ export default function UsersPage() {
     setShowForm(false);
   }
 
-  if (isLoading) {
+  if (isPending) {
     return <Loading />;
   }
 
@@ -79,21 +77,10 @@ export default function UsersPage() {
     <PageContainer>
       <PageBreadcrumb items={["Cadastros", "Usuários"]} />
 
-      <PageHeader
-        title="Usuários"
-        actions={
-          !showForm && (
-            <Button onClick={handleCreate}>Adicionar Registro</Button>
-          )
-        }
-      />
+      <PageHeader title="Usuários" actions={!showForm && <Button onClick={handleCreate}>Adicionar Registro</Button>} />
 
       {showForm ? (
-        <UserForm
-          user={editingUser}
-          onCancel={handleCloseForm}
-          onSuccess={handleCloseForm}
-        />
+        <UserForm user={editingUser} onCancel={handleCloseForm} onSuccess={handleCloseForm} />
       ) : (
         <>
           <DataTableToolbar>

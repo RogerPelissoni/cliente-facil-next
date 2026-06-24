@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useCompaniesSelect } from "../company/company.api";
-import { useCreateUser, useUpdateUser } from "./user.api";
+import { useCreateUser, useUpdateUser } from "./user.mutation";
 import { UserFormData, userSchema } from "./user.schema";
 import { User } from "./user.types";
 
@@ -24,7 +24,6 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
   const { data: companies = [] } = useCompaniesSelect();
 
   const createUser = useCreateUser();
-
   const updateUser = useUpdateUser();
 
   const form = useForm<UserFormData>({
@@ -78,10 +77,7 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
       return;
     }
 
-    const generatedEmail = `${name
-      .trim()
-      .toLowerCase()
-      .replaceAll(" ", ".")}@email.com`;
+    const generatedEmail = `${name.trim().toLowerCase().replaceAll(" ", ".")}@email.com`;
 
     form.setValue("email", generatedEmail, {
       shouldValidate: true,
@@ -109,19 +105,9 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
 
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormInput
-            form={form}
-            name="name"
-            label="Nome"
-            placeholder="Digite o nome"
-          />
+          <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
 
-          <FormInput
-            form={form}
-            name="email"
-            label="E-mail"
-            placeholder="Digite o e-mail"
-          />
+          <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />
 
           <FormSelect
             form={form}
@@ -149,22 +135,11 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
             }))}
           />
 
-          <FormDate
-            control={form.control}
-            name="birthDate"
-            label="Data de Nascimento"
-          />
+          <FormDate control={form.control} name="birthDate" label="Data de Nascimento" />
 
-          <FormDateTime
-            control={form.control}
-            name="lastAccess"
-            label="Data/Hora Inicial"
-          />
+          <FormDateTime control={form.control} name="lastAccess" label="Data/Hora Inicial" />
 
-          <FormActions
-            onCancel={onCancel}
-            loading={createUser.isPending || updateUser.isPending}
-          />
+          <FormActions onCancel={onCancel} loading={createUser.isPending || updateUser.isPending} />
         </form>
       </CardContent>
     </Card>
