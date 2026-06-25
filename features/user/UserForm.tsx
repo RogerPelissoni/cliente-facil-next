@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser } from "./user.mutation";
-import { UserFormSchemaFields, userSchema } from "./user.schema";
+import { UserFormInput, userSchema } from "./user.schema";
 import { KeyValue, User } from "./user.types";
 
 interface Props {
@@ -27,7 +27,7 @@ export function UserForm({ user, companies, profiles, people, onCancel, onSucces
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
 
-  const form = useForm<UserFormSchemaFields>({
+  const form = useForm<UserFormInput>({
     resolver: zodResolver(userSchema),
 
     defaultValues: {
@@ -67,7 +67,7 @@ export function UserForm({ user, companies, profiles, people, onCancel, onSucces
     });
   }, [user, form]);
 
-  async function onSubmit(data: UserFormSchemaFields) {
+  async function onSubmit(data: UserFormInput) {
     if (user) {
       await updateUser.mutateAsync({
         id: user.id,

@@ -2,7 +2,7 @@ import { api } from "@/lib/api/client";
 import { makeSearchRequest } from "@/lib/api/search-mapper";
 import { PageResponse } from "@/shared/types/api.type";
 import { Sorting } from "@/shared/types/table.types";
-import { UserFormSchemaFields } from "./user.schema";
+import { UserFormInput } from "./user.schema";
 import { User, UserFilters, UserScreenData } from "./user.types";
 
 export const userApi = {
@@ -18,14 +18,14 @@ export const userApi = {
     return api.get<User>(`/users/${id}`);
   },
 
-  create(data: UserFormSchemaFields) {
+  create(data: UserFormInput) {
     return api.post<User>("/users", {
       ...data,
       companyId: Number(data.companyId),
     });
   },
 
-  update(id: number, data: UserFormSchemaFields) {
+  update(id: number, data: UserFormInput) {
     return api.put<User>(`/users/${id}`, {
       ...data,
       companyId: Number(data.companyId),

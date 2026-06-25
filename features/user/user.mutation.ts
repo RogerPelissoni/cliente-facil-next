@@ -1,10 +1,9 @@
+import { ApiError } from "@/lib/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-
 import { userApi } from "./user.api";
 import { userKeys } from "./user.query";
-import { UserFormData } from "./user.schema";
-import { ApiError } from "@/lib/api";
+import { UserFormInput } from "./user.schema";
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
@@ -35,7 +34,7 @@ export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UserFormData }) => userApi.update(id, data),
+    mutationFn: ({ id, data }: { id: number; data: UserFormInput }) => userApi.update(id, data),
 
     onSuccess() {
       toast.success("Usuário atualizado com sucesso");
