@@ -1,17 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { RoleEnum } from "@/enum/role.enum";
 import { ConfirmDialog } from "@/shared/feedback/ConfirmDialog";
 import { EmptyState } from "@/shared/feedback/EmptyState";
 import { DataTable } from "@/shared/table/DataTable";
 import { Sorting } from "@/shared/types/table.types";
-import {
-  ColumnDef,
-  getCoreRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { useCompaniesSelect } from "../company/company.api";
 import { User } from "./user.types";
 
 interface Props {
@@ -22,26 +18,14 @@ interface Props {
   onDelete(user: User): void;
 }
 
-export function UserTable({
-  data,
-  sorting,
-  onSortingChange,
-  onEdit,
-  onDelete,
-}: Props) {
-  const { data: companies = [] } = useCompaniesSelect();
-
+export function UserTable({ data, sorting, onSortingChange, onEdit, onDelete }: Props) {
   function renderSortableHeader(label: string, field: string) {
     return (
       <Button variant="ghost" onClick={() => handleSort(field)}>
         {label}
 
         {sorting.field === field &&
-          (sorting.direction === "asc" ? (
-            <ArrowUp className="ml-2 h-4 w-4" />
-          ) : (
-            <ArrowDown className="ml-2 h-4 w-4" />
-          ))}
+          (sorting.direction === "asc" ? <ArrowUp className="ml-2 h-4 w-4" /> : <ArrowDown className="ml-2 h-4 w-4" />)}
       </Button>
     );
   }
@@ -50,7 +34,6 @@ export function UserTable({
     if (sorting.field === field) {
       onSortingChange({
         field,
-
         direction: sorting.direction === "asc" ? "desc" : "asc",
       });
 
@@ -66,7 +49,7 @@ export function UserTable({
   const columns: ColumnDef<User>[] = [
     {
       accessorKey: "id",
-      header: () => renderSortableHeader("Código", "id"),
+      header: () => renderSortableHeader("#", "id"),
     },
     {
       accessorKey: "name",
@@ -74,32 +57,28 @@ export function UserTable({
     },
     {
       accessorKey: "email",
-      header: () => renderSortableHeader("E-mail", "email"),
+      header: () => renderSortableHeader("Email", "email"),
     },
     {
-      accessorKey: "companyId",
-      header: () => renderSortableHeader("Empresa", "companyId"),
-      cell: ({ row }) => {
-        const company = companies.find(
-          (company) => company.id === row.original.companyId,
-        );
-
-        return company?.tradeName ?? "-";
-      },
+      accessorKey: "role",
+      header: () => renderSortableHeader("Cargo", "role"),
+      cell: ({ row }) => RoleEnum[row.original.role] ?? row.original.role,
     },
     {
-      accessorKey: "birthDate",
-      header: () => renderSortableHeader("Data de Nascimento", "birthDate"),
+      accessorKey: "personName",
+      header: () => renderSortableHeader("Pessoa", "personName"),
     },
     {
-      accessorKey: "lastAccess",
-      header: () => renderSortableHeader("Último Acesso", "lastAccess"),
+      accessorKey: "profileName",
+      header: () => renderSortableHeader("Perfil", "profileName"),
+    },
+    {
+      accessorKey: "companyName",
+      header: () => renderSortableHeader("Empresa", "companyName"),
     },
     {
       id: "actions",
-
       header: "Ações",
-
       cell: ({ row }) => {
         const user = row.original;
 
@@ -125,7 +104,6 @@ export function UserTable({
     },
   ];
 
-  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data,
     columns,

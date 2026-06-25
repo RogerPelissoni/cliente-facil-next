@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useDeleteUser } from "@/features/user/user.mutation";
-import { useUsers } from "@/features/user/user.query";
+import { useUsers, useUserScreen } from "@/features/user/user.query";
 import { User, UserFilters as UserFiltersType } from "@/features/user/user.types";
 import { UserFilters } from "@/features/user/UserFilters";
 import { UserForm } from "@/features/user/UserForm";
@@ -35,8 +35,8 @@ export default function UsersPage() {
 
   const debouncedFilters = useDebounce(filters, 500);
 
-  const { data, isPending, error, refetch } = useUsers({
-    filters: debouncedFilters,
+  const { data, isPending, error, refetch } = useUserScreen({
+    filters,
     page,
     size,
     sorting,
@@ -80,7 +80,14 @@ export default function UsersPage() {
       <PageHeader title="Usuários" actions={!showForm && <Button onClick={handleCreate}>Adicionar Registro</Button>} />
 
       {showForm ? (
-        <UserForm user={editingUser} onCancel={handleCloseForm} onSuccess={handleCloseForm} />
+        <UserForm
+          user={editingUser}
+          onCancel={handleCloseForm}
+          onSuccess={handleCloseForm}
+          companies={data?.kvCompany ?? []}
+          profiles={data?.kvProfile ?? []}
+          people={data?.kvPerson ?? []}
+        />
       ) : (
         <>
           <DataTableToolbar>
@@ -94,7 +101,7 @@ export default function UsersPage() {
           </DataTableToolbar>
 
           <UserTable
-            data={data?.content ?? []}
+            data={data?.obUser.content ?? []}
             sorting={sorting}
             onSortingChange={(value) => {
               setSorting(value);
@@ -116,8 +123,8 @@ export default function UsersPage() {
             <DataTablePagination
               page={page}
               size={size}
-              totalPages={data?.totalPages ?? 0}
-              totalElements={data?.totalElements ?? 0}
+              totalPages={data?.obUser.totalPages ?? 0}
+              totalElements={data?.obUser.totalElements ?? 0}
               onPageChange={setPage}
             />
           </div>

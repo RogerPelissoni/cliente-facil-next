@@ -1,11 +1,16 @@
 import { api } from "@/lib/api/client";
 import { makeSearchRequest } from "@/lib/api/search-mapper";
+import { PageResponse } from "@/shared/types/api.type";
 import { Sorting } from "@/shared/types/table.types";
-import { UserFormData } from "./user.schema";
-import { PageResponse, User, UserFilters } from "./user.types";
+import { UserFormSchemaFields } from "./user.schema";
+import { User, UserFilters, UserScreenData } from "./user.types";
 
 export const userApi = {
-  findAll(filters: UserFilters, page: number, size: number, sorting: Sorting) {
+  screen(filters: UserFilters, page: number, size: number, sorting: Sorting) {
+    return api.post<UserScreenData>("/users/screen", makeSearchRequest(filters, page, size, sorting));
+  },
+
+  search(filters: UserFilters, page: number, size: number, sorting: Sorting) {
     return api.post<PageResponse<User>>("/users/search", makeSearchRequest(filters, page, size, sorting));
   },
 
@@ -13,14 +18,14 @@ export const userApi = {
     return api.get<User>(`/users/${id}`);
   },
 
-  create(data: UserFormData) {
+  create(data: UserFormSchemaFields) {
     return api.post<User>("/users", {
       ...data,
       companyId: Number(data.companyId),
     });
   },
 
-  update(id: number, data: UserFormData) {
+  update(id: number, data: UserFormSchemaFields) {
     return api.put<User>(`/users/${id}`, {
       ...data,
       companyId: Number(data.companyId),

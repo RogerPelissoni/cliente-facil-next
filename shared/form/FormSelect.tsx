@@ -1,20 +1,9 @@
 "use client";
 
-import {
-  Controller,
-  FieldPath,
-  FieldValues,
-  UseFormReturn,
-  useWatch,
-} from "react-hook-form";
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+import { Controller, FieldPath, FieldValues, UseFormReturn, useWatch } from "react-hook-form";
+import { GRID_SIZE, GridSize } from "./form-grid";
 
 interface Option {
   label: string;
@@ -27,6 +16,7 @@ interface Props<T extends FieldValues> {
   label: string;
   options: Option[];
   placeholder?: string;
+  size?: GridSize;
 }
 
 export function FormSelect<T extends FieldValues>({
@@ -35,6 +25,7 @@ export function FormSelect<T extends FieldValues>({
   label,
   options,
   placeholder = "Selecione",
+  size = 4,
 }: Props<T>) {
   const watchedValue = useWatch({
     control: form.control,
@@ -49,7 +40,7 @@ export function FormSelect<T extends FieldValues>({
       control={form.control}
       name={name}
       render={({ field, fieldState }) => (
-        <div className="space-y-2">
+        <div className={cn("col-span-12 space-y-2", GRID_SIZE[size])}>
           <label className="text-sm font-medium">{label}</label>
 
           <Select
@@ -58,9 +49,7 @@ export function FormSelect<T extends FieldValues>({
             onValueChange={field.onChange}
           >
             <SelectTrigger className="w-full" aria-invalid={!!fieldState.error}>
-              <SelectValue placeholder={placeholder}>
-                {selectedOption?.label}
-              </SelectValue>
+              <SelectValue placeholder={placeholder}>{selectedOption?.label}</SelectValue>
             </SelectTrigger>
 
             <SelectContent>
@@ -72,9 +61,7 @@ export function FormSelect<T extends FieldValues>({
             </SelectContent>
           </Select>
 
-          {fieldState.error && (
-            <p className="text-sm text-red-500">{fieldState.error.message}</p>
-          )}
+          {fieldState.error && <p className="text-sm text-red-500">{fieldState.error.message}</p>}
         </div>
       )}
     />

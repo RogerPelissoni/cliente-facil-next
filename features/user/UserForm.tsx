@@ -1,45 +1,44 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RoleEnum } from "@/enum/role.enum";
+import { FormGrid } from "@/shared/components/FormGrid";
 import { FormActions } from "@/shared/form/FormActions";
-import { FormDate } from "@/shared/form/FormDate";
-import { FormDateTime } from "@/shared/form/FormDateTime";
 import { FormInput } from "@/shared/form/FormInput";
 import { FormSelect } from "@/shared/form/FormSelect";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import { useCompaniesSelect } from "../company/company.api";
+import { useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser } from "./user.mutation";
-import { UserFormData, userSchema } from "./user.schema";
-import { User } from "./user.types";
+import { UserFormSchemaFields, userSchema } from "./user.schema";
+import { KeyValue, User } from "./user.types";
 
 interface Props {
   user?: User | null;
+  companies: KeyValue;
+  profiles: KeyValue;
+  people: KeyValue;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export function UserForm({ user, onCancel, onSuccess }: Props) {
-  const { data: companies = [] } = useCompaniesSelect();
-
+export function UserForm({ user, companies, profiles, people, onCancel, onSuccess }: Props) {
+  console.log("people", people);
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
 
-  const form = useForm<UserFormData>({
+  const form = useForm<UserFormSchemaFields>({
     resolver: zodResolver(userSchema),
 
     defaultValues: {
       name: "",
       email: "",
-      status: "ACTIVE",
-      companyId: "",
+      password: "",
+      role: undefined,
+      personId: undefined,
+      profileId: undefined,
+      companyId: undefined,
     },
-  });
-
-  const name = useWatch({
-    control: form.control,
-    name: "name",
   });
 
   useEffect(() => {
@@ -47,8 +46,11 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
       form.reset({
         name: "",
         email: "",
-        status: "ACTIVE",
-        companyId: "",
+        password: "",
+        role: undefined,
+        personId: undefined,
+        profileId: undefined,
+        companyId: undefined,
       });
 
       return;
@@ -57,34 +59,15 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
     form.reset({
       name: user.name,
       email: user.email,
-      status: user.status,
-      companyId: String(user.companyId),
-      birthDate: user.birthDate,
-      lastAccess: user.lastAccess,
+      password: "",
+      role: user.role,
+      personId: user.personId,
+      profileId: user.profileId,
+      companyId: user.companyId,
     });
   }, [user, form]);
 
-  useEffect(() => {
-    if (user) {
-      return;
-    }
-
-    if (!name?.trim()) {
-      form.setValue("email", "", {
-        shouldValidate: true,
-      });
-
-      return;
-    }
-
-    const generatedEmail = `${name.trim().toLowerCase().replaceAll(" ", ".")}@email.com`;
-
-    form.setValue("email", generatedEmail, {
-      shouldValidate: true,
-    });
-  }, [name, user, form]);
-
-  async function onSubmit(data: UserFormData) {
+  async function onSubmit(data: UserFormSchemaFields) {
     if (user) {
       await updateUser.mutateAsync({
         id: user.id,
@@ -104,40 +87,60 @@ export function UserForm({ user, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <FormGrid>
+            <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
 
-          <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />
+            <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />
 
-          <FormSelect
-            form={form}
-            name="status"
-            label="Status"
-            options={[
-              {
-                value: "ACTIVE",
-                label: "Ativo",
-              },
-              {
-                value: "INACTIVE",
-                label: "Inativo",
-              },
-            ]}
-          />
+            <FormInput
+              form={form}
+              name="password"
+              type="password"
+              label={user ? "Nova senha" : "Senha"}
+              placeholder={user ? "Informe apenas para alterar" : "Digite a senha"}
+            />
 
-          <FormSelect
-            form={form}
-            name="companyId"
-            label="Empresa"
-            options={companies.map((company) => ({
-              value: String(company.id),
-              label: company.tradeName,
-            }))}
-          />
+            <FormSelect
+              form={form}
+              name="role"
+              label="Cargo"
+              options={Object.entries(RoleEnum).map(([value, label]) => ({
+                value,
+                label,
+              }))}
+            />
 
-          <FormDate control={form.control} name="birthDate" label="Data de Nascimento" />
+            <FormSelect
+              form={form}
+              name="personId"
+              label="Pessoa"
+              options={Object.entries(people).map(([value, label]) => ({
+                value,
+                label,
+              }))}
+            />
 
-          <FormDateTime control={form.control} name="lastAccess" label="Data/Hora Inicial" />
+            <FormSelect
+              form={form}
+              name="profileId"
+              label="Perfil"
+              options={Object.entries(profiles).map(([value, label]) => ({
+                value,
+                label,
+              }))}
+            />
+
+            <FormSelect
+              form={form}
+              name="companyId"
+              label="Empresa"
+              options={Object.entries(companies).map(([value, label]) => ({
+                value,
+                label,
+              }))}
+            />
+          </FormGrid>
 
           <FormActions onCancel={onCancel} loading={createUser.isPending || updateUser.isPending} />
         </form>
