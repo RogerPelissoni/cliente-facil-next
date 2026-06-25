@@ -33,10 +33,8 @@ export default function UserPage() {
     direction: "asc",
   });
 
-  const debouncedFilters = useDebounce(filters, 500);
-
   const { data, isPending, error, refetch } = useUserScreen({
-    filters,
+    filters: useDebounce(filters, 500),
     page,
     size,
     sorting,

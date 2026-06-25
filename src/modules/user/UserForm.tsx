@@ -6,11 +6,12 @@ import { FormActions } from "@/src/shared/components/FormActions";
 import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
+import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser } from "./user.mutation";
-import { UserFormInput, userSchema } from "./user.schema";
+import { createUserDefaultValues, mapUserToForm, UserFormInput, userSchema } from "./user.schema";
 import { KeyValue, User } from "./user.types";
 
 interface Props {
@@ -23,49 +24,21 @@ interface Props {
 }
 
 export function UserForm({ user, companies, profiles, people, onCancel, onSuccess }: Props) {
-  console.log("people", people);
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
 
   const form = useForm<UserFormInput>({
     resolver: zodResolver(userSchema),
-
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      role: undefined,
-      personId: undefined,
-      profileId: undefined,
-      companyId: undefined,
-    },
+    defaultValues: createUserDefaultValues(),
   });
 
   useEffect(() => {
-    if (!user) {
-      form.reset({
-        name: "",
-        email: "",
-        password: "",
-        role: undefined,
-        personId: undefined,
-        profileId: undefined,
-        companyId: undefined,
-      });
-
-      return;
+    if (user) {
+      form.reset(mapUserToForm(user));
+    } else {
+      form.reset(createUserDefaultValues());
     }
-
-    form.reset({
-      name: user.name,
-      email: user.email,
-      password: "",
-      role: user.role,
-      personId: user.personId,
-      profileId: user.profileId,
-      companyId: user.companyId,
-    });
-  }, [user, form]);
+  }, [user]);
 
   async function onSubmit(data: UserFormInput) {
     if (user) {
@@ -90,7 +63,6 @@ export function UserForm({ user, companies, profiles, people, onCancel, onSucces
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormGrid>
             <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
-
             <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />
 
             <FormInput
@@ -101,45 +73,10 @@ export function UserForm({ user, companies, profiles, people, onCancel, onSucces
               placeholder={user ? "Informe apenas para alterar" : "Digite a senha"}
             />
 
-            <FormSelect
-              form={form}
-              name="role"
-              label="Cargo"
-              options={Object.entries(RoleEnum).map(([value, label]) => ({
-                value,
-                label,
-              }))}
-            />
-
-            <FormSelect
-              form={form}
-              name="personId"
-              label="Pessoa"
-              options={Object.entries(people).map(([value, label]) => ({
-                value,
-                label,
-              }))}
-            />
-
-            <FormSelect
-              form={form}
-              name="profileId"
-              label="Perfil"
-              options={Object.entries(profiles).map(([value, label]) => ({
-                value,
-                label,
-              }))}
-            />
-
-            <FormSelect
-              form={form}
-              name="companyId"
-              label="Empresa"
-              options={Object.entries(companies).map(([value, label]) => ({
-                value,
-                label,
-              }))}
-            />
+            <FormSelect form={form} name="role" label="Cargo" options={toOptions(RoleEnum)} />
+            <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />
+            <FormSelect form={form} name="profileId" label="Perfil" options={toOptions(profiles)} />
+            <FormSelect form={form} name="companyId" label="Empresa" options={toOptions(companies)} />
           </FormGrid>
 
           <FormActions onCancel={onCancel} loading={createUser.isPending || updateUser.isPending} />
