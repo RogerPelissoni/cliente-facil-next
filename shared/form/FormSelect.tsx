@@ -52,7 +52,7 @@ export function FormSelect<T extends FieldValues>({
               <SelectValue placeholder={placeholder}>{selectedOption?.label}</SelectValue>
             </SelectTrigger>
 
-            <SelectContent>
+            <SelectContent position="popper">
               {options.map((option) => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}
