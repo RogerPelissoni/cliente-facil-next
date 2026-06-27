@@ -48,6 +48,7 @@ export default function LoginPage() {
 
               <FormInput
                 form={form}
+                type="password"
                 name="password"
                 label="Senha"
                 placeholder="Digite a senha"
