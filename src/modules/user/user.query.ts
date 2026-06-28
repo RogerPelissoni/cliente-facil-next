@@ -40,7 +40,6 @@ export function useUserScreen({ filters, page, size, sorting }: UseUserScreenPar
 export function useUsers({ filters, page, size, sorting }: UseUsersParams) {
   return useQuery({
     queryKey: userKeys.list(filters, page, size, sorting),
-
     queryFn: () => userApi.search(filters, page, size, sorting),
   });
 }
@@ -48,9 +47,7 @@ export function useUsers({ filters, page, size, sorting }: UseUsersParams) {
 export function useUser(id: number) {
   return useQuery({
     queryKey: userKeys.detail(id),
-
     queryFn: () => userApi.findById(id),
-
     enabled: !!id,
   });
 }
