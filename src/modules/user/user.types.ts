@@ -1,16 +1,17 @@
 import { RoleEnum } from "@/src/enum/role.enum";
 import { PageResponse } from "@/src/shared/types/api.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 
 export interface User {
-  id: number;
+  id: IdentifierType;
   name: string;
   email: string;
   role: keyof typeof RoleEnum;
-  personId: number;
+  personId: IdentifierType;
   personName: string;
-  profileId: number;
+  profileId: IdentifierType;
   profileName: string;
-  companyId: number;
+  companyId: IdentifierType;
   companyName: string;
 }
 
@@ -18,9 +19,9 @@ export interface UserFilters {
   name: string;
   email: string;
   role?: keyof typeof RoleEnum;
-  personId?: number;
-  profileId?: number;
-  companyId?: number;
+  personId?: IdentifierType;
+  profileId?: IdentifierType;
+  companyId?: IdentifierType;
 }
 
 export type KeyValue = Record<string, string>;

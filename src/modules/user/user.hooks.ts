@@ -1,3 +1,4 @@
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "next/dist/server/api-utils";
@@ -15,7 +16,7 @@ export const userKeys = {
   screen: (filters: UserFilters, page: number, size: number, sorting: Sorting) =>
     [...userKeys.all, "screen", filters, page, size, sorting] as const,
 
-  detail: (id: number) => [...userKeys.all, id] as const,
+  detail: (id: IdentifierType) => [...userKeys.all, id] as const,
 };
 
 interface UseUsersParams {
@@ -39,7 +40,7 @@ export function useUsers({ filters, page, size, sorting }: UseUsersParams) {
   });
 }
 
-export function useUser(id: number) {
+export function useUser(id: IdentifierType) {
   return useQuery({
     queryKey: userKeys.detail(id),
     queryFn: () => findUserById(id),
@@ -76,7 +77,7 @@ export function useUpdateUser() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: UserFormInput }) => updateUser(id, data),
+    mutationFn: ({ id, data }: { id: IdentifierType; data: UserFormInput }) => updateUser(id, data),
 
     onSuccess() {
       toast.success("Usuário atualizado com sucesso");

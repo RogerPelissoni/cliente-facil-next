@@ -2,7 +2,14 @@ import { Sorting } from "@/src/shared/types/table.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError } from "next/dist/server/api-utils";
 import { toast } from "sonner";
-import { createProfile, deleteProfile, findProfileById, searchProfiles, updateProfile } from "./profile.api";
+import {
+  createProfile,
+  deleteProfile,
+  findProfileById,
+  findProfilePermissionsByProfile,
+  searchProfiles,
+  updateProfile,
+} from "./profile.api";
 import { ProfileFormInput } from "./profile.schema";
 import { ProfileFiltersType } from "./profile.types";
 
@@ -13,6 +20,8 @@ export const profileKeys = {
     [...profileKeys.all, filters, page, size, sorting] as const,
 
   detail: (id: number) => [...profileKeys.all, id] as const,
+
+  profilePermission: (id: number | undefined) => [...profileKeys.all, id] as const,
 };
 
 interface UseProfilesParams {
@@ -34,6 +43,13 @@ export function useProfile(id: number) {
     queryKey: profileKeys.detail(id),
     queryFn: () => findProfileById(id),
     enabled: !!id,
+  });
+}
+
+export function useProfilePermission(id: number | undefined) {
+  return useQuery({
+    queryKey: profileKeys.profilePermission(id),
+    queryFn: () => findProfilePermissionsByProfile(id),
   });
 }
 

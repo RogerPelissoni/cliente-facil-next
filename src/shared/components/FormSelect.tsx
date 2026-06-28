@@ -46,7 +46,7 @@ export function FormSelect<T extends FieldValues>({
           <Select
             key={`${String(name)}-${value}-${options.map((option) => option.value).join("-")}`}
             value={value}
-            onValueChange={field.onChange}
+            onValueChange={(value) => field.onChange(String(value))}
           >
             <SelectTrigger className="w-full" aria-invalid={!!fieldState.error}>
               <SelectValue placeholder={placeholder}>{selectedOption?.label}</SelectValue>

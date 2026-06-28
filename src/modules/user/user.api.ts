@@ -1,4 +1,5 @@
 import { PageResponse } from "@/src/shared/types/api.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
 import { makeSearchRequest } from "@/src/shared/utils/form.util";
 import { api } from "@/src/shared/utils/http.util";
@@ -13,7 +14,7 @@ export function searchUsers(filters: UserFilters, page: number, size: number, so
   return api.post<PageResponse<User>>("/users/search", makeSearchRequest(filters, page, size, sorting));
 }
 
-export function findUserById(id: number) {
+export function findUserById(id: IdentifierType) {
   return api.get<User>(`/users/${id}`);
 }
 
@@ -24,13 +25,13 @@ export function createUser(data: UserFormInput) {
   });
 }
 
-export function updateUser(id: number, data: UserFormInput) {
+export function updateUser(id: IdentifierType, data: UserFormInput) {
   return api.put<User>(`/users/${id}`, {
     ...data,
     companyId: Number(data.companyId),
   });
 }
 
-export function deleteUser(id: number) {
+export function deleteUser(id: IdentifierType) {
   return api.delete<void>(`/users/${id}`);
 }

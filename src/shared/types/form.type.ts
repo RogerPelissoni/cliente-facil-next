@@ -18,3 +18,5 @@ export interface FilterRequest {
 }
 
 export type FilterOperator = "EQUALS" | "NOT_EQUALS" | "LIKE" | "IN" | "GREATER_THAN" | "LESS_THAN";
+
+export type IdentifierType = string;

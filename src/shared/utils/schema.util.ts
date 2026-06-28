@@ -39,3 +39,5 @@ export const zStringOptional = () =>
 
 export const zEnum = <T extends Record<string, string>>(enumObject: T) =>
   z.enum(Object.keys(enumObject) as [keyof T & string, ...(keyof T & string)[]]);
+
+export const zIdentifier = () => z.string().min(1);
