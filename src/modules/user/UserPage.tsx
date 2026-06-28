@@ -1,8 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useDeleteUser } from "@/src/modules/user/user.mutation";
-import { useUserScreen } from "@/src/modules/user/user.query";
 import { User, UserFilters as UserFiltersType } from "@/src/modules/user/user.types";
 import { UserFilters } from "@/src/modules/user/UserFilters";
 import { UserForm } from "@/src/modules/user/UserForm";
@@ -17,6 +15,7 @@ import { useTableState } from "@/src/shared/hooks/useTableState";
 import { PageBreadcrumb } from "@/src/shared/layout/PageBreadcrumb";
 import { PageContainer } from "@/src/shared/layout/PageContainer";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
+import { useDeleteUser, useUserScreen } from "./user.hooks";
 
 export default function UserPage() {
   const table = useTableState<UserFiltersType>({

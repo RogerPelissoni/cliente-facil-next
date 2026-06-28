@@ -7,7 +7,7 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useCreateProfile, useUpdateProfile } from "./profile.mutation";
+import { useCreateProfile, useUpdateProfile } from "./profile.hooks";
 import { createProfileDefaultValues, mapProfileToForm, ProfileFormInput, profileSchema } from "./profile.schema";
 import { Profile } from "./profile.types";
 

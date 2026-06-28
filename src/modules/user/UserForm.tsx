@@ -10,7 +10,7 @@ import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useCreateUser, useUpdateUser } from "./user.mutation";
+import { useCreateUser, useUpdateUser } from "./user.hooks";
 import { createUserDefaultValues, mapUserToForm, UserFormInput, userSchema } from "./user.schema";
 import { KeyValue, User } from "./user.types";
 
