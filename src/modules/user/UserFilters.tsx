@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 
-import { UserFilters as UserFiltersType } from "./user.types";
+import { UserFiltersType } from "./user.types";
 
 interface Props {
   filters: UserFiltersType;

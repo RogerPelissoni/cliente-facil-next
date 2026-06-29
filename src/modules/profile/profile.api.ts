@@ -1,31 +1,18 @@
-import { PageResponse } from "@/src/shared/types/api.type";
-import { Sorting } from "@/src/shared/types/table.type";
-import { makeSearchRequest } from "@/src/shared/utils/form.util";
+import { IdentifierType } from "@/src/shared/types/form.type";
+import { createCrudApi } from "@/src/shared/utils/api.util";
 import { api } from "@/src/shared/utils/http.util";
 import { ProfilePermissionType } from "../profilePermission/profilePermission.types";
 import { ProfileFormInput } from "./profile.schema";
-import { Profile, ProfileFiltersType } from "./profile.types";
+import { ProfileFiltersType, ProfileType } from "./profile.types";
 
-export function searchProfiles(filters: ProfileFiltersType, page: number, size: number, sorting: Sorting) {
-  return api.post<PageResponse<Profile>>("/profile/search", makeSearchRequest(filters, page, size, sorting));
-}
+const profileApi = createCrudApi<ProfileType, ProfileFormInput, ProfileFiltersType>("/profile");
 
-export function findProfileById(id: number) {
-  return api.get<Profile>(`/profile/${id}`);
-}
+export const searchProfiles = profileApi.search;
+export const findProfileById = profileApi.findById;
+export const createProfile = profileApi.create;
+export const updateProfile = profileApi.update;
+export const deleteProfile = profileApi.delete;
 
-export function findProfilePermissionsByProfile(id: number | undefined = 0) {
+export function findProfilePermissionsByProfile(id: IdentifierType = "0") {
   return api.get<ProfilePermissionType[]>(`/profile/permissionsByProfile/${id}`);
-}
-
-export function createProfile(data: ProfileFormInput) {
-  return api.post<Profile>("/profile", data);
-}
-
-export function updateProfile(id: number, data: ProfileFormInput) {
-  return api.put<Profile>(`/profile/${id}`, data);
-}
-
-export function deleteProfile(id: number) {
-  return api.delete<void>(`/profile/${id}`);
 }

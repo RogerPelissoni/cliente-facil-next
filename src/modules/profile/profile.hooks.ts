@@ -1,7 +1,8 @@
+import { QueryParamsType } from "@/src/shared/types/api.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApiError } from "next/dist/server/api-utils";
-import { toast } from "sonner";
+import { useApiMutation } from "@/src/shared/utils/mutation.util";
+import { useQuery } from "@tanstack/react-query";
 import {
   createProfile,
   deleteProfile,
@@ -11,34 +12,27 @@ import {
   updateProfile,
 } from "./profile.api";
 import { ProfileFormInput } from "./profile.schema";
-import { ProfileFiltersType } from "./profile.types";
+import { ProfileFiltersType, ProfileType } from "./profile.types";
 
 export const profileKeys = {
   all: ["profile"] as const,
 
   list: (filters: ProfileFiltersType, page: number, size: number, sorting: Sorting) =>
-    [...profileKeys.all, filters, page, size, sorting] as const,
+    ["profile", "list", filters, page, size, sorting] as const,
 
-  detail: (id: number) => [...profileKeys.all, id] as const,
+  detail: (id: IdentifierType) => ["profile", "detail", id] as const,
 
-  profilePermission: (id: number | undefined) => [...profileKeys.all, id] as const,
+  profilePermission: (id: IdentifierType | undefined) => ["profile", "profilePermission", id] as const,
 };
 
-interface UseProfilesParams {
-  filters: ProfileFiltersType;
-  page: number;
-  size: number;
-  sorting: Sorting;
-}
-
-export function useProfiles({ filters, page, size, sorting }: UseProfilesParams) {
+export function useProfiles({ filters, page, size, sorting }: QueryParamsType<ProfileFiltersType>) {
   return useQuery({
     queryKey: profileKeys.list(filters, page, size, sorting),
     queryFn: () => searchProfiles(filters, page, size, sorting),
   });
 }
 
-export function useProfile(id: number) {
+export function useProfile(id: IdentifierType) {
   return useQuery({
     queryKey: profileKeys.detail(id),
     queryFn: () => findProfileById(id),
@@ -46,7 +40,7 @@ export function useProfile(id: number) {
   });
 }
 
-export function useProfilePermission(id: number | undefined) {
+export function useProfilePermission(id: IdentifierType | undefined) {
   return useQuery({
     queryKey: profileKeys.profilePermission(id),
     queryFn: () => findProfilePermissionsByProfile(id),
@@ -54,76 +48,22 @@ export function useProfilePermission(id: number | undefined) {
 }
 
 export function useCreateProfile() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+  return useApiMutation({
     mutationFn: createProfile,
-
-    onSuccess() {
-      toast.success("Usuário criado com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: profileKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao criar usuário");
-    },
+    queryKey: profileKeys.all,
   });
 }
 
 export function useUpdateProfile() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: ProfileFormInput }) => updateProfile(id, data),
-
-    onSuccess() {
-      toast.success("Usuário atualizado com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: profileKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao atualizar usuário");
-    },
+  return useApiMutation<ProfileType, { id: IdentifierType; data: ProfileFormInput }>({
+    mutationFn: ({ id, data }) => updateProfile(id, data),
+    queryKey: profileKeys.all,
   });
 }
 
 export function useDeleteProfile() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+  return useApiMutation({
     mutationFn: deleteProfile,
-
-    onSuccess() {
-      toast.success("Usuário removido com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: profileKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao remover usuário");
-    },
+    queryKey: profileKeys.all,
   });
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { User, UserFilters as UserFiltersType } from "@/src/modules/user/user.types";
+import { UserFiltersType, UserType } from "@/src/modules/user/user.types";
 import { UserFilters } from "@/src/modules/user/UserFilters";
 import { UserForm } from "@/src/modules/user/UserForm";
 import { UserTable } from "@/src/modules/user/UserTable";
@@ -29,7 +29,7 @@ export default function UserPage() {
     },
   });
 
-  const crud = useCrudForm<User>();
+  const crud = useCrudForm<UserType>();
 
   const query = useUserScreen({
     filters: table.debouncedFilters,

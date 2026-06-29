@@ -3,7 +3,7 @@ import { PageResponse } from "@/src/shared/types/api.type";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
 
-export interface User {
+export interface UserType {
   id: IdentifierType;
   name: string;
   email: string;
@@ -16,7 +16,7 @@ export interface User {
   companyName: string;
 }
 
-export interface UserFilters {
+export interface UserFiltersType {
   name: string;
   email: string;
   role?: keyof typeof RoleEnum;
@@ -25,8 +25,8 @@ export interface UserFilters {
   companyId?: IdentifierType;
 }
 
-export interface UserScreenData {
-  obUser: PageResponse<User>;
+export interface UserScreenDataType {
+  obUser: PageResponse<UserType>;
   kvCompany: KeyValueType;
   kvProfile: KeyValueType;
   kvPerson: KeyValueType;

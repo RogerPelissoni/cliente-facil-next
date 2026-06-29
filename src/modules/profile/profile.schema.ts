@@ -1,7 +1,7 @@
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { profilePermissionSchema } from "../profilePermission/profilePermission.schema";
-import { Profile } from "./profile.types";
+import { ProfileType } from "./profile.types";
 
 export const profileSchema = z.object({
   name: z.string().min(3, "Informe o nome"),
@@ -18,7 +18,7 @@ export function createProfileDefaultValues(): DefaultValues<ProfileFormInput> {
   };
 }
 
-export function mapProfileToForm(profile: Profile): ProfileFormInput {
+export function mapProfileToForm(profile: ProfileType): ProfileFormInput {
   return {
     name: profile.name,
     profilePermissions: profile.profilePermission ?? [],

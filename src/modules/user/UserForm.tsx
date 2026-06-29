@@ -13,10 +13,10 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser } from "./user.hooks";
 import { createUserDefaultValues, mapUserToForm, UserFormInput, userSchema } from "./user.schema";
-import { User } from "./user.types";
+import { UserType } from "./user.types";
 
 interface Props {
-  user?: User | null;
+  user?: UserType | null;
   companies: KeyValueType;
   profiles: KeyValueType;
   people: KeyValueType;

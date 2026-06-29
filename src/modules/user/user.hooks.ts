@@ -1,39 +1,32 @@
+import { QueryParamsType } from "@/src/shared/types/api.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApiError } from "next/dist/server/api-utils";
-import { toast } from "sonner";
+import { useApiMutation } from "@/src/shared/utils/mutation.util";
+import { useQuery } from "@tanstack/react-query";
 import { createUser, deleteUser, findUserById, screenUsers, searchUsers, updateUser } from "./user.api";
 import { UserFormInput } from "./user.schema";
-import { UserFilters } from "./user.types";
+import { UserFiltersType, UserType } from "./user.types";
 
 export const userKeys = {
   all: ["users"] as const,
 
-  list: (filters: UserFilters, page: number, size: number, sorting: Sorting) =>
-    [...userKeys.all, filters, page, size, sorting] as const,
+  list: (filters: UserFiltersType, page: number, size: number, sorting: Sorting) =>
+    ["users", "list", filters, page, size, sorting] as const,
 
-  screen: (filters: UserFilters, page: number, size: number, sorting: Sorting) =>
-    [...userKeys.all, "screen", filters, page, size, sorting] as const,
+  screen: (filters: UserFiltersType, page: number, size: number, sorting: Sorting) =>
+    ["users", "screen", filters, page, size, sorting] as const,
 
-  detail: (id: IdentifierType) => [...userKeys.all, id] as const,
+  detail: (id: IdentifierType) => ["users", "detail", id] as const,
 };
 
-interface UseUsersParams {
-  filters: UserFilters;
-  page: number;
-  size: number;
-  sorting: Sorting;
-}
-
-export function useUserScreen({ filters, page, size, sorting }: UseUsersParams) {
+export function useUserScreen({ filters, page, size, sorting }: QueryParamsType<UserFiltersType>) {
   return useQuery({
     queryKey: userKeys.screen(filters, page, size, sorting),
     queryFn: () => screenUsers(filters, page, size, sorting),
   });
 }
 
-export function useUsers({ filters, page, size, sorting }: UseUsersParams) {
+export function useUsers({ filters, page, size, sorting }: QueryParamsType<UserFiltersType>) {
   return useQuery({
     queryKey: userKeys.list(filters, page, size, sorting),
     queryFn: () => searchUsers(filters, page, size, sorting),
@@ -49,76 +42,22 @@ export function useUser(id: IdentifierType) {
 }
 
 export function useCreateUser() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+  return useApiMutation({
     mutationFn: createUser,
-
-    onSuccess() {
-      toast.success("Usuário criado com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: userKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao criar usuário");
-    },
+    queryKey: userKeys.all,
   });
 }
 
 export function useUpdateUser() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, data }: { id: IdentifierType; data: UserFormInput }) => updateUser(id, data),
-
-    onSuccess() {
-      toast.success("Usuário atualizado com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: userKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao atualizar usuário");
-    },
+  return useApiMutation<UserType, { id: IdentifierType; data: UserFormInput }>({
+    mutationFn: ({ id, data }) => updateUser(id, data),
+    queryKey: userKeys.all,
   });
 }
 
 export function useDeleteUser() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+  return useApiMutation({
     mutationFn: deleteUser,
-
-    onSuccess() {
-      toast.success("Usuário removido com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: userKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao remover usuário");
-    },
+    queryKey: userKeys.all,
   });
 }

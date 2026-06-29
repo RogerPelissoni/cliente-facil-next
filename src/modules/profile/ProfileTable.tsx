@@ -9,14 +9,14 @@ import { TableActions } from "@/src/shared/components/table/TableActions";
 import { Sorting } from "@/src/shared/types/table.type";
 import { nextSorting } from "@/src/shared/utils/table.util";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { Profile } from "./profile.types";
+import { ProfileType } from "./profile.types";
 
 interface Props {
-  data: Profile[];
+  data: ProfileType[];
   sorting: Sorting;
   onSortingChange(sorting: Sorting): void;
-  onEdit(profile: Profile): void;
-  onDelete(profile: Profile): void;
+  onEdit(profile: ProfileType): void;
+  onDelete(profile: ProfileType): void;
 }
 
 export function ProfileTable({ data, sorting, onSortingChange, onEdit, onDelete }: Props) {
@@ -24,7 +24,7 @@ export function ProfileTable({ data, sorting, onSortingChange, onEdit, onDelete 
     onSortingChange(nextSorting(sorting, field));
   }
 
-  const columns: ColumnDef<Profile>[] = [
+  const columns: ColumnDef<ProfileType>[] = [
     {
       accessorKey: "id",
       header: () => <SortableHeader label="#" field="id" sorting={sorting} onSort={handleSort} />,

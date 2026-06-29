@@ -1,37 +1,15 @@
-import { PageResponse } from "@/src/shared/types/api.type";
-import { IdentifierType } from "@/src/shared/types/form.type";
-import { Sorting } from "@/src/shared/types/table.type";
-import { makeSearchRequest } from "@/src/shared/utils/form.util";
-import { api } from "@/src/shared/utils/http.util";
+import { createCrudApi, createScreenApi } from "@/src/shared/utils/api.util";
 import { UserFormInput } from "./user.schema";
-import { User, UserFilters, UserScreenData } from "./user.types";
+import { UserFiltersType, UserScreenDataType, UserType } from "./user.types";
 
-export function screenUsers(filters: UserFilters, page: number, size: number, sorting: Sorting) {
-  return api.post<UserScreenData>("/users/screen", makeSearchRequest(filters, page, size, sorting));
-}
+const userApi = {
+  ...createCrudApi<UserType, UserFormInput, UserFiltersType>("/users"),
+  ...createScreenApi<UserFiltersType, UserScreenDataType>("/users"),
+};
 
-export function searchUsers(filters: UserFilters, page: number, size: number, sorting: Sorting) {
-  return api.post<PageResponse<User>>("/users/search", makeSearchRequest(filters, page, size, sorting));
-}
-
-export function findUserById(id: IdentifierType) {
-  return api.get<User>(`/users/${id}`);
-}
-
-export function createUser(data: UserFormInput) {
-  return api.post<User>("/users", {
-    ...data,
-    companyId: Number(data.companyId),
-  });
-}
-
-export function updateUser(id: IdentifierType, data: UserFormInput) {
-  return api.put<User>(`/users/${id}`, {
-    ...data,
-    companyId: Number(data.companyId),
-  });
-}
-
-export function deleteUser(id: IdentifierType) {
-  return api.delete<void>(`/users/${id}`);
-}
+export const findUserById = userApi.findById;
+export const createUser = userApi.create;
+export const updateUser = userApi.update;
+export const deleteUser = userApi.delete;
+export const searchUsers = userApi.search;
+export const screenUsers = userApi.screen;

@@ -1,45 +1,39 @@
+import { QueryParamsType } from "@/src/shared/types/api.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { ApiError } from "next/dist/server/api-utils";
-import { toast } from "sonner";
+import { useApiMutation } from "@/src/shared/utils/mutation.util";
+import { useQuery } from "@tanstack/react-query";
 import { createClient, deleteClient, findClientById, screenClients, searchClients, updateClient } from "./client.api";
 import { ClientFormInput } from "./client.schema";
-import { ClientFiltersType } from "./client.types";
+import { ClientFiltersType, ClientType } from "./client.types";
 
 export const clientKeys = {
   all: ["client"] as const,
 
   list: (filters: ClientFiltersType, page: number, size: number, sorting: Sorting) =>
-    [...clientKeys.all, filters, page, size, sorting] as const,
+    ["client", "list", filters, page, size, sorting] as const,
 
   screen: (filters: ClientFiltersType, page: number, size: number, sorting: Sorting) =>
-    [...clientKeys.all, "screen", filters, page, size, sorting] as const,
+    ["client", "screen", filters, page, size, sorting] as const,
 
-  detail: (id: number) => [...clientKeys.all, id] as const,
+  detail: (id: IdentifierType) => ["client", "detail", id] as const,
 };
 
-interface UseClientParams {
-  filters: ClientFiltersType;
-  page: number;
-  size: number;
-  sorting: Sorting;
-}
-
-export function useClientsScreen({ filters, page, size, sorting }: UseClientParams) {
+export function useClientsScreen({ filters, page, size, sorting }: QueryParamsType<ClientFiltersType>) {
   return useQuery({
     queryKey: clientKeys.screen(filters, page, size, sorting),
     queryFn: () => screenClients(filters, page, size, sorting),
   });
 }
 
-export function useClients({ filters, page, size, sorting }: UseClientParams) {
+export function useClients({ filters, page, size, sorting }: QueryParamsType<ClientFiltersType>) {
   return useQuery({
     queryKey: clientKeys.list(filters, page, size, sorting),
     queryFn: () => searchClients(filters, page, size, sorting),
   });
 }
 
-export function useClient(id: number) {
+export function useClient(id: IdentifierType) {
   return useQuery({
     queryKey: clientKeys.detail(id),
     queryFn: () => findClientById(id),
@@ -48,76 +42,22 @@ export function useClient(id: number) {
 }
 
 export function useCreateClient() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+  return useApiMutation({
     mutationFn: createClient,
-
-    onSuccess() {
-      toast.success("Usuário criado com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: clientKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao criar usuário");
-    },
+    queryKey: clientKeys.all,
   });
 }
 
 export function useUpdateClient() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({ id, data }: { id: number; data: ClientFormInput }) => updateClient(id, data),
-
-    onSuccess() {
-      toast.success("Usuário atualizado com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: clientKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao atualizar usuário");
-    },
+  return useApiMutation<ClientType, { id: IdentifierType; data: ClientFormInput }>({
+    mutationFn: ({ id, data }) => updateClient(id, data),
+    queryKey: clientKeys.all,
   });
 }
 
 export function useDeleteClient() {
-  const queryClient = useQueryClient();
-
-  return useMutation({
+  return useApiMutation({
     mutationFn: deleteClient,
-
-    onSuccess() {
-      toast.success("Usuário removido com sucesso");
-
-      queryClient.invalidateQueries({
-        queryKey: clientKeys.all,
-      });
-    },
-
-    onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-        return;
-      }
-
-      toast.error("Erro ao remover usuário");
-    },
+    queryKey: clientKeys.all,
   });
 }

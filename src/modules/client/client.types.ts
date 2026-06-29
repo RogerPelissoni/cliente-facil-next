@@ -3,7 +3,7 @@ import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
 
 export interface ClientType {
-  id: number;
+  id: IdentifierType;
   personId: IdentifierType;
   personName: string;
 }
@@ -12,7 +12,7 @@ export interface ClientFiltersType {
   personName: string;
 }
 
-export interface ClientScreenData {
+export interface ClientScreenDataType {
   obClients: PageResponse<ClientType>;
   kvPerson: KeyValueType;
 }

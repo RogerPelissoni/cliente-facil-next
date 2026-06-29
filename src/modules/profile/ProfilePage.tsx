@@ -11,7 +11,7 @@ import { PageBreadcrumb } from "@/src/shared/layout/PageBreadcrumb";
 import { PageContainer } from "@/src/shared/layout/PageContainer";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
 import { useDeleteProfile, useProfiles } from "./profile.hooks";
-import { Profile, ProfileFiltersType } from "./profile.types";
+import { ProfileFiltersType, ProfileType } from "./profile.types";
 import { ProfileFilters } from "./ProfileFilters";
 import { ProfileForm } from "./ProfileForm";
 import { ProfileTable } from "./ProfileTable";
@@ -27,7 +27,7 @@ export default function ProfilePage() {
     },
   });
 
-  const crud = useCrudForm<Profile>();
+  const crud = useCrudForm<ProfileType>();
 
   const query = useProfiles({
     filters: table.debouncedFilters,

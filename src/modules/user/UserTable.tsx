@@ -10,14 +10,14 @@ import { TableActions } from "@/src/shared/components/table/TableActions";
 import { Sorting } from "@/src/shared/types/table.type";
 import { nextSorting } from "@/src/shared/utils/table.util";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import { User } from "./user.types";
+import { UserType } from "./user.types";
 
 interface Props {
-  data: User[];
+  data: UserType[];
   sorting: Sorting;
   onSortingChange(sorting: Sorting): void;
-  onEdit(user: User): void;
-  onDelete(user: User): void;
+  onEdit(user: UserType): void;
+  onDelete(user: UserType): void;
 }
 
 export function UserTable({ data, sorting, onSortingChange, onEdit, onDelete }: Props) {
@@ -25,7 +25,7 @@ export function UserTable({ data, sorting, onSortingChange, onEdit, onDelete }: 
     onSortingChange(nextSorting(sorting, field));
   }
 
-  const columns: ColumnDef<User>[] = [
+  const columns: ColumnDef<UserType>[] = [
     {
       accessorKey: "id",
       header: () => <SortableHeader label="#" field="id" sorting={sorting} onSort={handleSort} />,

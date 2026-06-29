@@ -12,10 +12,10 @@ import { FieldErrors, useForm } from "react-hook-form";
 import { ProfilePermissionTable } from "../profilePermission/ProfilePermissionTable";
 import { useCreateProfile, useProfilePermission, useUpdateProfile } from "./profile.hooks";
 import { createProfileDefaultValues, mapProfileToForm, ProfileFormInput, profileSchema } from "./profile.schema";
-import { Profile } from "./profile.types";
+import { ProfileType } from "./profile.types";
 
 interface Props {
-  profile?: Profile | null;
+  profile?: ProfileType | null;
   onCancel: () => void;
   onSuccess: () => void;
 }

@@ -2,7 +2,7 @@ import { RoleEnum } from "@/src/enum/role.enum";
 import { zEnum, zIdentifier } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
-import { User } from "./user.types";
+import { UserType } from "./user.types";
 
 export const userSchema = z.object({
   name: z.string().min(3, "Informe o nome"),
@@ -29,7 +29,7 @@ export function createUserDefaultValues(): DefaultValues<UserFormInput> {
   };
 }
 
-export function mapUserToForm(user: User): UserFormInput {
+export function mapUserToForm(user: UserType): UserFormInput {
   return {
     name: user.name,
     email: user.email,
