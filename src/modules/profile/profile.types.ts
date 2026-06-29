@@ -11,8 +11,6 @@ export interface ProfileFiltersType {
   name: string;
 }
 
-export type KeyValue = Record<string, string>;
-
 export interface ProfileScreenData {
   obProfile: PageResponse<Profile>;
 }

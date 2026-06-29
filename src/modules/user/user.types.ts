@@ -1,5 +1,6 @@
 import { RoleEnum } from "@/src/enum/role.enum";
 import { PageResponse } from "@/src/shared/types/api.type";
+import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
 
 export interface User {
@@ -24,11 +25,9 @@ export interface UserFilters {
   companyId?: IdentifierType;
 }
 
-export type KeyValue = Record<string, string>;
-
 export interface UserScreenData {
   obUser: PageResponse<User>;
-  kvCompany: KeyValue;
-  kvProfile: KeyValue;
-  kvPerson: KeyValue;
+  kvCompany: KeyValueType;
+  kvProfile: KeyValueType;
+  kvPerson: KeyValueType;
 }

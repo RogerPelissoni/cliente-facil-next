@@ -6,19 +6,20 @@ import { FormActions } from "@/src/shared/components/FormActions";
 import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
+import { KeyValueType } from "@/src/shared/types/core.type";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser } from "./user.hooks";
 import { createUserDefaultValues, mapUserToForm, UserFormInput, userSchema } from "./user.schema";
-import { KeyValue, User } from "./user.types";
+import { User } from "./user.types";
 
 interface Props {
   user?: User | null;
-  companies: KeyValue;
-  profiles: KeyValue;
-  people: KeyValue;
+  companies: KeyValueType;
+  profiles: KeyValueType;
+  people: KeyValueType;
   onCancel: () => void;
   onSuccess: () => void;
 }
