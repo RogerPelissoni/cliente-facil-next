@@ -1,3 +1,5 @@
+import { BaseSyntheticEvent } from "react";
+import { FieldValues, SubmitErrorHandler, SubmitHandler, UseFormReturn } from "react-hook-form";
 import { SearchRequest } from "../types/form.type";
 import { Sorting } from "../types/table.type";
 
@@ -42,5 +44,25 @@ export function makeSearchRequest<TFilter extends Record<string, any>>(
         operator: "LIKE",
         value: String(value),
       })),
+  };
+}
+
+export function createSubmitHandler<T extends FieldValues>(
+  form: UseFormReturn<T>,
+  onSubmit: SubmitHandler<T>,
+  onError?: SubmitErrorHandler<T>,
+) {
+  const submit = form.handleSubmit(onSubmit, onError);
+
+  return (e: BaseSyntheticEvent) => {
+    /**
+     * React propagates events through the component tree, even when a modal is
+     * rendered using a Portal (e.g. Radix Dialog). Without stopping propagation,
+     * submitting a form inside the modal may also trigger the parent form.
+     */
+    e.preventDefault();
+    e.stopPropagation();
+
+    submit(e);
   };
 }

@@ -11,6 +11,7 @@ import { FormSelect } from "@/src/shared/components/FormSelect";
 import { QueryState } from "@/src/shared/components/QueryState";
 import { BooleanEnum } from "@/src/shared/enum/boolean.enum";
 import { IdentifierType } from "@/src/shared/types/form.type";
+import { createSubmitHandler } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
@@ -106,7 +107,7 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
+            <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
               <FormGrid>
                 <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
                 <FormInput form={form} name="dsDocument" label="Documento" placeholder="Digite o CPF ou CNPJ" />
