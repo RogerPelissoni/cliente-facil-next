@@ -3,6 +3,7 @@ import { BooleanEnum, toBooleanEnum } from "@/src/shared/enum/boolean.enum";
 import { zEnum, zIdentifier } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
+import { personAddressSchema } from "../personAddress/personAddress.schema";
 import { PersonType } from "./person.types";
 
 export const personSchema = z.object({
@@ -11,6 +12,7 @@ export const personSchema = z.object({
   dsDocument: z.string().min(1, "Documento é obrigatório"),
   tpGender: zEnum(PersonGenderEnum),
   flActive: zEnum(BooleanEnum),
+  personAddresses: z.array(personAddressSchema),
 });
 
 export type PersonFormInput = z.input<typeof personSchema>;
@@ -23,6 +25,7 @@ export function createPersonDefaultValues(): DefaultValues<PersonFormInput> {
     dsDocument: "",
     tpGender: undefined,
     flActive: undefined,
+    personAddresses: [],
   };
 }
 
@@ -33,5 +36,6 @@ export function mapPersonToForm(person: PersonType): PersonFormInput {
     dsDocument: person.dsDocument,
     tpGender: person.tpGender,
     flActive: toBooleanEnum(person.flActive),
+    personAddresses: person.personAddresses ?? [],
   };
 }

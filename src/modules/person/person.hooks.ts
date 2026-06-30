@@ -13,7 +13,7 @@ export const personKeys = {
   list: (filters: PersonFiltersType, page: number, size: number, sorting: Sorting) =>
     ["person", "list", filters, page, size, sorting] as const,
 
-  detail: (id: IdentifierType) => ["person", "detail", id] as const,
+  detail: (id?: IdentifierType) => ["person", "detail", id] as const,
 };
 
 export function usePersons({ filters, page, size, sorting }: QueryParamsType<PersonFiltersType>) {
@@ -23,7 +23,7 @@ export function usePersons({ filters, page, size, sorting }: QueryParamsType<Per
   });
 }
 
-export function usePerson(id: IdentifierType) {
+export function usePerson(id?: IdentifierType) {
   return useQuery({
     queryKey: personKeys.detail(id),
     queryFn: () => findPersonById(id),

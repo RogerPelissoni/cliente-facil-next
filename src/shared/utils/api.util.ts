@@ -10,7 +10,7 @@ export function createCrudApi<TEntity, TCreate, TFilters extends object>(resourc
       return api.get<TEntity[]>(resource);
     },
 
-    findById(id: IdentifierType) {
+    findById(id?: IdentifierType) {
       return api.get<TEntity>(`${resource}/${id}`);
     },
 

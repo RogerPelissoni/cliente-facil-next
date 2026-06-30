@@ -3,6 +3,7 @@ import { BooleanEnum } from "@/src/shared/enum/boolean.enum";
 import { PageResponse } from "@/src/shared/types/api.type";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
+import { PersonAddressType } from "../personAddress/personAddress.type";
 
 export interface PersonType {
   id: IdentifierType;
@@ -10,6 +11,7 @@ export interface PersonType {
   dsDocument: string;
   tpGender: keyof typeof PersonGenderEnum;
   flActive: keyof typeof BooleanEnum;
+  personAddresses: PersonAddressType[];
 }
 
 export interface PersonFiltersType {

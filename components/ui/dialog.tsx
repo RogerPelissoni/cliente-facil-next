@@ -130,7 +130,7 @@ function DialogTitle({
     <DialogPrimitive.Title
       data-slot="dialog-title"
       className={cn(
-        "font-heading text-base leading-none font-medium",
+        "text-base leading-none font-medium",
         className
       )}
       {...props}
@@ -155,15 +155,15 @@ function DialogDescription({
 }
 
 export {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogOverlay,
-    DialogPortal,
-    DialogTitle,
-    DialogTrigger
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger
 }
 
