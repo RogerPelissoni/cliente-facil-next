@@ -11,7 +11,7 @@ import { PersonAddressType } from "./personAddress.type";
 interface Props {
   data: PersonAddressType[];
   onEdit(address: PersonAddressType, rowIndex: number): void;
-  onDelete(address: PersonAddressType): void;
+  onDelete(index: number): void;
 }
 
 export function PersonAddressTable({ data, onEdit, onDelete }: Props) {
@@ -54,7 +54,7 @@ export function PersonAddressTable({ data, onEdit, onDelete }: Props) {
             <TableActionDelete
               title="Excluir Endereço"
               description={`Deseja excluir o endereço ${address.dsStreet}, ${address.dsNumber}?`}
-              onConfirm={() => onDelete(address)}
+              onConfirm={() => onDelete(row.index)}
             />
           </TableActions>
         );
