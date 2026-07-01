@@ -15,6 +15,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { PersonAddressSection } from "../personAddress/PersonAddressSection";
+import { PersonMailSection } from "../personMail/PersonMailSection";
+import { PersonPhoneSection } from "../personPhone/PersonPhoneSection";
 import { useCreatePerson, usePerson, useUpdatePerson } from "./person.hooks";
 import { createPersonDefaultValues, mapPersonToForm, PersonFormInput, personSchema } from "./person.schema";
 
@@ -86,6 +88,8 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
               </FormGrid>
 
               <PersonAddressSection form={form} />
+              <PersonMailSection form={form} />
+              <PersonPhoneSection form={form} />
 
               <FormActions onCancel={onCancel} loading={createPerson.isPending || updatePerson.isPending} />
             </form>

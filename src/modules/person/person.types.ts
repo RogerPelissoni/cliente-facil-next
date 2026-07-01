@@ -4,6 +4,8 @@ import { PageResponse } from "@/src/shared/types/api.type";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
 import { PersonAddressType } from "../personAddress/personAddress.type";
+import { PersonMailType } from "../personMail/personMail.type";
+import { PersonPhoneType } from "../personPhone/personPhone.type";
 
 export interface PersonType {
   id: IdentifierType;
@@ -12,6 +14,8 @@ export interface PersonType {
   tpGender: keyof typeof PersonGenderEnum;
   flActive: keyof typeof BooleanEnum;
   personAddresses: PersonAddressType[];
+  personMails: PersonMailType[];
+  personPhones: PersonPhoneType[];
 }
 
 export interface PersonFiltersType {

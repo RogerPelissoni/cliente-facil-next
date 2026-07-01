@@ -4,6 +4,8 @@ import { zEnum, zIdentifier } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { personAddressSchema } from "../personAddress/personAddress.schema";
+import { personMailSchema } from "../personMail/personMail.schema";
+import { personPhoneSchema } from "../personPhone/personPhone.schema";
 import { PersonType } from "./person.types";
 
 export const personSchema = z.object({
@@ -13,6 +15,8 @@ export const personSchema = z.object({
   tpGender: zEnum(PersonGenderEnum),
   flActive: zEnum(BooleanEnum),
   personAddresses: z.array(personAddressSchema),
+  personMails: z.array(personMailSchema),
+  personPhones: z.array(personPhoneSchema),
 });
 
 export type PersonFormInput = z.input<typeof personSchema>;
@@ -26,6 +30,8 @@ export function createPersonDefaultValues(): DefaultValues<PersonFormInput> {
     tpGender: undefined,
     flActive: undefined,
     personAddresses: [],
+    personMails: [],
+    personPhones: [],
   };
 }
 
@@ -37,5 +43,7 @@ export function mapPersonToForm(person: PersonType): PersonFormInput {
     tpGender: person.tpGender,
     flActive: toBooleanEnum(person.flActive),
     personAddresses: person.personAddresses ?? [],
+    personMails: person.personMails ?? [],
+    personPhones: person.personPhones ?? [],
   };
 }
