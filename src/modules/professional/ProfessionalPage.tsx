@@ -42,13 +42,16 @@ export default function ProfessionalPage() {
   return (
     <QueryState query={query}>
       <PageContainer>
-        <PageBreadcrumb items={["Cadastros", "Professionales"]} />
+        <PageBreadcrumb items={["Cadastros", "Profissionais"]} />
 
-        <PageHeader title="Perfis" actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>} />
+        <PageHeader
+          title="Profissionais"
+          actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>}
+        />
 
         {crud.open ? (
           <ProfessionalForm
-            professional={crud.item}
+            id={crud.item?.id}
             people={query.data?.kvPerson ?? EMPTY_KEY_VALUE}
             onCancel={crud.close}
             onSuccess={crud.close}

@@ -23,7 +23,7 @@ export const companyKeys = {
   screen: (filters: CompanyFiltersType, page: number, size: number, sorting: Sorting) =>
     ["company", "screen", filters, page, size, sorting] as const,
 
-  detail: (id: IdentifierType) => ["company", "detail", id] as const,
+  detail: (id?: IdentifierType) => ["company", "detail", id] as const,
 };
 
 export function useCompanysScreen({ filters, page, size, sorting }: QueryParamsType<CompanyFiltersType>) {
@@ -40,7 +40,7 @@ export function useCompanys({ filters, page, size, sorting }: QueryParamsType<Co
   });
 }
 
-export function useCompany(id: IdentifierType) {
+export function useCompany(id?: IdentifierType) {
   return useQuery({
     queryKey: companyKeys.detail(id),
     queryFn: () => findCompanyById(id),

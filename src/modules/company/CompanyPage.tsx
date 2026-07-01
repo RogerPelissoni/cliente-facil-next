@@ -52,7 +52,7 @@ export default function CompanyPage() {
 
         {crud.open ? (
           <CompanyForm
-            company={crud.item}
+            id={crud.item?.id}
             people={query.data?.kvPerson ?? EMPTY_KEY_VALUE}
             onCancel={crud.close}
             onSuccess={crud.close}

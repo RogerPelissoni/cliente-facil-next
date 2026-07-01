@@ -16,7 +16,7 @@ export const userKeys = {
   screen: (filters: UserFiltersType, page: number, size: number, sorting: Sorting) =>
     ["users", "screen", filters, page, size, sorting] as const,
 
-  detail: (id: IdentifierType) => ["users", "detail", id] as const,
+  detail: (id?: IdentifierType) => ["users", "detail", id] as const,
 };
 
 export function useUserScreen({ filters, page, size, sorting }: QueryParamsType<UserFiltersType>) {
@@ -33,7 +33,7 @@ export function useUsers({ filters, page, size, sorting }: QueryParamsType<UserF
   });
 }
 
-export function useUser(id: IdentifierType) {
+export function useUser(id?: IdentifierType) {
   return useQuery({
     queryKey: userKeys.detail(id),
     queryFn: () => findUserById(id),

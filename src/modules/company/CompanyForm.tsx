@@ -6,24 +6,26 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useCreateCompany, useUpdateCompany } from "./company.hooks";
+import { useCompany, useCreateCompany, useUpdateCompany } from "./company.hooks";
 import { CompanyFormInput, companySchema, createCompanyDefaultValues, mapCompanyToForm } from "./company.schema";
-import { CompanyType } from "./company.types";
 
 interface Props {
-  company?: CompanyType | null;
+  id?: IdentifierType;
   people: KeyValueType;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export function CompanyForm({ company, people, onCancel, onSuccess }: Props) {
+export function CompanyForm({ id, people, onCancel, onSuccess }: Props) {
   const createCompany = useCreateCompany();
   const updateCompany = useUpdateCompany();
+
+  const query = useCompany(id);
 
   const form = useForm<CompanyFormInput>({
     resolver: zodResolver(companySchema),
@@ -31,19 +33,19 @@ export function CompanyForm({ company, people, onCancel, onSuccess }: Props) {
   });
 
   useEffect(() => {
-    if (company) {
-      form.reset(mapCompanyToForm(company));
-    } else {
+    if (!id) {
       form.reset(createCompanyDefaultValues());
+      return;
     }
-  }, [company]);
+
+    if (query.data) {
+      form.reset(mapCompanyToForm(query.data));
+    }
+  }, [id, query.data, form]);
 
   async function onSubmit(data: CompanyFormInput) {
-    if (company) {
-      await updateCompany.mutateAsync({
-        id: company.id,
-        data,
-      });
+    if (id) {
+      await updateCompany.mutateAsync({ id, data });
     } else {
       await createCompany.mutateAsync(data);
     }
@@ -58,7 +60,7 @@ export function CompanyForm({ company, people, onCancel, onSuccess }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{company ? "Editar Empresa" : "Novo Empresa"}</CardTitle>
+        <CardTitle>{id ? "Editar Empresa" : "Novo Empresa"}</CardTitle>
       </CardHeader>
 
       <CardContent>

@@ -5,24 +5,31 @@ import { FormActions } from "@/src/shared/components/FormActions";
 import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useCreateProfessional, useUpdateProfessional } from "./professional.hooks";
-import { createProfessionalDefaultValues, mapProfessionalToForm, ProfessionalFormInput, professionalSchema } from "./professional.schema";
-import { ProfessionalType } from "./professional.types";
+import { useCreateProfessional, useProfessional, useUpdateProfessional } from "./professional.hooks";
+import {
+  createProfessionalDefaultValues,
+  mapProfessionalToForm,
+  ProfessionalFormInput,
+  professionalSchema,
+} from "./professional.schema";
 
 interface Props {
-  professional?: ProfessionalType | null;
+  id?: IdentifierType;
   people: KeyValueType;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export function ProfessionalForm({ professional, people, onCancel, onSuccess }: Props) {
+export function ProfessionalForm({ id, people, onCancel, onSuccess }: Props) {
   const createProfessional = useCreateProfessional();
   const updateProfessional = useUpdateProfessional();
+
+  const query = useProfessional(id);
 
   const form = useForm<ProfessionalFormInput>({
     resolver: zodResolver(professionalSchema),
@@ -30,19 +37,19 @@ export function ProfessionalForm({ professional, people, onCancel, onSuccess }: 
   });
 
   useEffect(() => {
-    if (professional) {
-      form.reset(mapProfessionalToForm(professional));
-    } else {
+    if (!id) {
       form.reset(createProfessionalDefaultValues());
+      return;
     }
-  }, [professional]);
+
+    if (query.data) {
+      form.reset(mapProfessionalToForm(query.data));
+    }
+  }, [id, query.data, form]);
 
   async function onSubmit(data: ProfessionalFormInput) {
-    if (professional) {
-      await updateProfessional.mutateAsync({
-        id: professional.id,
-        data,
-      });
+    if (id) {
+      await updateProfessional.mutateAsync({ id, data });
     } else {
       await createProfessional.mutateAsync(data);
     }
@@ -57,7 +64,7 @@ export function ProfessionalForm({ professional, people, onCancel, onSuccess }: 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{professional ? "Editar Perfil" : "Novo Perfil"}</CardTitle>
+        <CardTitle>{id ? "Editar Profissional" : "Novo Profissional"}</CardTitle>
       </CardHeader>
 
       <CardContent>

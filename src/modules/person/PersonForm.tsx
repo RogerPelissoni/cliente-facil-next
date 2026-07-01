@@ -67,7 +67,7 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
       <QueryState query={query}>
         <Card>
           <CardHeader>
-            <CardTitle>{id ? "Editar Perfil" : "Novo Perfil"}</CardTitle>
+            <CardTitle>{id ? "Editar Pessoa" : "Novo Pessoa"}</CardTitle>
           </CardHeader>
 
           <CardContent>

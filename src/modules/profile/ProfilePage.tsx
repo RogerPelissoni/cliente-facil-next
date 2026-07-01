@@ -46,7 +46,7 @@ export default function ProfilePage() {
         <PageHeader title="Perfis" actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>} />
 
         {crud.open ? (
-          <ProfileForm profile={crud.item} onCancel={crud.close} onSuccess={crud.close} />
+          <ProfileForm id={crud.item?.id} onCancel={crud.close} onSuccess={crud.close} />
         ) : (
           <>
             <DataTableToolbar>

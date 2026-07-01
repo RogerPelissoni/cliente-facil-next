@@ -7,16 +7,16 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useCreateUser, useUpdateUser } from "./user.hooks";
+import { useCreateUser, useUpdateUser, useUser } from "./user.hooks";
 import { createUserDefaultValues, mapUserToForm, UserFormInput, userSchema } from "./user.schema";
-import { UserType } from "./user.types";
 
 interface Props {
-  user?: UserType | null;
+  id?: IdentifierType;
   companies: KeyValueType;
   profiles: KeyValueType;
   people: KeyValueType;
@@ -24,9 +24,11 @@ interface Props {
   onSuccess: () => void;
 }
 
-export function UserForm({ user, companies, profiles, people, onCancel, onSuccess }: Props) {
+export function UserForm({ id, companies, profiles, people, onCancel, onSuccess }: Props) {
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
+
+  const query = useUser(id);
 
   const form = useForm<UserFormInput>({
     resolver: zodResolver(userSchema),
@@ -34,19 +36,19 @@ export function UserForm({ user, companies, profiles, people, onCancel, onSucces
   });
 
   useEffect(() => {
-    if (user) {
-      form.reset(mapUserToForm(user));
-    } else {
+    if (!id) {
       form.reset(createUserDefaultValues());
+      return;
     }
-  }, [user]);
+
+    if (query.data) {
+      form.reset(mapUserToForm(query.data));
+    }
+  }, [id, query.data, form]);
 
   async function onSubmit(data: UserFormInput) {
-    if (user) {
-      await updateUser.mutateAsync({
-        id: user.id,
-        data,
-      });
+    if (id) {
+      await updateUser.mutateAsync({ id, data });
     } else {
       await createUser.mutateAsync(data);
     }
@@ -57,7 +59,7 @@ export function UserForm({ user, companies, profiles, people, onCancel, onSucces
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{user ? "Editar Usuário" : "Novo Usuário"}</CardTitle>
+        <CardTitle>{id ? "Editar Usuário" : "Novo Usuário"}</CardTitle>
       </CardHeader>
 
       <CardContent>
@@ -70,8 +72,8 @@ export function UserForm({ user, companies, profiles, people, onCancel, onSucces
               form={form}
               name="password"
               type="password"
-              label={user ? "Nova senha" : "Senha"}
-              placeholder={user ? "Informe apenas para alterar" : "Digite a senha"}
+              label={id ? "Nova senha" : "Senha"}
+              placeholder={id ? "Informe apenas para alterar" : "Digite a senha"}
             />
 
             <FormSelect form={form} name="role" label="Cargo" options={toOptions(RoleEnum)} />

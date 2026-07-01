@@ -52,7 +52,7 @@ export default function UserPage() {
 
         {crud.open ? (
           <UserForm
-            user={crud.item}
+            id={crud.item?.id}
             onCancel={crud.close}
             onSuccess={crud.close}
             companies={query.data?.kvCompany ?? EMPTY_KEY_VALUE}

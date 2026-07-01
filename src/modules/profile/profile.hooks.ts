@@ -20,7 +20,7 @@ export const profileKeys = {
   list: (filters: ProfileFiltersType, page: number, size: number, sorting: Sorting) =>
     ["profile", "list", filters, page, size, sorting] as const,
 
-  detail: (id: IdentifierType) => ["profile", "detail", id] as const,
+  detail: (id?: IdentifierType) => ["profile", "detail", id] as const,
 
   profilePermission: (id: IdentifierType | undefined) => ["profile", "profilePermission", id] as const,
 };
@@ -32,7 +32,7 @@ export function useProfiles({ filters, page, size, sorting }: QueryParamsType<Pr
   });
 }
 
-export function useProfile(id: IdentifierType) {
+export function useProfile(id?: IdentifierType) {
   return useQuery({
     queryKey: profileKeys.detail(id),
     queryFn: () => findProfileById(id),

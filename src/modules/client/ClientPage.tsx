@@ -48,7 +48,7 @@ export default function ClientPage() {
 
         {crud.open ? (
           <ClientForm
-            client={crud.item}
+            id={crud.item?.id}
             people={query.data?.kvPerson ?? EMPTY_KEY_VALUE}
             onCancel={crud.close}
             onSuccess={crud.close}

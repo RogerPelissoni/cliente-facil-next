@@ -5,24 +5,26 @@ import { FormActions } from "@/src/shared/components/FormActions";
 import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useCreateClient, useUpdateClient } from "./client.hooks";
+import { useClient, useCreateClient, useUpdateClient } from "./client.hooks";
 import { ClientFormInput, clientSchema, createClientDefaultValues, mapClientToForm } from "./client.schema";
-import { ClientType } from "./client.types";
 
 interface Props {
-  client?: ClientType | null;
+  id?: IdentifierType;
   people: KeyValueType;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export function ClientForm({ client, people, onCancel, onSuccess }: Props) {
+export function ClientForm({ id, people, onCancel, onSuccess }: Props) {
   const createClient = useCreateClient();
   const updateClient = useUpdateClient();
+
+  const query = useClient(id);
 
   const form = useForm<ClientFormInput>({
     resolver: zodResolver(clientSchema),
@@ -30,19 +32,19 @@ export function ClientForm({ client, people, onCancel, onSuccess }: Props) {
   });
 
   useEffect(() => {
-    if (client) {
-      form.reset(mapClientToForm(client));
-    } else {
+    if (!id) {
       form.reset(createClientDefaultValues());
+      return;
     }
-  }, [client]);
+
+    if (query.data) {
+      form.reset(mapClientToForm(query.data));
+    }
+  }, [id, query.data, form]);
 
   async function onSubmit(data: ClientFormInput) {
-    if (client) {
-      await updateClient.mutateAsync({
-        id: client.id,
-        data,
-      });
+    if (id) {
+      await updateClient.mutateAsync({ id, data });
     } else {
       await createClient.mutateAsync(data);
     }
@@ -57,7 +59,7 @@ export function ClientForm({ client, people, onCancel, onSuccess }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{client ? "Editar Perfil" : "Novo Perfil"}</CardTitle>
+        <CardTitle>{id ? "Editar Cliente" : "Novo Cliente"}</CardTitle>
       </CardHeader>
 
       <CardContent>

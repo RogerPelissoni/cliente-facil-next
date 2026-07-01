@@ -16,7 +16,7 @@ export const clientKeys = {
   screen: (filters: ClientFiltersType, page: number, size: number, sorting: Sorting) =>
     ["client", "screen", filters, page, size, sorting] as const,
 
-  detail: (id: IdentifierType) => ["client", "detail", id] as const,
+  detail: (id?: IdentifierType) => ["client", "detail", id] as const,
 };
 
 export function useClientsScreen({ filters, page, size, sorting }: QueryParamsType<ClientFiltersType>) {
@@ -33,7 +33,7 @@ export function useClients({ filters, page, size, sorting }: QueryParamsType<Cli
   });
 }
 
-export function useClient(id: IdentifierType) {
+export function useClient(id?: IdentifierType) {
   return useQuery({
     queryKey: clientKeys.detail(id),
     queryFn: () => findClientById(id),

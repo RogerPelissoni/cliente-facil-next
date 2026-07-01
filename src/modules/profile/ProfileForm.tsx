@@ -6,23 +6,25 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { QueryState } from "@/src/shared/components/QueryState";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
+import { IdentifierType } from "@/src/shared/types/form.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { ProfilePermissionTable } from "../profilePermission/ProfilePermissionTable";
-import { useCreateProfile, useProfilePermission, useUpdateProfile } from "./profile.hooks";
+import { useCreateProfile, useProfile, useProfilePermission, useUpdateProfile } from "./profile.hooks";
 import { createProfileDefaultValues, mapProfileToForm, ProfileFormInput, profileSchema } from "./profile.schema";
-import { ProfileType } from "./profile.types";
 
 interface Props {
-  profile?: ProfileType | null;
+  id?: IdentifierType;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export function ProfileForm({ profile, onCancel, onSuccess }: Props) {
+export function ProfileForm({ id, onCancel, onSuccess }: Props) {
   const createProfile = useCreateProfile();
   const updateProfile = useUpdateProfile();
+
+  const query = useProfile(id);
 
   const form = useForm<ProfileFormInput>({
     resolver: zodResolver(profileSchema),
@@ -30,19 +32,19 @@ export function ProfileForm({ profile, onCancel, onSuccess }: Props) {
   });
 
   useEffect(() => {
-    if (profile) {
-      form.reset(mapProfileToForm(profile));
-    } else {
+    if (!id) {
       form.reset(createProfileDefaultValues());
+      return;
     }
-  }, [profile]);
+
+    if (query.data) {
+      form.reset(mapProfileToForm(query.data));
+    }
+  }, [id, query.data, form]);
 
   async function onSubmit(data: ProfileFormInput) {
-    if (profile) {
-      await updateProfile.mutateAsync({
-        id: profile.id,
-        data,
-      });
+    if (id) {
+      await updateProfile.mutateAsync({ id, data });
     } else {
       await createProfile.mutateAsync(data);
     }
@@ -54,7 +56,7 @@ export function ProfileForm({ profile, onCancel, onSuccess }: Props) {
     console.log("Erros:", errors);
   };
 
-  const profilePermissionQuery = useProfilePermission(profile?.id);
+  const profilePermissionQuery = useProfilePermission(id);
 
   useEffect(() => {
     if (profilePermissionQuery.data) {
@@ -72,7 +74,7 @@ export function ProfileForm({ profile, onCancel, onSuccess }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{profile ? "Editar Perfil" : "Novo Perfil"}</CardTitle>
+        <CardTitle>{id ? "Editar Perfil" : "Novo Perfil"}</CardTitle>
       </CardHeader>
 
       <CardContent>

@@ -43,9 +43,9 @@ export default function PersonPage() {
   return (
     <QueryState query={query}>
       <PageContainer>
-        <PageBreadcrumb items={["Cadastros", "Persones"]} />
+        <PageBreadcrumb items={["Cadastros", "Pessoas"]} />
 
-        <PageHeader title="Perfis" actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>} />
+        <PageHeader title="Pessoas" actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>} />
 
         {crud.open ? (
           <PersonForm id={crud.item?.id} onCancel={crud.close} onSuccess={crud.close} />

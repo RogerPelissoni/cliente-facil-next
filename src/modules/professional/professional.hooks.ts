@@ -3,7 +3,14 @@ import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
-import { createProfessional, deleteProfessional, findProfessionalById, screenProfessionals, searchProfessionals, updateProfessional } from "./professional.api";
+import {
+  createProfessional,
+  deleteProfessional,
+  findProfessionalById,
+  screenProfessionals,
+  searchProfessionals,
+  updateProfessional,
+} from "./professional.api";
 import { ProfessionalFormInput } from "./professional.schema";
 import { ProfessionalFiltersType, ProfessionalType } from "./professional.types";
 
@@ -16,7 +23,7 @@ export const professionalKeys = {
   screen: (filters: ProfessionalFiltersType, page: number, size: number, sorting: Sorting) =>
     ["professional", "screen", filters, page, size, sorting] as const,
 
-  detail: (id: IdentifierType) => ["professional", "detail", id] as const,
+  detail: (id?: IdentifierType) => ["professional", "detail", id] as const,
 };
 
 export function useProfessionalsScreen({ filters, page, size, sorting }: QueryParamsType<ProfessionalFiltersType>) {
@@ -33,7 +40,7 @@ export function useProfessionals({ filters, page, size, sorting }: QueryParamsTy
   });
 }
 
-export function useProfessional(id: IdentifierType) {
+export function useProfessional(id?: IdentifierType) {
   return useQuery({
     queryKey: professionalKeys.detail(id),
     queryFn: () => findProfessionalById(id),
