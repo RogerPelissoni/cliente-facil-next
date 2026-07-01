@@ -2,10 +2,10 @@ import { IdentifierType } from "@/src/shared/types/form.type";
 import { createCrudApi } from "@/src/shared/utils/api.util";
 import { api } from "@/src/shared/utils/http.util";
 import { ProfilePermissionType } from "../profilePermission/profilePermission.types";
-import { ProfileFormInput } from "./profile.schema";
+import { ProfileFormSchemaFields } from "./profile.schema";
 import { ProfileFiltersType, ProfileType } from "./profile.types";
 
-const profileApi = createCrudApi<ProfileType, ProfileFormInput, ProfileFiltersType>("/profile");
+const profileApi = createCrudApi<ProfileType, ProfileFormSchemaFields, ProfileFiltersType>("/profile");
 
 export const searchProfiles = profileApi.search;
 export const findProfileById = profileApi.findById;

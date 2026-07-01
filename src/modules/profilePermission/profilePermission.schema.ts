@@ -1,4 +1,4 @@
-import { zIdentifier, zString } from "@/src/shared/utils/schema.util";
+import { toFormIdentifier, zIdentifier, zString } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { ProfilePermissionType } from "./profilePermission.types";
@@ -17,21 +17,21 @@ export type ProfilePermissionFormOutput = z.output<typeof profilePermissionSchem
 
 export function createProfilePermissionDefaultValues(): DefaultValues<ProfilePermissionFormInput> {
   return {
-    resourceId: undefined,
-    resourceName: undefined,
-    resourceSignature: undefined,
-    moduleId: undefined,
-    moduleName: undefined,
-    hasPermission: undefined,
+    resourceId: "",
+    resourceName: "",
+    resourceSignature: "",
+    moduleId: "",
+    moduleName: "",
+    hasPermission: false,
   };
 }
 
 export function mapProfilePermissionToForm(profilePermission: ProfilePermissionType): ProfilePermissionFormInput {
   return {
-    resourceId: String(profilePermission.resourceId),
+    resourceId: toFormIdentifier(profilePermission.resourceId),
     resourceName: profilePermission.resourceName,
     resourceSignature: profilePermission.resourceSignature,
-    moduleId: String(profilePermission.moduleId),
+    moduleId: toFormIdentifier(profilePermission.moduleId),
     moduleName: profilePermission.moduleName,
     hasPermission: profilePermission.hasPermission,
   };

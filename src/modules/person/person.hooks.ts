@@ -4,7 +4,7 @@ import { Sorting } from "@/src/shared/types/table.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
 import { createPerson, deletePerson, findPersonById, searchPersons, updatePerson } from "./person.api";
-import { PersonFormInput } from "./person.schema";
+import { PersonFormSchemaFields } from "./person.schema";
 import { PersonFiltersType, PersonType } from "./person.types";
 
 export const personKeys = {
@@ -39,7 +39,7 @@ export function useCreatePerson() {
 }
 
 export function useUpdatePerson() {
-  return useApiMutation<PersonType, { id: IdentifierType; data: PersonFormInput }>({
+  return useApiMutation<PersonType, { id: IdentifierType; data: PersonFormSchemaFields }>({
     mutationFn: ({ id, data }) => updatePerson(id, data),
     queryKey: personKeys.all,
   });

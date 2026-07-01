@@ -7,13 +7,20 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { QueryState } from "@/src/shared/components/QueryState";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { ProfilePermissionTable } from "../profilePermission/ProfilePermissionTable";
+import { mapProfilePermissionToForm } from "../profilePermission/profilePermission.schema";
 import { useCreateProfile, useProfile, useProfilePermission, useUpdateProfile } from "./profile.hooks";
-import { createProfileDefaultValues, mapProfileToForm, ProfileFormInput, profileSchema } from "./profile.schema";
+import {
+  createProfileDefaultValues,
+  mapProfileToForm,
+  ProfileFormInput,
+  ProfileFormSchemaFields,
+  profileSchema,
+} from "./profile.schema";
 
 interface Props {
   id?: IdentifierType;
@@ -42,11 +49,11 @@ export function ProfileForm({ id, onCancel, onSuccess }: Props) {
     });
   }, [id, query.data, form]);
 
-  async function onSubmit(data: ProfileFormInput) {
+  async function onSubmit(payload: ProfileFormSchemaFields) {
     if (id) {
-      await updateProfile.mutateAsync({ id, data });
+      await updateProfile.mutateAsync({ id, data: payload });
     } else {
-      await createProfile.mutateAsync(data);
+      await createProfile.mutateAsync(payload);
     }
 
     onSuccess();
@@ -62,11 +69,7 @@ export function ProfileForm({ id, onCancel, onSuccess }: Props) {
     if (profilePermissionQuery.data) {
       form.setValue(
         "profilePermissions",
-        profilePermissionQuery.data.map((v) => ({
-          ...v,
-          resourceId: String(v.resourceId),
-          moduleId: String(v.moduleId),
-        })),
+        profilePermissionQuery.data.map(mapProfilePermissionToForm),
       );
     }
   }, [profilePermissionQuery.data, form]);
@@ -78,7 +81,7 @@ export function ProfileForm({ id, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form onSubmit={createSubmitHandler(form, parseSubmit(profileSchema, onSubmit), onError)} className="space-y-6">
           <FormGrid>
             <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
           </FormGrid>

@@ -1,11 +1,11 @@
 import { BooleanEnum, toBooleanEnum } from "@/src/shared/enum/boolean.enum";
-import { zEnum, zIdentifier, zString } from "@/src/shared/utils/schema.util";
+import { toOptionalFormIdentifier, zEnum, zOptionalIdentifier, zString } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { PersonAddressType } from "./personAddress.type";
 
 export const personAddressSchema = z.object({
-  id: zIdentifier(),
+  id: zOptionalIdentifier(),
   dsStreet: zString(),
   dsNumber: zString(),
   dsComplement: zString(),
@@ -33,9 +33,9 @@ export function createPersonAddressDefaultValues(): DefaultValues<PersonAddressF
   };
 }
 
-export function mapPersonAddressToForm(personAddress: PersonAddressFormInput): PersonAddressFormInput {
+export function mapPersonAddressToForm(personAddress: PersonAddressType): PersonAddressFormInput {
   return {
-    id: String(personAddress.id),
+    id: toOptionalFormIdentifier(personAddress.id),
     dsStreet: personAddress.dsStreet,
     dsNumber: personAddress.dsNumber,
     dsComplement: personAddress.dsComplement,

@@ -4,7 +4,7 @@ import { Sorting } from "@/src/shared/types/table.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
 import { createClient, deleteClient, findClientById, screenClients, searchClients, updateClient } from "./client.api";
-import { ClientFormInput } from "./client.schema";
+import { ClientFormSchemaFields } from "./client.schema";
 import { ClientFiltersType, ClientType } from "./client.types";
 
 export const clientKeys = {
@@ -49,7 +49,7 @@ export function useCreateClient() {
 }
 
 export function useUpdateClient() {
-  return useApiMutation<ClientType, { id: IdentifierType; data: ClientFormInput }>({
+  return useApiMutation<ClientType, { id: IdentifierType; data: ClientFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateClient(id, data),
     queryKey: clientKeys.all,
   });

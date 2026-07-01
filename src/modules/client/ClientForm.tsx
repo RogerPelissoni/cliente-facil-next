@@ -6,13 +6,13 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useClient, useCreateClient, useUpdateClient } from "./client.hooks";
-import { ClientFormInput, clientSchema, createClientDefaultValues, mapClientToForm } from "./client.schema";
+import { ClientFormInput, ClientFormSchemaFields, clientSchema, createClientDefaultValues, mapClientToForm } from "./client.schema";
 
 interface Props {
   id?: IdentifierType;
@@ -42,11 +42,11 @@ export function ClientForm({ id, people, onCancel, onSuccess }: Props) {
     });
   }, [id, query.data, form]);
 
-  async function onSubmit(data: ClientFormInput) {
+  async function onSubmit(payload: ClientFormSchemaFields) {
     if (id) {
-      await updateClient.mutateAsync({ id, data });
+      await updateClient.mutateAsync({ id, data: payload });
     } else {
-      await createClient.mutateAsync(data);
+      await createClient.mutateAsync(payload);
     }
 
     onSuccess();
@@ -63,7 +63,7 @@ export function ClientForm({ id, people, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form onSubmit={createSubmitHandler(form, parseSubmit(clientSchema, onSubmit), onError)} className="space-y-6">
           <FormGrid>
             <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />
           </FormGrid>

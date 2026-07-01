@@ -11,7 +11,7 @@ import {
   searchCompanys,
   updateCompany,
 } from "./company.api";
-import { CompanyFormInput } from "./company.schema";
+import { CompanyFormSchemaFields } from "./company.schema";
 import { CompanyFiltersType, CompanyType } from "./company.types";
 
 export const companyKeys = {
@@ -56,7 +56,7 @@ export function useCreateCompany() {
 }
 
 export function useUpdateCompany() {
-  return useApiMutation<CompanyType, { id: IdentifierType; data: CompanyFormInput }>({
+  return useApiMutation<CompanyType, { id: IdentifierType; data: CompanyFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateCompany(id, data),
     queryKey: companyKeys.all,
   });

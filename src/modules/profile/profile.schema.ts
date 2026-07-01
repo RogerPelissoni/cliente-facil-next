@@ -1,6 +1,6 @@
 import { zString } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
-import { profilePermissionSchema } from "../profilePermission/profilePermission.schema";
+import { mapProfilePermissionToForm, profilePermissionSchema } from "../profilePermission/profilePermission.schema";
 import { ProfileType } from "./profile.types";
 
 export const profileSchema = z.object({
@@ -21,6 +21,6 @@ export function createProfileDefaultValues(): ProfileFormInput {
 export function mapProfileToForm(profile: ProfileType): ProfileFormInput {
   return {
     name: profile.name,
-    profilePermissions: profile.profilePermission ?? [],
+    profilePermissions: profile.profilePermission?.map(mapProfilePermissionToForm) ?? [],
   };
 }

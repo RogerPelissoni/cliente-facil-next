@@ -6,7 +6,7 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -16,6 +16,7 @@ import {
   createProfessionalDefaultValues,
   mapProfessionalToForm,
   ProfessionalFormInput,
+  ProfessionalFormSchemaFields,
   professionalSchema,
 } from "./professional.schema";
 
@@ -47,11 +48,11 @@ export function ProfessionalForm({ id, people, onCancel, onSuccess }: Props) {
     });
   }, [id, query.data, form]);
 
-  async function onSubmit(data: ProfessionalFormInput) {
+  async function onSubmit(payload: ProfessionalFormSchemaFields) {
     if (id) {
-      await updateProfessional.mutateAsync({ id, data });
+      await updateProfessional.mutateAsync({ id, data: payload });
     } else {
-      await createProfessional.mutateAsync(data);
+      await createProfessional.mutateAsync(payload);
     }
 
     onSuccess();
@@ -68,7 +69,10 @@ export function ProfessionalForm({ id, people, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(form, parseSubmit(professionalSchema, onSubmit), onError)}
+          className="space-y-6"
+        >
           <FormGrid>
             <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />
           </FormGrid>

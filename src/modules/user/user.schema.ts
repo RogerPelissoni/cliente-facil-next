@@ -1,5 +1,5 @@
 import { RoleEnum } from "@/src/enum/role.enum";
-import { zEnum, zIdentifier, zString } from "@/src/shared/utils/schema.util";
+import { toFormIdentifier, zEnum, zIdentifier, zString } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
 import { UserType } from "./user.types";
 
@@ -21,7 +21,7 @@ export function createUserDefaultValues(): UserFormInput {
     name: "",
     email: "",
     password: "",
-    role: undefined,
+    role: "",
     personId: "",
     profileId: "",
     companyId: "",
@@ -34,8 +34,8 @@ export function mapUserToForm(user: UserType): UserFormInput {
     email: user.email,
     password: "",
     role: user.role,
-    personId: String(user.personId),
-    profileId: String(user.profileId),
-    companyId: String(user.companyId),
+    personId: toFormIdentifier(user.personId),
+    profileId: toFormIdentifier(user.profileId),
+    companyId: toFormIdentifier(user.companyId),
   };
 }

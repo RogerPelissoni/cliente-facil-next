@@ -1,9 +1,9 @@
 import { createCrudApi, createScreenApi } from "@/src/shared/utils/api.util";
-import { CompanyFormInput } from "./company.schema";
+import { CompanyFormSchemaFields } from "./company.schema";
 import { CompanyFiltersType, CompanyScreenDataType, CompanyType } from "./company.types";
 
 const companyApi = {
-  ...createCrudApi<CompanyType, CompanyFormInput, CompanyFiltersType>("/company"),
+  ...createCrudApi<CompanyType, CompanyFormSchemaFields, CompanyFiltersType>("/company"),
   ...createScreenApi<CompanyFiltersType, CompanyScreenDataType>("/company"),
 };
 

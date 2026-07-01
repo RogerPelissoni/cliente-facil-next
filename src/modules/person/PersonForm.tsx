@@ -9,7 +9,7 @@ import { FormSelect } from "@/src/shared/components/FormSelect";
 import { QueryState } from "@/src/shared/components/QueryState";
 import { BooleanEnum } from "@/src/shared/enum/boolean.enum";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -18,7 +18,13 @@ import { PersonAddressSection } from "../personAddress/PersonAddressSection";
 import { PersonMailSection } from "../personMail/PersonMailSection";
 import { PersonPhoneSection } from "../personPhone/PersonPhoneSection";
 import { useCreatePerson, usePerson, useUpdatePerson } from "./person.hooks";
-import { createPersonDefaultValues, mapPersonToForm, PersonFormInput, personSchema } from "./person.schema";
+import {
+  createPersonDefaultValues,
+  mapPersonToForm,
+  PersonFormInput,
+  PersonFormSchemaFields,
+  personSchema,
+} from "./person.schema";
 
 interface Props {
   id?: IdentifierType;
@@ -47,11 +53,11 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
     });
   }, [id, query.data, form]);
 
-  async function onSubmit(data: PersonFormInput) {
+  async function onSubmit(payload: PersonFormSchemaFields) {
     if (id) {
-      await updatePerson.mutateAsync({ id, data });
+      await updatePerson.mutateAsync({ id, data: payload });
     } else {
-      await createPerson.mutateAsync(data);
+      await createPerson.mutateAsync(payload);
     }
 
     onSuccess();
@@ -70,7 +76,7 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+            <form onSubmit={createSubmitHandler(form, parseSubmit(personSchema, onSubmit), onError)} className="space-y-6">
               <FormGrid>
                 <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
                 <FormInput form={form} name="dsDocument" label="Documento" placeholder="Digite o CPF ou CNPJ" />

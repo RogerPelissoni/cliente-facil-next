@@ -1,4 +1,4 @@
-import { zIdentifier } from "@/src/shared/utils/schema.util";
+import { toFormIdentifier, zIdentifier } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
 import { ClientType } from "./client.types";
 
@@ -17,6 +17,6 @@ export function createClientDefaultValues(): ClientFormInput {
 
 export function mapClientToForm(client: ClientType): ClientFormInput {
   return {
-    personId: String(client.personId),
+    personId: toFormIdentifier(client.personId),
   };
 }

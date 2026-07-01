@@ -11,7 +11,7 @@ import {
   searchProfessionals,
   updateProfessional,
 } from "./professional.api";
-import { ProfessionalFormInput } from "./professional.schema";
+import { ProfessionalFormSchemaFields } from "./professional.schema";
 import { ProfessionalFiltersType, ProfessionalType } from "./professional.types";
 
 export const professionalKeys = {
@@ -56,7 +56,7 @@ export function useCreateProfessional() {
 }
 
 export function useUpdateProfessional() {
-  return useApiMutation<ProfessionalType, { id: IdentifierType; data: ProfessionalFormInput }>({
+  return useApiMutation<ProfessionalType, { id: IdentifierType; data: ProfessionalFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateProfessional(id, data),
     queryKey: professionalKeys.all,
   });

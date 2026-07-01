@@ -1,13 +1,22 @@
 import { z } from "zod";
 
-export const zIdentifier = () => z.string().optional();
+type EnumKey<T extends Record<string, string>> = keyof T & string;
+
+export const zOptionalIdentifier = () => z.string().trim().optional();
+
+export const zIdentifier = (message = "Campo obrigatório") => z.string().trim().min(1, message);
 
 export const zString = (message = "Campo obrigatório", min = 1) => z.string().trim().min(min, message);
 
 export const zEnum = <T extends Record<string, string>>(enumObject: T, message = "Campo obrigatório") =>
   z
-    .enum(Object.keys(enumObject) as [keyof T & string, ...(keyof T & string)[]])
-    .optional()
-    .refine((value) => value !== undefined, {
+    .union([z.enum(Object.keys(enumObject) as [EnumKey<T>, ...EnumKey<T>[]]), z.literal("")])
+    .refine((value) => value !== "", {
       message,
-    });
+    })
+    .transform((value): EnumKey<T> => value as EnumKey<T>);
+
+export const toFormIdentifier = (value: unknown): string => (value == null ? "" : String(value));
+
+export const toOptionalFormIdentifier = (value: unknown): string | undefined =>
+  value == null || value === "" ? undefined : String(value);

@@ -11,7 +11,7 @@ import {
   searchProfiles,
   updateProfile,
 } from "./profile.api";
-import { ProfileFormInput } from "./profile.schema";
+import { ProfileFormSchemaFields } from "./profile.schema";
 import { ProfileFiltersType, ProfileType } from "./profile.types";
 
 export const profileKeys = {
@@ -55,7 +55,7 @@ export function useCreateProfile() {
 }
 
 export function useUpdateProfile() {
-  return useApiMutation<ProfileType, { id: IdentifierType; data: ProfileFormInput }>({
+  return useApiMutation<ProfileType, { id: IdentifierType; data: ProfileFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateProfile(id, data),
     queryKey: profileKeys.all,
   });

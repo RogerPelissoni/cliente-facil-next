@@ -8,13 +8,19 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser, useUser } from "./user.hooks";
-import { createUserDefaultValues, mapUserToForm, UserFormInput, userSchema } from "./user.schema";
+import {
+  createUserDefaultValues,
+  mapUserToForm,
+  UserFormInput,
+  UserFormSchemaFields,
+  userSchema,
+} from "./user.schema";
 
 interface Props {
   id?: IdentifierType;
@@ -46,11 +52,11 @@ export function UserForm({ id, companies, profiles, people, onCancel, onSuccess 
     });
   }, [id, query.data, form]);
 
-  async function onSubmit(data: UserFormInput) {
+  async function onSubmit(payload: UserFormSchemaFields) {
     if (id) {
-      await updateUser.mutateAsync({ id, data });
+      await updateUser.mutateAsync({ id, data: payload });
     } else {
-      await createUser.mutateAsync(data);
+      await createUser.mutateAsync(payload);
     }
 
     onSuccess();
@@ -67,7 +73,7 @@ export function UserForm({ id, companies, profiles, people, onCancel, onSuccess 
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form onSubmit={createSubmitHandler(form, parseSubmit(userSchema, onSubmit), onError)} className="space-y-6">
           <FormGrid>
             <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
             <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />

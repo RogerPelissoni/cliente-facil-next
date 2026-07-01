@@ -1,5 +1,6 @@
 import { BaseSyntheticEvent } from "react";
 import { DefaultValues, FieldValues, SubmitErrorHandler, SubmitHandler, UseFormReturn } from "react-hook-form";
+import { z } from "zod";
 import { SearchRequest } from "../types/form.type";
 import { Sorting } from "../types/table.type";
 
@@ -65,6 +66,13 @@ export function createSubmitHandler<T extends FieldValues>(
 
     submit(e);
   };
+}
+
+export function parseSubmit<TSchema extends z.ZodTypeAny>(
+  schema: TSchema,
+  onSubmit: SubmitHandler<z.output<TSchema>>,
+): SubmitHandler<z.input<TSchema>> {
+  return (data) => onSubmit(schema.parse(data));
 }
 
 interface ResetFormOptions<TForm extends FieldValues, TEntity> {

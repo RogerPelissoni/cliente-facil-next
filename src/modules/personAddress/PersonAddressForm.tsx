@@ -6,7 +6,7 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { BooleanEnum } from "@/src/shared/enum/boolean.enum";
-import { createSubmitHandler } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, parseSubmit } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -15,6 +15,7 @@ import {
   createPersonAddressDefaultValues,
   mapPersonAddressToForm,
   PersonAddressFormInput,
+  PersonAddressFormSchemaFields,
   personAddressSchema,
 } from "./personAddress.schema";
 import { PersonAddressType } from "./personAddress.type";
@@ -22,7 +23,7 @@ import { PersonAddressType } from "./personAddress.type";
 interface Props {
   personAddress?: PersonAddressType | null;
   onCancel(): void;
-  onSubmit(data: PersonAddressFormInput): void;
+  onSubmit(data: PersonAddressFormSchemaFields): void;
 }
 
 export function PersonAddressForm({ personAddress, onCancel, onSubmit }: Props) {
@@ -37,7 +38,7 @@ export function PersonAddressForm({ personAddress, onCancel, onSubmit }: Props) 
     } else {
       form.reset(createPersonAddressDefaultValues());
     }
-  }, [personAddress]);
+  }, [form, personAddress]);
 
   const onError = (errors: FieldErrors<PersonAddressFormInput>) => {
     console.log("Erros:", errors);
@@ -50,7 +51,10 @@ export function PersonAddressForm({ personAddress, onCancel, onSubmit }: Props) 
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(form, parseSubmit(personAddressSchema, onSubmit), onError)}
+          className="space-y-6"
+        >
           <FormGrid>
             <FormInput form={form} name="dsStreet" label="Rua" placeholder="Digite a rua" />
             <FormInput form={form} name="dsNumber" label="Número" placeholder="Digite o número" />

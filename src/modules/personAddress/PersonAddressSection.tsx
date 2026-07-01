@@ -4,7 +4,7 @@ import { CoreModal } from "@/src/shared/components/CoreModal";
 import { useState } from "react";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
 import { PersonFormInput } from "../person/person.schema";
-import { PersonAddressFormInput } from "./personAddress.schema";
+import { PersonAddressFormSchemaFields, personAddressSchema } from "./personAddress.schema";
 import { PersonAddressType } from "./personAddress.type";
 import { PersonAddressForm } from "./PersonAddressForm";
 import { PersonAddressTable } from "./PersonAddressTable";
@@ -31,6 +31,8 @@ export function PersonAddressSection({ form }: Props) {
     keyName: "fieldId",
   });
 
+  const addressRows = addresses.map((address) => personAddressSchema.parse(address));
+
   const handleCreate = () => {
     setEditing(undefined);
     setIsOpenForm(true);
@@ -45,7 +47,7 @@ export function PersonAddressSection({ form }: Props) {
     removeAddress(index);
   };
 
-  const handleSubmit = (data: PersonAddressFormInput) => {
+  const handleSubmit = (data: PersonAddressFormSchemaFields) => {
     if (!editing) {
       addAddress(data);
     } else {
@@ -66,7 +68,7 @@ export function PersonAddressSection({ form }: Props) {
         </CardHeader>
 
         <CardContent>
-          <PersonAddressTable data={addresses} onEdit={handleEdit} onDelete={handleDelete} />
+          <PersonAddressTable data={addressRows} onEdit={handleEdit} onDelete={handleDelete} />
         </CardContent>
       </Card>
 

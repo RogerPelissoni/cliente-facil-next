@@ -7,13 +7,19 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { useCompany, useCreateCompany, useUpdateCompany } from "./company.hooks";
-import { CompanyFormInput, companySchema, createCompanyDefaultValues, mapCompanyToForm } from "./company.schema";
+import {
+  CompanyFormInput,
+  CompanyFormSchemaFields,
+  companySchema,
+  createCompanyDefaultValues,
+  mapCompanyToForm,
+} from "./company.schema";
 
 interface Props {
   id?: IdentifierType;
@@ -43,11 +49,11 @@ export function CompanyForm({ id, people, onCancel, onSuccess }: Props) {
     });
   }, [id, query.data, form]);
 
-  async function onSubmit(data: CompanyFormInput) {
+  async function onSubmit(payload: CompanyFormSchemaFields) {
     if (id) {
-      await updateCompany.mutateAsync({ id, data });
+      await updateCompany.mutateAsync({ id, data: payload });
     } else {
-      await createCompany.mutateAsync(data);
+      await createCompany.mutateAsync(payload);
     }
 
     onSuccess();
@@ -64,7 +70,7 @@ export function CompanyForm({ id, people, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form onSubmit={createSubmitHandler(form, parseSubmit(companySchema, onSubmit), onError)} className="space-y-6">
           <FormGrid>
             <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
             <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />

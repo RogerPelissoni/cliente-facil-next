@@ -1,4 +1,4 @@
-import { zIdentifier } from "@/src/shared/utils/schema.util";
+import { toFormIdentifier, zIdentifier } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
 import { ProfessionalType } from "./professional.types";
 
@@ -17,6 +17,6 @@ export function createProfessionalDefaultValues(): ProfessionalFormInput {
 
 export function mapProfessionalToForm(professional: ProfessionalType): ProfessionalFormInput {
   return {
-    personId: String(professional.personId),
+    personId: toFormIdentifier(professional.personId),
   };
 }

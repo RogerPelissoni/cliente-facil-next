@@ -1,10 +1,10 @@
-import { zIdentifier, zString } from "@/src/shared/utils/schema.util";
+import { toOptionalFormIdentifier, zOptionalIdentifier, zString } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { PersonPhoneType } from "./personPhone.type";
 
 export const personPhoneSchema = z.object({
-  id: zIdentifier().optional(),
+  id: zOptionalIdentifier(),
   dsPhone: zString(),
 });
 
@@ -20,7 +20,7 @@ export function createPersonPhoneDefaultValues(): DefaultValues<PersonPhoneFormI
 
 export function mapPersonPhoneToForm(personPhone: PersonPhoneType): PersonPhoneFormInput {
   return {
-    id: String(personPhone.id),
+    id: toOptionalFormIdentifier(personPhone.id),
     dsPhone: personPhone.dsPhone,
   };
 }

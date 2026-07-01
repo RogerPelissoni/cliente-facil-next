@@ -4,7 +4,7 @@ import { Sorting } from "@/src/shared/types/table.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
 import { createUser, deleteUser, findUserById, screenUsers, searchUsers, updateUser } from "./user.api";
-import { UserFormInput } from "./user.schema";
+import { UserFormSchemaFields } from "./user.schema";
 import { UserFiltersType, UserType } from "./user.types";
 
 export const userKeys = {
@@ -49,7 +49,7 @@ export function useCreateUser() {
 }
 
 export function useUpdateUser() {
-  return useApiMutation<UserType, { id: IdentifierType; data: UserFormInput }>({
+  return useApiMutation<UserType, { id: IdentifierType; data: UserFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateUser(id, data),
     queryKey: userKeys.all,
   });

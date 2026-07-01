@@ -1,9 +1,9 @@
 import { createCrudApi, createScreenApi } from "@/src/shared/utils/api.util";
-import { ProfessionalFormInput } from "./professional.schema";
+import { ProfessionalFormSchemaFields } from "./professional.schema";
 import { ProfessionalFiltersType, ProfessionalScreenDataType, ProfessionalType } from "./professional.types";
 
 const professionalApi = {
-  ...createCrudApi<ProfessionalType, ProfessionalFormInput, ProfessionalFiltersType>("/professional"),
+  ...createCrudApi<ProfessionalType, ProfessionalFormSchemaFields, ProfessionalFiltersType>("/professional"),
   ...createScreenApi<ProfessionalFiltersType, ProfessionalScreenDataType>("/professional"),
 };
 
