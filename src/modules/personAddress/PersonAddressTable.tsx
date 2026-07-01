@@ -5,6 +5,7 @@ import { EmptyState } from "@/src/shared/components/EmptyState";
 import { TableActionDelete } from "@/src/shared/components/table/TableActionDelete";
 import { TableActionEdit } from "@/src/shared/components/table/TableActionEdit";
 import { TableActions } from "@/src/shared/components/table/TableActions";
+import { fromBooleanEnum } from "@/src/shared/enum/boolean.enum";
 import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { PersonAddressType } from "./personAddress.type";
 
@@ -39,7 +40,7 @@ export function PersonAddressTable({ data, onEdit, onDelete }: Props) {
     {
       accessorKey: "flMain",
       header: "Principal",
-      cell: ({ row }) => (row.original.flMain ? "Sim" : "Não"),
+      cell: ({ row }) => (fromBooleanEnum(row.original.flMain) ? "Sim" : "Não"),
     },
     {
       id: "actions",

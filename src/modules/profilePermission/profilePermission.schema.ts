@@ -1,14 +1,14 @@
-import { zIdentifier } from "@/src/shared/utils/schema.util";
+import { zIdentifier, zString } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { ProfilePermissionType } from "./profilePermission.types";
 
 export const profilePermissionSchema = z.object({
   resourceId: zIdentifier(),
-  resourceName: z.string(),
-  resourceSignature: z.string(),
+  resourceName: zString(),
+  resourceSignature: zString(),
   moduleId: zIdentifier(),
-  moduleName: z.string(),
+  moduleName: zString(),
   hasPermission: z.boolean(),
 });
 

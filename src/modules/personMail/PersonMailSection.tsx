@@ -28,6 +28,7 @@ export function PersonMailSection({ form }: Props) {
   } = useFieldArray({
     control: form.control,
     name: "personMails",
+    keyName: "fieldId",
   });
 
   const handleCreate = () => {

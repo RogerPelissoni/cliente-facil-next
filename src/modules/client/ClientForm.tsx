@@ -6,6 +6,7 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
+import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -32,14 +33,13 @@ export function ClientForm({ id, people, onCancel, onSuccess }: Props) {
   });
 
   useEffect(() => {
-    if (!id) {
-      form.reset(createClientDefaultValues());
-      return;
-    }
-
-    if (query.data) {
-      form.reset(mapClientToForm(query.data));
-    }
+    resetForm({
+      id,
+      form,
+      data: query.data,
+      defaultValues: createClientDefaultValues(),
+      mapToForm: mapClientToForm,
+    });
   }, [id, query.data, form]);
 
   async function onSubmit(data: ClientFormInput) {
@@ -63,7 +63,7 @@ export function ClientForm({ id, people, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-6">
+        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
           <FormGrid>
             <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />
           </FormGrid>

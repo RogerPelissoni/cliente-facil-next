@@ -1,5 +1,5 @@
 import { BaseSyntheticEvent } from "react";
-import { FieldValues, SubmitErrorHandler, SubmitHandler, UseFormReturn } from "react-hook-form";
+import { DefaultValues, FieldValues, SubmitErrorHandler, SubmitHandler, UseFormReturn } from "react-hook-form";
 import { SearchRequest } from "../types/form.type";
 import { Sorting } from "../types/table.type";
 
@@ -65,4 +65,27 @@ export function createSubmitHandler<T extends FieldValues>(
 
     submit(e);
   };
+}
+
+interface ResetFormOptions<TForm extends FieldValues, TEntity> {
+  form: UseFormReturn<TForm>;
+  defaultValues: DefaultValues<TForm>;
+  data?: TEntity;
+  id?: unknown;
+  mapToForm(entity: TEntity): TForm;
+}
+
+export function resetForm<TForm extends FieldValues, TEntity>({
+  id,
+  form,
+  data,
+  defaultValues,
+  mapToForm,
+}: ResetFormOptions<TForm, TEntity>) {
+  if (id && data) {
+    form.reset(mapToForm(data));
+    return;
+  }
+
+  form.reset(defaultValues);
 }

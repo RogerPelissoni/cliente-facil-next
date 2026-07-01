@@ -7,13 +7,13 @@ import { ErrorState } from "./ErrorState";
 import { Loading } from "./Loading";
 
 interface Props<TData = unknown, TError = Error> {
-  query: Pick<UseQueryResult<TData, TError>, "isPending" | "error" | "refetch">;
+  query: Pick<UseQueryResult<TData, TError>, "isLoading" | "error" | "refetch">;
   loadingMessage?: string;
   children: ReactNode;
 }
 
 export function QueryState<TData = unknown, TError = Error>({ query, loadingMessage, children }: Props<TData, TError>) {
-  if (query.isPending) {
+  if (query.isLoading) {
     return <Loading message={loadingMessage} />;
   }
 

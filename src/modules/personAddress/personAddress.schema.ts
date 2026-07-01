@@ -1,18 +1,18 @@
 import { BooleanEnum, toBooleanEnum } from "@/src/shared/enum/boolean.enum";
-import { zEnum, zIdentifier } from "@/src/shared/utils/schema.util";
+import { zEnum, zIdentifier, zString } from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { PersonAddressType } from "./personAddress.type";
 
 export const personAddressSchema = z.object({
-  id: zIdentifier().optional(),
-  dsStreet: z.string().min(1, "Rua é obrigatória"),
-  dsNumber: z.string().min(1, "Número é obrigatório"),
-  dsComplement: z.string(),
-  dsDistrict: z.string().min(1, "Bairro é obrigatório"),
-  dsCity: z.string().min(1, "Cidade é obrigatória"),
-  dsState: z.string().min(1, "Estado é obrigatório"),
-  dsZipCode: z.string().min(1, "CEP é obrigatório"),
+  id: zIdentifier(),
+  dsStreet: zString(),
+  dsNumber: zString(),
+  dsComplement: zString(),
+  dsDistrict: zString(),
+  dsCity: zString(),
+  dsState: zString(),
+  dsZipCode: zString(),
   flMain: zEnum(BooleanEnum),
 });
 
@@ -29,11 +29,11 @@ export function createPersonAddressDefaultValues(): DefaultValues<PersonAddressF
     dsCity: "",
     dsState: "",
     dsZipCode: "",
-    flMain: undefined,
+    flMain: "false",
   };
 }
 
-export function mapPersonAddressToForm(personAddress: PersonAddressType): PersonAddressFormInput {
+export function mapPersonAddressToForm(personAddress: PersonAddressFormInput): PersonAddressFormInput {
   return {
     id: String(personAddress.id),
     dsStreet: personAddress.dsStreet,

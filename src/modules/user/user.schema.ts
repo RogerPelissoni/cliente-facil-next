@@ -1,13 +1,12 @@
 import { RoleEnum } from "@/src/enum/role.enum";
-import { zEnum, zIdentifier } from "@/src/shared/utils/schema.util";
-import { DefaultValues } from "react-hook-form";
+import { zEnum, zIdentifier, zString } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
 import { UserType } from "./user.types";
 
 export const userSchema = z.object({
-  name: z.string().min(3, "Informe o nome"),
+  name: zString(),
   email: z.email("E-mail inválido"),
-  password: z.string().min(6, "A senha deve possuir no mínimo 6 caracteres"),
+  password: zString().min(6, "A senha deve possuir no mínimo 6 caracteres"),
   role: zEnum(RoleEnum),
   personId: zIdentifier(),
   profileId: zIdentifier(),
@@ -17,15 +16,15 @@ export const userSchema = z.object({
 export type UserFormInput = z.input<typeof userSchema>;
 export type UserFormSchemaFields = z.output<typeof userSchema>;
 
-export function createUserDefaultValues(): DefaultValues<UserFormInput> {
+export function createUserDefaultValues(): UserFormInput {
   return {
     name: "",
     email: "",
     password: "",
     role: undefined,
-    personId: undefined,
-    profileId: undefined,
-    companyId: undefined,
+    personId: "",
+    profileId: "",
+    companyId: "",
   };
 }
 

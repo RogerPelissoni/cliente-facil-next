@@ -8,10 +8,11 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
+import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { useCreateUser, useUpdateUser, useUser } from "./user.hooks";
 import { createUserDefaultValues, mapUserToForm, UserFormInput, userSchema } from "./user.schema";
 
@@ -36,14 +37,13 @@ export function UserForm({ id, companies, profiles, people, onCancel, onSuccess 
   });
 
   useEffect(() => {
-    if (!id) {
-      form.reset(createUserDefaultValues());
-      return;
-    }
-
-    if (query.data) {
-      form.reset(mapUserToForm(query.data));
-    }
+    resetForm({
+      id,
+      form,
+      data: query.data,
+      defaultValues: createUserDefaultValues(),
+      mapToForm: mapUserToForm,
+    });
   }, [id, query.data, form]);
 
   async function onSubmit(data: UserFormInput) {
@@ -56,6 +56,10 @@ export function UserForm({ id, companies, profiles, people, onCancel, onSuccess 
     onSuccess();
   }
 
+  const onError = (errors: FieldErrors<UserFormInput>) => {
+    console.log("Erros:", errors);
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -63,7 +67,7 @@ export function UserForm({ id, companies, profiles, people, onCancel, onSuccess 
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
           <FormGrid>
             <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
             <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />

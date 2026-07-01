@@ -9,7 +9,7 @@ import { FormSelect } from "@/src/shared/components/FormSelect";
 import { QueryState } from "@/src/shared/components/QueryState";
 import { BooleanEnum } from "@/src/shared/enum/boolean.enum";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler } from "@/src/shared/utils/form.util";
+import { createSubmitHandler, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -38,14 +38,13 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
   });
 
   useEffect(() => {
-    if (!id) {
-      form.reset(createPersonDefaultValues());
-      return;
-    }
-
-    if (query.data) {
-      form.reset(mapPersonToForm(query.data));
-    }
+    resetForm({
+      id,
+      form,
+      data: query.data,
+      defaultValues: createPersonDefaultValues(),
+      mapToForm: mapPersonToForm,
+    });
   }, [id, query.data, form]);
 
   async function onSubmit(data: PersonFormInput) {

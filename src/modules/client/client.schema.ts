@@ -1,5 +1,4 @@
 import { zIdentifier } from "@/src/shared/utils/schema.util";
-import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { ClientType } from "./client.types";
 
@@ -10,9 +9,9 @@ export const clientSchema = z.object({
 export type ClientFormInput = z.input<typeof clientSchema>;
 export type ClientFormSchemaFields = z.output<typeof clientSchema>;
 
-export function createClientDefaultValues(): DefaultValues<ClientFormInput> {
+export function createClientDefaultValues(): ClientFormInput {
   return {
-    personId: undefined,
+    personId: "",
   };
 }
 

@@ -28,6 +28,7 @@ export function PersonPhoneSection({ form }: Props) {
   } = useFieldArray({
     control: form.control,
     name: "personPhones",
+    keyName: "fieldId",
   });
 
   const handleCreate = () => {
