@@ -1,6 +1,8 @@
 import { EventStatusEnum } from "@/src/enum/eventStatus.enum";
 import { EventTypeEnum } from "@/src/enum/eventType.enum";
 import {
+  zDate,
+  zEnum,
   zString,
 } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
@@ -9,12 +11,10 @@ import { EventType } from "./event.types";
 export const eventSchema = z.object({
   dsTitle: zString().max(100),
   dsDescription: z.string().optional(),
-
-  dtStart: z.string(),
-  dtEnd: z.string(),
-
-  tpStatus: z.nativeEnum(EventStatusEnum),
-  tpEvent: z.nativeEnum(EventTypeEnum),
+  dtStart: zDate(),
+  dtEnd: zDate(),
+  tpStatus: zEnum(EventStatusEnum),
+  tpEvent: zEnum(EventTypeEnum),
 });
 
 export type EventFormInput = z.input<typeof eventSchema>;
@@ -24,12 +24,10 @@ export function createEventDefaultValues(): EventFormInput {
   return {
     dsTitle: "",
     dsDescription: "",
-
-    dtStart: "",
-    dtEnd: "",
-
-    tpStatus: EventStatusEnum.SCHEDULED,
-    tpEvent: EventTypeEnum.APPOINTMENT,
+    dtStart: undefined,
+    dtEnd: undefined,
+    tpStatus: 'SCHEDULED',
+    tpEvent: 'APPOINTMENT',
   };
 }
 
@@ -37,10 +35,8 @@ export function mapEventToForm(event: EventType): EventFormInput {
   return {
     dsTitle: event.dsTitle,
     dsDescription: event.dsDescription ?? "",
-
-    dtStart: event.dtStart,
-    dtEnd: event.dtEnd,
-
+    dtStart: new Date(event.dtStart),
+    dtEnd: new Date(event.dtEnd),
     tpStatus: event.tpStatus,
     tpEvent: event.tpEvent,
   };

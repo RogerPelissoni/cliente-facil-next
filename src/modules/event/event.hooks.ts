@@ -50,20 +50,20 @@ export function useEventByAuthUser() {
 export function useCreateEvent() {
   return useApiMutation({
     mutationFn: createEvent,
-    queryKey: eventKeys.all,
+    invalidateQueries: [eventKeys.all, eventKeys.byAuthUser()],
   });
 }
 
 export function useUpdateEvent() {
   return useApiMutation<EventType, { id: IdentifierType; data: EventFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateEvent(id, data),
-    queryKey: eventKeys.all,
+    invalidateQueries: [eventKeys.all, eventKeys.byAuthUser()],
   });
 }
 
 export function useDeleteEvent() {
   return useApiMutation({
     mutationFn: deleteEvent,
-    queryKey: eventKeys.all,
+    invalidateQueries: [eventKeys.all, eventKeys.byAuthUser()],
   });
 }

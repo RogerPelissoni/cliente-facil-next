@@ -14,22 +14,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { cn } from "@/src/shared/utils/util";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { CalendarIcon } from "lucide-react";
-import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  UseFormReturn,
+} from "react-hook-form";
+import { GRID_SIZE, GridSize } from "../utils/form.util";
 
-interface Props<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
+interface Props<TFieldValues extends FieldValues> {
+  form: UseFormReturn<TFieldValues>;
+  name: FieldPath<TFieldValues>;
   label: string;
+  placeholder?: string;
+  size?: GridSize;
 }
 
-export function FormDateTime<T extends FieldValues>({
-  control,
+export function FormDateTime<TFieldValues extends FieldValues>({
+  form,
   name,
   label,
-}: Props<T>) {
+  placeholder = "Selecione data e hora",
+  size = 4,
+}: Props<TFieldValues>) {
   const hours = Array.from({ length: 24 }, (_, i) =>
     i.toString().padStart(2, "0"),
   );
@@ -39,40 +50,37 @@ export function FormDateTime<T extends FieldValues>({
   );
 
   return (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field, fieldState }) => {
-        const current = field.value ? new Date(field.value) : undefined;
+    <div className={cn("col-span-12 space-y-2", GRID_SIZE[size])}>
+      <label className="text-sm font-medium">{label}</label>
 
-        function updateDate(date: Date) {
-          field.onChange(date);
-        }
+      <Controller
+        control={form.control}
+        name={name}
+        render={({ field }) => {
+          const current = field.value ? new Date(field.value) : undefined;
 
-        function updateHour(hour: string) {
-          if (!current) return;
+          function updateDate(date: Date) {
+            if (current) {
+              date.setHours(current.getHours());
+              date.setMinutes(current.getMinutes());
+            }
 
-          const newDate = new Date(current);
+            field.onChange(date);
+          }
 
-          newDate.setHours(Number(hour));
+          function updateHour(hour: string) {
+            const newDate = current ?? new Date();
+            newDate.setHours(Number(hour));
+            field.onChange(newDate);
+          }
 
-          field.onChange(newDate);
-        }
+          function updateMinute(minute: string) {
+            const newDate = current ?? new Date();
+            newDate.setMinutes(Number(minute));
+            field.onChange(newDate);
+          }
 
-        function updateMinute(minute: string) {
-          if (!current) return;
-
-          const newDate = new Date(current);
-
-          newDate.setMinutes(Number(minute));
-
-          field.onChange(newDate);
-        }
-
-        return (
-          <div className="space-y-2">
-            <label className="text-sm font-medium">{label}</label>
-
+          return (
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -85,7 +93,7 @@ export function FormDateTime<T extends FieldValues>({
                       locale: ptBR,
                     })
                   ) : (
-                    <span>Selecione data e hora</span>
+                    <span>{placeholder}</span>
                   )}
 
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -95,9 +103,9 @@ export function FormDateTime<T extends FieldValues>({
               <PopoverContent className="space-y-4 p-4" align="start">
                 <Calendar
                   mode="single"
+                  locale={ptBR}
                   selected={current}
                   onSelect={(date) => date && updateDate(date)}
-                  locale={ptBR}
                 />
 
                 <div className="grid grid-cols-2 gap-2">
@@ -141,13 +149,13 @@ export function FormDateTime<T extends FieldValues>({
                 </div>
               </PopoverContent>
             </Popover>
+          );
+        }}
+      />
 
-            {fieldState.error && (
-              <p className="text-sm text-red-500">{fieldState.error.message}</p>
-            )}
-          </div>
-        );
-      }}
-    />
+      <p className="text-sm text-red-500">
+        {form.formState.errors[name]?.message as string}
+      </p>
+    </div>
   );
 }

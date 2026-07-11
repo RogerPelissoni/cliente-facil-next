@@ -20,3 +20,10 @@ export const toFormIdentifier = (value: unknown): string => (value == null ? "" 
 
 export const toOptionalFormIdentifier = (value: unknown): string | undefined =>
   value == null || value === "" ? undefined : String(value);
+
+export const zDate = (message = "Campo obrigatório") =>
+  z
+    .union([z.date(), z.undefined()])
+    .refine((value): value is Date => value !== undefined, {
+      message,
+    });

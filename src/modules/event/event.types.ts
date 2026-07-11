@@ -1,18 +1,15 @@
-import { EventStatusEnumType } from "@/src/enum/eventStatus.enum";
-import { EventTypeEnumType } from "@/src/enum/eventType.enum";
+import { EventStatusEnum, EventStatusEnumType } from "@/src/enum/eventStatus.enum";
+import { EventTypeEnum, EventTypeEnumType } from "@/src/enum/eventType.enum";
 import { IdentifierType } from "@/src/shared/types/form.type";
 
 export interface EventType {
   id: IdentifierType;
-
   dsTitle: string;
   dsDescription: string | null;
-
-  dtStart: string;
-  dtEnd: string;
-
-  tpStatus: EventStatusEnumType;
-  tpEvent: EventTypeEnumType;
+  dtStart: Date;
+  dtEnd: Date;
+  tpStatus: keyof typeof EventStatusEnum;
+  tpEvent: keyof typeof EventTypeEnum;
 }
 
 export interface EventFiltersType {

@@ -4,7 +4,8 @@ import { toast } from "sonner";
 
 interface MutationOptions<TData, TVariables> {
   mutationFn: MutationFunction<TData, TVariables>;
-  queryKey: QueryKey;
+
+  invalidateQueries?: QueryKey[];
 
   successMessage?: string;
   errorMessage?: string;
@@ -15,7 +16,7 @@ interface MutationOptions<TData, TVariables> {
 
 export function useApiMutation<TData, TVariables>({
   mutationFn,
-  queryKey,
+  invalidateQueries,
   successMessage = "Operação efetuada com sucesso",
   errorMessage = "Ocorreu um erro durante a operação",
   onSuccess,
@@ -29,9 +30,13 @@ export function useApiMutation<TData, TVariables>({
     async onSuccess(data) {
       toast.success(successMessage);
 
-      await queryClient.invalidateQueries({
-        queryKey,
-      });
+      if (invalidateQueries?.length) {
+        await Promise.all(
+          invalidateQueries.map((queryKey) =>
+            queryClient.invalidateQueries({ queryKey }),
+          ),
+        );
+      }
 
       onSuccess?.(data);
     },
