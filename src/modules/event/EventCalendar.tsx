@@ -3,7 +3,6 @@
 import FullCalendar from "@fullcalendar/react";
 
 import { CoreModal } from "@/src/shared/components/CoreModal";
-import { IdentifierType } from "@/src/shared/types/form.type";
 import ptBr from "@fullcalendar/core/locales/pt-br";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
@@ -11,13 +10,15 @@ import listPlugin from "@fullcalendar/list";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useState } from "react";
 import { useEventByAuthUser } from "./event.hooks";
-import { EventForm } from "./EventForm";
+import { EventForm, EventFormInitialDataType } from "./EventForm";
 
 export function EventCalendar() {
     const [isOpenForm, setIsOpenForm] = useState(false);
-    const [editing, setEditing] = useState<{
-        id?: IdentifierType
-    }>();
+    const [editing, setEditing] = useState<EventFormInitialDataType>({
+        id: undefined,
+        start: undefined,
+        end: undefined
+    });
 
     const events = useEventByAuthUser();
 
@@ -49,14 +50,28 @@ export function EventCalendar() {
                 headerToolbar={{
                     left: "prev,next today",
                     center: "title",
-                    right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                    right: "addEvent dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+                }}
+                customButtons={{
+                    addEvent: {
+                        text: "Adicionar",
+                        click: () => {
+                            setEditing({ id: undefined });
+                            setIsOpenForm(true);
+                        },
+                    },
                 }}
                 editable
                 selectable
                 weekends
                 events={events.data}
                 dateClick={(info) => {
-                    setEditing({ id: undefined });
+                    setEditing({
+                        id: undefined,
+                        start: info.date ?? undefined,
+                        end: info.date ?? undefined,
+                    });
+
                     setIsOpenForm(true);
                 }}
                 eventClick={(info) => {
@@ -64,16 +79,19 @@ export function EventCalendar() {
                     setIsOpenForm(true);
                 }}
                 select={(info) => {
-                    console.log(info.startStr, info.endStr);
-                }}
-                datesSet={(info) => {
-                    console.log(info.start, info.end);
+                    setEditing({
+                        id: undefined,
+                        start: info.start ?? undefined,
+                        end: info.end ?? undefined,
+                    });
+
+                    setIsOpenForm(true);
                 }}
             />
 
             <CoreModal open={isOpenForm} title="Novo Evento" size="lg" onOpenChange={setIsOpenForm}>
                 <EventForm
-                    id={editing?.id}
+                    initialData={editing}
                     onCancel={() => setIsOpenForm(false)}
                     onSuccess={onSuccessSubmitEvent}
                 />

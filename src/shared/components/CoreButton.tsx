@@ -6,28 +6,28 @@ type CoreButtonProps = {
   children: React.ReactNode;
   className?: string;
   size?:
-    | "sm"
-    | "default"
-    | "lg"
-    | "icon"
-    | "icon-sm"
-    | "icon-lg"
-    | null
-    | undefined;
+  | "sm"
+  | "default"
+  | "lg"
+  | "icon"
+  | "icon-sm"
+  | "icon-lg"
+  | null
+  | undefined;
   type?: "button" | "submit" | "reset" | undefined;
   variant?:
-    | "default"
-    | "link"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | null
-    | undefined;
+  | "default"
+  | "link"
+  | "destructive"
+  | "outline"
+  | "secondary"
+  | "ghost"
+  | null
+  | undefined;
   onClick?: () => void;
 };
 
-export default function ButtonComponent({
+export default function CoreButton({
   children,
   className,
   size = "sm",

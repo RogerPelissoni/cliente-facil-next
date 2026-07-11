@@ -1,7 +1,7 @@
 "use client";
 
 import { IconLogOut } from "../utils/icon.util";
-import CoreButtonComponent from "./ButtonComponent";
+import CoreButtonComponent from "./CoreButton";
 
 export function SideMenuComponent() {
   const doLogout = async () => {

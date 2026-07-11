@@ -1,8 +1,10 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { EventStatusEnum } from "@/src/enum/eventStatus.enum";
 import { EventTypeEnum } from "@/src/enum/eventType.enum";
+import { ConfirmDialog } from "@/src/shared/components/ConfirmDialog";
 import { FormActions } from "@/src/shared/components/FormActions";
 import { FormDate } from "@/src/shared/components/FormDate";
 import { FormGrid } from "@/src/shared/components/FormGrid";
@@ -14,39 +16,50 @@ import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useCreateEvent, useEvent, useUpdateEvent } from "./event.hooks";
+import { toast } from "sonner";
+import { useCreateEvent, useDeleteEvent, useEvent, useUpdateEvent } from "./event.hooks";
 import { createEventDefaultValues, EventFormInput, EventFormSchemaFields, eventSchema, mapEventToForm } from "./event.schema";
 
+export type EventFormInitialDataType = {
+  id?: IdentifierType,
+  start?: Date,
+  end?: Date
+}
+
 interface Props {
-  id?: IdentifierType;
+  initialData: EventFormInitialDataType;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export function EventForm({ id, onCancel, onSuccess }: Props) {
+export function EventForm({ initialData, onCancel, onSuccess }: Props) {
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent();
+  const deleteEvent = useDeleteEvent();
 
-  const query = useEvent(id);
+  const query = useEvent(initialData.id);
 
   const form = useForm<EventFormInput>({
     resolver: zodResolver(eventSchema),
-    defaultValues: createEventDefaultValues(),
+    defaultValues: {
+      dtStart: initialData.start,
+      dtEnd: initialData.end,
+    },
   });
 
   useEffect(() => {
     resetForm({
-      id,
+      id: initialData.id,
       form,
       data: query.data,
       defaultValues: createEventDefaultValues(),
       mapToForm: mapEventToForm,
     });
-  }, [id, query.data, form]);
+  }, [initialData, query.data, form]);
 
   async function onSubmit(payload: EventFormSchemaFields) {
-    if (id) {
-      await updateEvent.mutateAsync({ id, data: payload });
+    if (initialData.id) {
+      await updateEvent.mutateAsync({ id: initialData.id, data: payload });
     } else {
       await createEvent.mutateAsync(payload);
     }
@@ -58,10 +71,15 @@ export function EventForm({ id, onCancel, onSuccess }: Props) {
     console.log("Erros:", errors);
   };
 
+  const onConfirmDelete = () => {
+    if (!initialData.id) return toast.error('Identificador não encontrado');
+    deleteEvent.mutateAsync(initialData.id);
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{id ? `Editar Evento #${id}` : "Novo Evento"}</CardTitle>
+        <CardTitle>{initialData.id ? `Editar Evento #${initialData.id}` : "Novo Evento"}</CardTitle>
       </CardHeader>
 
       <CardContent>
@@ -75,7 +93,22 @@ export function EventForm({ id, onCancel, onSuccess }: Props) {
             <FormSelect form={form} name="tpEvent" label="Tipo de Evento" options={toOptions(EventTypeEnum)} />
           </FormGrid>
 
-          <FormActions onCancel={onCancel} loading={createEvent.isPending || updateEvent.isPending} />
+          <FormActions onCancel={onCancel} loading={createEvent.isPending || updateEvent.isPending} >
+
+            {initialData.id && (
+              <ConfirmDialog
+                title="Atenção"
+                description="Deseja remover o evento?"
+                onConfirm={onConfirmDelete}
+                trigger={
+                  <Button variant="destructive">
+                    Excluir
+                  </Button>
+                }
+              />
+            )}
+
+          </FormActions>
         </form>
       </CardContent>
     </Card>

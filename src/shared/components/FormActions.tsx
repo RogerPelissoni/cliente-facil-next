@@ -1,13 +1,17 @@
 import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
 
 interface Props {
+  children?: ReactNode;
   onCancel: () => void;
   loading?: boolean;
 }
 
-export function FormActions({ onCancel, loading }: Props) {
+export function FormActions({ children, onCancel, loading }: Props) {
   return (
-    <div className="flex gap-2">
+    <div className="flex justify-end gap-2">
+      {children}
+
       <Button type="submit" disabled={loading}>
         Salvar
       </Button>

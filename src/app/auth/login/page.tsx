@@ -1,7 +1,7 @@
 "use client";
 
 import { LoginFormData, loginSchema } from "@/src/modules/login/login.schema";
-import ButtonComponent from "@/src/shared/components/ButtonComponent";
+import CoreButton from "@/src/shared/components/CoreButton";
 import CardComponent from "@/src/shared/components/CardComponent";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -55,7 +55,7 @@ export default function LoginPage() {
               />
 
               <div className="flex justify-end">
-                <ButtonComponent type="submit">Entrar</ButtonComponent>
+                <CoreButton type="submit">Entrar</CoreButton>
               </div>
             </form>
           </>

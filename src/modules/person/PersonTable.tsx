@@ -57,8 +57,8 @@ export function PersonTable({ data, sorting, onSortingChange, onEdit, onDelete }
             <TableActionEdit onClick={() => onEdit(person)} />
 
             <TableActionDelete
-              title="Excluir Persone"
-              description={`Deseja excluir o persone ${person.name}?`}
+              title="Excluir Pessoa"
+              description={`Deseja excluir a pessoa ${person.name}?`}
               onConfirm={() => onDelete(person)}
             />
           </TableActions>
@@ -74,7 +74,7 @@ export function PersonTable({ data, sorting, onSortingChange, onEdit, onDelete }
   });
 
   if (!data.length) {
-    return <EmptyState message="Nenhum persone encontrado" />;
+    return <EmptyState message="Nenhum pessoa encontrada" />;
   }
 
   return <DataTable table={table} />;
