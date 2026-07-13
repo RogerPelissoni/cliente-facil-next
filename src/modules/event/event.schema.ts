@@ -36,7 +36,6 @@ export function createEventDefaultValues(): EventFormInput {
     eventService: {
       clientId: '',
       professionalId: '',
-      accountReceivableId: '',
     },
     accountReceivable: {
       vlTotal: 0,
@@ -56,7 +55,6 @@ export function mapEventToForm(event: EventWithRelationsType): EventFormInput {
     eventService: {
       clientId: toFormIdentifier(event.service?.clientId),
       professionalId: toFormIdentifier(event.service?.professionalId),
-      accountReceivableId: toFormIdentifier(event.service?.accountReceivableId),
     },
     accountReceivable: {
       vlTotal: event.accountReceivable?.vlTotal,

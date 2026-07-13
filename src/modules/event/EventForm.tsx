@@ -98,8 +98,8 @@ export function EventForm({ initialData, kvClient, kvProfessional, onCancel, onS
 
             {form.watch('tpEvent') === 'SERVICE' && (
               <>
-                <FormSelect form={form} name="service.clientId" label="Cliente" options={toOptions(kvClient)} />
-                <FormSelect form={form} name="service.professionalId" label="Profissional" options={toOptions(kvProfessional)} />
+                <FormSelect form={form} name="eventService.clientId" label="Cliente" options={toOptions(kvClient)} />
+                <FormSelect form={form} name="eventService.professionalId" label="Profissional" options={toOptions(kvProfessional)} />
                 <FormDecimalInput form={form} name="accountReceivable.vlTotal" label="Valor" />
                 <FormDate form={form} name="accountReceivable.daDue" label="Vencimento" />
               </>

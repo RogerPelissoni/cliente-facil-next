@@ -4,7 +4,6 @@ import { z } from "zod";
 export const eventServiceSchema = z.object({
   clientId: zIdentifier(),
   professionalId: zIdentifier(),
-  accountReceivableId: zIdentifier(),
 });
 
 export type EventServiceFormInput = z.input<typeof eventServiceSchema>;
