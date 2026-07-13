@@ -2,7 +2,7 @@
 
 import { Input } from "@/components/ui/input";
 import { cn } from "@/src/shared/utils/util";
-import { FieldPath, FieldValues, UseFormReturn } from "react-hook-form";
+import { FieldPath, FieldValues, get, UseFormReturn } from "react-hook-form";
 import { GRID_SIZE, GridSize } from "../utils/form.util";
 
 interface Props<TFieldValues extends FieldValues> {
@@ -22,13 +22,17 @@ export function FormInput<TFieldValues extends FieldValues>({
   type = "text",
   size = 4,
 }: Props<TFieldValues>) {
+  const error = get(form.formState.errors, name);
+
   return (
     <div className={cn("col-span-12 space-y-2", GRID_SIZE[size])}>
       <label className="text-sm font-medium">{label}</label>
 
       <Input type={type} placeholder={placeholder} {...form.register(name)} />
 
-      <p className="text-sm text-red-500">{form.formState.errors[name]?.message as string}</p>
+      <p className="text-sm text-red-500">
+        {error?.message}
+      </p>
     </div>
   );
 }

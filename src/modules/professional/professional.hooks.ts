@@ -51,20 +51,20 @@ export function useProfessional(id?: IdentifierType) {
 export function useCreateProfessional() {
   return useApiMutation({
     mutationFn: createProfessional,
-    queryKey: professionalKeys.all,
+    invalidateQueries: [professionalKeys.all],
   });
 }
 
 export function useUpdateProfessional() {
   return useApiMutation<ProfessionalType, { id: IdentifierType; data: ProfessionalFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateProfessional(id, data),
-    queryKey: professionalKeys.all,
+    invalidateQueries: [professionalKeys.all],
   });
 }
 
 export function useDeleteProfessional() {
   return useApiMutation({
     mutationFn: deleteProfessional,
-    queryKey: professionalKeys.all,
+    invalidateQueries: [professionalKeys.all],
   });
 }

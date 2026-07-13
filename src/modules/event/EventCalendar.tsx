@@ -3,13 +3,14 @@
 import FullCalendar from "@fullcalendar/react";
 
 import { CoreModal } from "@/src/shared/components/CoreModal";
+import { EMPTY_KEY_VALUE } from "@/src/shared/constants/default.constant";
 import ptBr from "@fullcalendar/core/locales/pt-br";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useState } from "react";
-import { useEventByAuthUser } from "./event.hooks";
+import { useEventScreen } from "./event.hooks";
 import { EventForm, EventFormInitialDataType } from "./EventForm";
 
 export function EventCalendar() {
@@ -20,16 +21,18 @@ export function EventCalendar() {
         end: undefined
     });
 
-    const events = useEventByAuthUser();
+    const eventScreenQuery = useEventScreen();
 
-    events.data = events.data?.map((event) => {
-        return {
-            ...event,
-            title: event.dsTitle,
-            start: new Date(event.dtStart),
-            end: new Date(event.dtEnd)
-        }
-    });
+    if (eventScreenQuery.data?.obEvent) {
+        eventScreenQuery.data.obEvent = eventScreenQuery.data.obEvent.map((event) => {
+            return {
+                ...event,
+                title: event.dsTitle,
+                start: new Date(event.dtStart),
+                end: new Date(event.dtEnd)
+            }
+        });
+    }
 
     const onSuccessSubmitEvent = () => {
         setIsOpenForm(false);
@@ -64,7 +67,7 @@ export function EventCalendar() {
                 editable
                 selectable
                 weekends
-                events={events.data}
+                events={eventScreenQuery.data?.obEvent}
                 dateClick={(info) => {
                     setEditing({
                         id: undefined,
@@ -92,6 +95,8 @@ export function EventCalendar() {
             <CoreModal open={isOpenForm} title="Novo Evento" size="lg" onOpenChange={setIsOpenForm}>
                 <EventForm
                     initialData={editing}
+                    kvClient={eventScreenQuery.data?.kvClient ?? EMPTY_KEY_VALUE}
+                    kvProfessional={eventScreenQuery.data?.kvProfessional ?? EMPTY_KEY_VALUE}
                     onCancel={() => setIsOpenForm(false)}
                     onSuccess={onSuccessSubmitEvent}
                 />

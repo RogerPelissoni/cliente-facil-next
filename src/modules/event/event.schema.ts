@@ -1,12 +1,15 @@
 import { EventStatusEnum } from "@/src/enum/eventStatus.enum";
 import { EventTypeEnum } from "@/src/enum/eventType.enum";
 import {
+  toFormIdentifier,
   zDate,
   zEnum,
   zString,
 } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
-import { EventType } from "./event.types";
+import { accountReceivableEventSchema } from "../accountReceivable/accountReceivable.schema";
+import { eventServiceSchema } from "../eventService/eventService.schema";
+import { EventWithRelationsType } from "./event.types";
 
 export const eventSchema = z.object({
   dsTitle: zString().max(100),
@@ -15,6 +18,8 @@ export const eventSchema = z.object({
   dtEnd: zDate(),
   tpStatus: zEnum(EventStatusEnum),
   tpEvent: zEnum(EventTypeEnum),
+  service: eventServiceSchema,
+  accountReceivable: accountReceivableEventSchema,
 });
 
 export type EventFormInput = z.input<typeof eventSchema>;
@@ -28,10 +33,19 @@ export function createEventDefaultValues(): EventFormInput {
     dtEnd: undefined,
     tpStatus: 'SCHEDULED',
     tpEvent: 'APPOINTMENT',
+    service: {
+      clientId: '',
+      professionalId: '',
+      accountReceivableId: '',
+    },
+    accountReceivable: {
+      vlTotal: 0,
+      daDue: undefined,
+    }
   };
 }
 
-export function mapEventToForm(event: EventType): EventFormInput {
+export function mapEventToForm(event: EventWithRelationsType): EventFormInput {
   return {
     dsTitle: event.dsTitle,
     dsDescription: event.dsDescription ?? "",
@@ -39,5 +53,14 @@ export function mapEventToForm(event: EventType): EventFormInput {
     dtEnd: new Date(event.dtEnd),
     tpStatus: event.tpStatus,
     tpEvent: event.tpEvent,
+    service: {
+      clientId: toFormIdentifier(event.service?.clientId),
+      professionalId: toFormIdentifier(event.service?.professionalId),
+      accountReceivableId: toFormIdentifier(event.service?.accountReceivableId),
+    },
+    accountReceivable: {
+      vlTotal: event.accountReceivable?.vlTotal,
+      daDue: event.accountReceivable?.daDue,
+    },
   };
 }

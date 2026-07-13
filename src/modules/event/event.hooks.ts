@@ -8,6 +8,7 @@ import {
   deleteEvent,
   findEventByAuthUser,
   findEventById,
+  screenEvent,
   searchEvents,
   updateEvent,
 } from "./event.api";
@@ -20,10 +21,19 @@ export const eventKeys = {
   list: (filters: EventFiltersType, page: number, size: number, sorting: Sorting) =>
     ["event", "list", filters, page, size, sorting] as const,
 
+  screen: () => ["users", "screen"] as const,
+
   detail: (id?: IdentifierType) => ["event", "detail", id] as const,
 
   byAuthUser: () => ["event", "byAuthUser"] as const,
 };
+
+export function useEventScreen() {
+  return useQuery({
+    queryKey: eventKeys.screen(),
+    queryFn: () => screenEvent(),
+  });
+}
 
 export function useEvents({ filters, page, size, sorting }: QueryParamsType<EventFiltersType>) {
   return useQuery({

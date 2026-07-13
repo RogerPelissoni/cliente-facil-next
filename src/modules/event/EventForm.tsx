@@ -7,9 +7,11 @@ import { EventTypeEnum } from "@/src/enum/eventType.enum";
 import { ConfirmDialog } from "@/src/shared/components/ConfirmDialog";
 import { FormActions } from "@/src/shared/components/FormActions";
 import { FormDate } from "@/src/shared/components/FormDate";
+import { FormDecimalInput } from "@/src/shared/components/FormDecimalInput";
 import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
+import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
 import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
@@ -28,11 +30,13 @@ export type EventFormInitialDataType = {
 
 interface Props {
   initialData: EventFormInitialDataType;
+  kvClient: KeyValueType;
+  kvProfessional: KeyValueType;
   onCancel: () => void;
   onSuccess: () => void;
 }
 
-export function EventForm({ initialData, onCancel, onSuccess }: Props) {
+export function EventForm({ initialData, kvClient, kvProfessional, onCancel, onSuccess }: Props) {
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
@@ -91,6 +95,15 @@ export function EventForm({ initialData, onCancel, onSuccess }: Props) {
             <FormDate form={form} name="dtEnd" label="Data de Término" />
             <FormSelect form={form} name="tpStatus" label="Status" options={toOptions(EventStatusEnum)} />
             <FormSelect form={form} name="tpEvent" label="Tipo de Evento" options={toOptions(EventTypeEnum)} />
+
+            {form.watch('tpEvent') === 'SERVICE' && (
+              <>
+                <FormSelect form={form} name="service.clientId" label="Cliente" options={toOptions(kvClient)} />
+                <FormSelect form={form} name="service.professionalId" label="Profissional" options={toOptions(kvProfessional)} />
+                <FormDecimalInput form={form} name="accountReceivable.vlTotal" label="Valor" />
+                <FormDate form={form} name="accountReceivable.daDue" label="Vencimento" />
+              </>
+            )}
           </FormGrid>
 
           <FormActions onCancel={onCancel} loading={createEvent.isPending || updateEvent.isPending} >

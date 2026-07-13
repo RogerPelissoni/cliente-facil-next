@@ -2,7 +2,7 @@
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/src/shared/utils/util";
-import { Controller, FieldPath, FieldValues, UseFormReturn, useWatch } from "react-hook-form";
+import { Controller, FieldPath, FieldValues, get, UseFormReturn, useWatch } from "react-hook-form";
 import { GRID_SIZE, GridSize } from "../utils/form.util";
 
 interface Option {
@@ -27,6 +27,8 @@ export function FormSelect<T extends FieldValues>({
   placeholder = "Selecione",
   size = 4,
 }: Props<T>) {
+  const error = get(form.formState.errors, name);
+
   const watchedValue = useWatch({
     control: form.control,
     name,
@@ -61,7 +63,9 @@ export function FormSelect<T extends FieldValues>({
             </SelectContent>
           </Select>
 
-          {fieldState.error && <p className="text-sm text-red-500">{fieldState.error.message}</p>}
+          <p className="text-sm text-red-500">
+            {error?.message}
+          </p>
         </div>
       )}
     />

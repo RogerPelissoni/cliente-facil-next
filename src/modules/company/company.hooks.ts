@@ -51,20 +51,20 @@ export function useCompany(id?: IdentifierType) {
 export function useCreateCompany() {
   return useApiMutation({
     mutationFn: createCompany,
-    queryKey: companyKeys.all,
+    invalidateQueries: [companyKeys.all],
   });
 }
 
 export function useUpdateCompany() {
   return useApiMutation<CompanyType, { id: IdentifierType; data: CompanyFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateCompany(id, data),
-    queryKey: companyKeys.all,
+    invalidateQueries: [companyKeys.all],
   });
 }
 
 export function useDeleteCompany() {
   return useApiMutation({
     mutationFn: deleteCompany,
-    queryKey: companyKeys.all,
+    invalidateQueries: [companyKeys.all],
   });
 }

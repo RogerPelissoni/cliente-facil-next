@@ -44,20 +44,20 @@ export function useUser(id?: IdentifierType) {
 export function useCreateUser() {
   return useApiMutation({
     mutationFn: createUser,
-    queryKey: userKeys.all,
+    invalidateQueries: [userKeys.all],
   });
 }
 
 export function useUpdateUser() {
   return useApiMutation<UserType, { id: IdentifierType; data: UserFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateUser(id, data),
-    queryKey: userKeys.all,
+    invalidateQueries: [userKeys.all],
   });
 }
 
 export function useDeleteUser() {
   return useApiMutation({
     mutationFn: deleteUser,
-    queryKey: userKeys.all,
+    invalidateQueries: [userKeys.all],
   });
 }

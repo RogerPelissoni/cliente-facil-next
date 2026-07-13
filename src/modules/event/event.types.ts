@@ -1,5 +1,6 @@
 import { EventStatusEnum, EventStatusEnumType } from "@/src/enum/eventStatus.enum";
 import { EventTypeEnum, EventTypeEnumType } from "@/src/enum/eventType.enum";
+import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
 
 export interface EventType {
@@ -12,8 +13,28 @@ export interface EventType {
   tpEvent: keyof typeof EventTypeEnum;
 }
 
+export type EventWithRelationsType = EventType & {
+  service: {
+    id: IdentifierType;
+    clientId: IdentifierType;
+    professionalId: IdentifierType;
+    accountReceivableId: IdentifierType;
+  };
+  accountReceivable: {
+    id: IdentifierType;
+    vlTotal: number;
+    daDue: Date;
+  }
+}
+
 export interface EventFiltersType {
   dsTitle: string;
   tpStatus?: EventStatusEnumType;
   tpEvent?: EventTypeEnumType;
+}
+
+export interface EventScreenDataType {
+  obEvent: EventType[];
+  kvClient: KeyValueType;
+  kvProfessional: KeyValueType;
 }

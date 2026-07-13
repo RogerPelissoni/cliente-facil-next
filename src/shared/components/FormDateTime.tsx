@@ -22,6 +22,7 @@ import {
   Controller,
   FieldPath,
   FieldValues,
+  get,
   UseFormReturn,
 } from "react-hook-form";
 import { GRID_SIZE, GridSize } from "../utils/form.util";
@@ -41,6 +42,8 @@ export function FormDateTime<TFieldValues extends FieldValues>({
   placeholder = "Selecione data e hora",
   size = 4,
 }: Props<TFieldValues>) {
+  const error = get(form.formState.errors, name);
+
   const hours = Array.from({ length: 24 }, (_, i) =>
     i.toString().padStart(2, "0"),
   );
@@ -154,7 +157,7 @@ export function FormDateTime<TFieldValues extends FieldValues>({
       />
 
       <p className="text-sm text-red-500">
-        {form.formState.errors[name]?.message as string}
+        {error?.message}
       </p>
     </div>
   );

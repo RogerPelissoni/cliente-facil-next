@@ -50,20 +50,20 @@ export function useProfilePermission(id: IdentifierType | undefined) {
 export function useCreateProfile() {
   return useApiMutation({
     mutationFn: createProfile,
-    queryKey: profileKeys.all,
+    invalidateQueries: [profileKeys.all],
   });
 }
 
 export function useUpdateProfile() {
   return useApiMutation<ProfileType, { id: IdentifierType; data: ProfileFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateProfile(id, data),
-    queryKey: profileKeys.all,
+    invalidateQueries: [profileKeys.all],
   });
 }
 
 export function useDeleteProfile() {
   return useApiMutation({
     mutationFn: deleteProfile,
-    queryKey: profileKeys.all,
+    invalidateQueries: [profileKeys.all],
   });
 }

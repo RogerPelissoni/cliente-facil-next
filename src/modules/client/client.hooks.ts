@@ -44,20 +44,20 @@ export function useClient(id?: IdentifierType) {
 export function useCreateClient() {
   return useApiMutation({
     mutationFn: createClient,
-    queryKey: clientKeys.all,
+    invalidateQueries: [clientKeys.all],
   });
 }
 
 export function useUpdateClient() {
   return useApiMutation<ClientType, { id: IdentifierType; data: ClientFormSchemaFields }>({
     mutationFn: ({ id, data }) => updateClient(id, data),
-    queryKey: clientKeys.all,
+    invalidateQueries: [clientKeys.all],
   });
 }
 
 export function useDeleteClient() {
   return useApiMutation({
     mutationFn: deleteClient,
-    queryKey: clientKeys.all,
+    invalidateQueries: [clientKeys.all],
   });
 }

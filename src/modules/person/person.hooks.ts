@@ -34,20 +34,20 @@ export function usePerson(id?: IdentifierType) {
 export function useCreatePerson() {
   return useApiMutation({
     mutationFn: createPerson,
-    queryKey: personKeys.all,
+    invalidateQueries: [personKeys.all],
   });
 }
 
 export function useUpdatePerson() {
   return useApiMutation<PersonType, { id: IdentifierType; data: PersonFormSchemaFields }>({
     mutationFn: ({ id, data }) => updatePerson(id, data),
-    queryKey: personKeys.all,
+    invalidateQueries: [personKeys.all],
   });
 }
 
 export function useDeletePerson() {
   return useApiMutation({
     mutationFn: deletePerson,
-    queryKey: personKeys.all,
+    invalidateQueries: [personKeys.all],
   });
 }
