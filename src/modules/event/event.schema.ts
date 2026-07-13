@@ -18,7 +18,7 @@ export const eventSchema = z.object({
   dtEnd: zDate(),
   tpStatus: zEnum(EventStatusEnum),
   tpEvent: zEnum(EventTypeEnum),
-  service: eventServiceSchema,
+  eventService: eventServiceSchema,
   accountReceivable: accountReceivableEventSchema,
 });
 
@@ -33,7 +33,7 @@ export function createEventDefaultValues(): EventFormInput {
     dtEnd: undefined,
     tpStatus: 'SCHEDULED',
     tpEvent: 'APPOINTMENT',
-    service: {
+    eventService: {
       clientId: '',
       professionalId: '',
       accountReceivableId: '',
@@ -53,7 +53,7 @@ export function mapEventToForm(event: EventWithRelationsType): EventFormInput {
     dtEnd: new Date(event.dtEnd),
     tpStatus: event.tpStatus,
     tpEvent: event.tpEvent,
-    service: {
+    eventService: {
       clientId: toFormIdentifier(event.service?.clientId),
       professionalId: toFormIdentifier(event.service?.professionalId),
       accountReceivableId: toFormIdentifier(event.service?.accountReceivableId),
