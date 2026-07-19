@@ -19,6 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { EventMessageSection } from "../eventMessage/EventMessageSection";
 import { useCreateEvent, useDeleteEvent, useEvent, useUpdateEvent } from "./event.hooks";
 import { createEventDefaultValues, EventFormInput, EventFormSchemaFields, eventSchema, mapEventToForm } from "./event.schema";
 
@@ -105,6 +106,8 @@ export function EventForm({ initialData, kvClient, kvProfessional, onCancel, onS
               </>
             )}
           </FormGrid>
+
+          {initialData.id && <EventMessageSection eventId={initialData.id} />}
 
           <FormActions onCancel={onCancel} loading={createEvent.isPending || updateEvent.isPending} >
 
