@@ -14,7 +14,7 @@ export interface EventType {
 }
 
 export type EventWithRelationsType = EventType & {
-  service: {
+  eventService: {
     id: IdentifierType;
     clientId: IdentifierType;
     professionalId: IdentifierType;

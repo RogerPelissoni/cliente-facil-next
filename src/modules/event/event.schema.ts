@@ -53,12 +53,12 @@ export function mapEventToForm(event: EventWithRelationsType): EventFormInput {
     tpStatus: event.tpStatus,
     tpEvent: event.tpEvent,
     eventService: {
-      clientId: toFormIdentifier(event.service?.clientId),
-      professionalId: toFormIdentifier(event.service?.professionalId),
+      clientId: toFormIdentifier(event.eventService?.clientId),
+      professionalId: toFormIdentifier(event.eventService?.professionalId),
     },
     accountReceivable: {
       vlTotal: event.accountReceivable?.vlTotal,
-      daDue: event.accountReceivable?.daDue,
+      daDue: new Date(event.accountReceivable?.daDue),
     },
   };
 }

@@ -13,7 +13,7 @@ import Link from "next/link";
 
 export function NavBarComponent() {
   return (
-    <div className="px-2">
+    <div className="px-2 z-[5]">
       <NavigationMenu viewport={false}>
         <NavigationMenuList>
           {menuConfig.map((menu) => (

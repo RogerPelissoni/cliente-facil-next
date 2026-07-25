@@ -22,8 +22,6 @@ export function EventMessageSection({ eventId }: Props) {
 
   const eventMessages = useEventMessagesByEvent(eventId);
 
-  console.log('eventMessages', eventMessages.data)
-
   const handleCreate = () => {
     setEditing(undefined);
     setIsOpenForm(true);
