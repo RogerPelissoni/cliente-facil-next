@@ -1,5 +1,4 @@
 import { MutationFunction, QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ApiError } from "next/dist/server/api-utils";
 import { toast } from "sonner";
 
 interface MutationOptions<TData, TVariables> {
@@ -42,12 +41,7 @@ export function useApiMutation<TData, TVariables>({
     },
 
     onError(error) {
-      if (error instanceof ApiError) {
-        toast.error(error.message);
-      } else {
-        toast.error(errorMessage);
-      }
-
+      toast.error(error.message ?? errorMessage);
       onError?.(error as Error);
     },
   });
