@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { CoreModal } from "@/src/shared/components/CoreModal";
+import { useHasAuthority } from "@/src/modules/auth/auth.hooks";
 import { useStompSubscription } from "@/src/shared/hooks/useStompSubscription";
 import { Bell, Check, Send, Trash2 } from "lucide-react";
 import { useCallback, useState } from "react";
@@ -29,6 +30,7 @@ export function NotificationBell() {
   const { mutate: markAllAsRead } = useMarkAllNotificationsAsRead();
   const { mutate: markAsRead } = useMarkNotificationAsRead();
   const { mutate: deleteNotification } = useDeleteNotification();
+  const canSendNotification = useHasAuthority("NOTIFICATION_SEND");
 
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const [isSendOpen, setIsSendOpen] = useState(false);
@@ -75,10 +77,12 @@ export function NotificationBell() {
         onOpenChange={handleNotificationsOpenChange}
       >
         <div className="flex flex-col gap-3">
-          <Button type="button" variant="outline" className="self-end" onClick={() => setIsSendOpen(true)}>
-            <Send className="h-4 w-4" />
-            Enviar notificação
-          </Button>
+          {canSendNotification && (
+            <Button type="button" variant="outline" className="self-end" onClick={() => setIsSendOpen(true)}>
+              <Send className="h-4 w-4" />
+              Enviar notificação
+            </Button>
+          )}
 
           {notifications.length === 0 ? (
             <p className="text-sm text-muted-foreground">Nenhuma notificação recebida ainda.</p>

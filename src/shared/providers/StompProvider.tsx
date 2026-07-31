@@ -46,14 +46,14 @@ export function StompProvider({ children }: React.PropsWithChildren) {
 
     fetch("/api/ws-token")
       .then((response) => (response.ok ? response.json() : null))
-      .then((data: { token?: string } | null) => {
-        if (cancelled || !data?.token) {
+      .then((data: { ticket?: string } | null) => {
+        if (cancelled || !data?.ticket) {
           return;
         }
 
         const client = new Client({
           brokerURL: process.env.NEXT_PUBLIC_WS_URL,
-          connectHeaders: { Authorization: `Bearer ${data.token}` },
+          connectHeaders: { Authorization: `Bearer ${data.ticket}` },
           reconnectDelay: 5000,
           onConnect: () => {
             setConnected(true);
