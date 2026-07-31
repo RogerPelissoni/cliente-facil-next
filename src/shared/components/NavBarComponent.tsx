@@ -9,14 +9,29 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { menuConfig } from "@/src/config/menu";
+import { useCurrentUser } from "@/src/modules/auth/auth.hooks";
 import Link from "next/link";
 
 export function NavBarComponent() {
+  const { data: currentUser } = useCurrentUser();
+
+  function isAllowed(authority?: string) {
+    return !authority || (currentUser?.authorities.includes(authority) ?? false);
+  }
+
+  const visibleMenu = menuConfig
+    .filter((menu) => isAllowed(menu.authority))
+    .map((menu) => ({
+      ...menu,
+      children: menu.children?.filter((child) => isAllowed(child.authority)),
+    }))
+    .filter((menu) => menu.href || (menu.children && menu.children.length > 0));
+
   return (
     <div className="px-2 z-[5]">
       <NavigationMenu viewport={false}>
         <NavigationMenuList>
-          {menuConfig.map((menu) => (
+          {visibleMenu.map((menu) => (
             <NavigationMenuItem key={menu.label}>
               {menu.href && !menu.children && (
                 <NavigationMenuLink asChild>

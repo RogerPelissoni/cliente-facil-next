@@ -17,6 +17,22 @@ export interface FilterRequest {
   values?: string[];
 }
 
-export type FilterOperator = "EQUALS" | "NOT_EQUALS" | "LIKE" | "IN" | "GREATER_THAN" | "LESS_THAN";
+// Precisa espelhar br.com.clientefacil.core.dto.search.FilterOperator (backend) exatamente —
+// os valores viram literais de string no JSON, então nomes diferentes quebram silenciosamente.
+export type FilterOperator =
+  | "EQ"
+  | "NE"
+  | "GT"
+  | "GTE"
+  | "LT"
+  | "LTE"
+  | "LIKE"
+  | "CONTAINS"
+  | "STARTS_WITH"
+  | "ENDS_WITH"
+  | "IN"
+  | "BETWEEN"
+  | "IS_NULL"
+  | "IS_NOT_NULL";
 
 export type IdentifierType = string;
