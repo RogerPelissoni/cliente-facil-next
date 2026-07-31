@@ -3,12 +3,14 @@ import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
-import { createUser, deleteUser, findUserById, screenUsers, searchUsers, updateUser } from "./user.api";
+import { createUser, deleteUser, findUserById, findUsersKeyValue, screenUsers, searchUsers, updateUser } from "./user.api";
 import { UserFormSchemaFields } from "./user.schema";
 import { UserFiltersType, UserType } from "./user.types";
 
 export const userKeys = {
   all: ["users"] as const,
+
+  keyValue: ["users", "keyValue"] as const,
 
   list: (filters: UserFiltersType, page: number, size: number, sorting: Sorting) =>
     ["users", "list", filters, page, size, sorting] as const,
@@ -30,6 +32,13 @@ export function useUsers({ filters, page, size, sorting }: QueryParamsType<UserF
   return useQuery({
     queryKey: userKeys.list(filters, page, size, sorting),
     queryFn: () => searchUsers(filters, page, size, sorting),
+  });
+}
+
+export function useUsersKeyValue() {
+  return useQuery({
+    queryKey: userKeys.keyValue,
+    queryFn: findUsersKeyValue,
   });
 }
 

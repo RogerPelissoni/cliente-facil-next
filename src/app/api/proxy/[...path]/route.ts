@@ -50,7 +50,11 @@ async function proxy(req: NextRequest, method: string) {
 
   const responseContentType = response.headers.get("content-type") ?? "";
 
-  const responseBody = await response.arrayBuffer();
+  // Respostas com esses status não podem ter body (nem vazio) — o construtor de Response lança
+  // "Invalid response status code" se tentarmos passar um ArrayBuffer, mesmo vazio, junto com elas.
+  const isNullBodyStatus = [204, 205, 304].includes(response.status);
+
+  const responseBody = isNullBodyStatus ? null : await response.arrayBuffer();
 
   return new NextResponse(responseBody, {
     status: response.status,

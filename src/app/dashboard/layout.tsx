@@ -1,8 +1,10 @@
 import { Toaster } from "@/components/ui/sonner";
+import { NotificationBell } from "@/src/modules/notification/NotificationBell";
 import { ColorModeComponent } from "@/src/shared/components/ColorModeComponent";
 import { NavBarComponent } from "@/src/shared/components/NavBarComponent";
 import { SideMenuComponent } from "@/src/shared/components/SideMenuComponent";
 import { QueryProvider } from "@/src/shared/providers/QueryProvider";
+import { StompProvider } from "@/src/shared/providers/StompProvider";
 import { ThemeProvider } from "@/src/shared/providers/ThemeProvider";
 import { cn } from "@/src/shared/utils/util";
 import { Gem } from "lucide-react";
@@ -27,22 +29,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={cn(geist.className, "antialiased min-h-screen flex flex-col")}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           {/* <SwalConfirmProvider> */}
-          <header className="flex justify-between p-2 border-b">
-            <div className="flex items-center gap-2">
-              <h2 className="ml-4 px-2 text-center">
-                <Gem />
-              </h2>
-
-              <NavBarComponent />
-            </div>
-            <div className="flex items-center px-2 gap-2">
-              <ColorModeComponent />
-              <SideMenuComponent />
-            </div>
-          </header>
-
           <QueryProvider>
-            <main className="flex-1">{children}</main>
+            <StompProvider>
+              <header className="flex justify-between p-2 border-b">
+                <div className="flex items-center gap-2">
+                  <h2 className="ml-4 px-2 text-center">
+                    <Gem />
+                  </h2>
+
+                  <NavBarComponent />
+                </div>
+                <div className="flex items-center px-2 gap-2">
+                  <NotificationBell />
+                  <ColorModeComponent />
+                  <SideMenuComponent />
+                </div>
+              </header>
+
+              <main className="flex-1">{children}</main>
+            </StompProvider>
           </QueryProvider>
 
           <Toaster position="top-right" richColors closeButton />
