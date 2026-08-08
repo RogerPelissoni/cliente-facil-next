@@ -14,6 +14,7 @@ export interface UserType {
   profileName: string;
   companyId: IdentifierType;
   companyName: string;
+  dtEmailConfirmedAt: string | null;
 }
 
 export interface UserFiltersType {

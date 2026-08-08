@@ -3,7 +3,16 @@ import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
-import { createUser, deleteUser, findUserById, findUsersKeyValue, screenUsers, searchUsers, updateUser } from "./user.api";
+import {
+  createUser,
+  deleteUser,
+  findUserById,
+  findUsersKeyValue,
+  resendUserConfirmation,
+  screenUsers,
+  searchUsers,
+  updateUser,
+} from "./user.api";
 import { UserFormSchemaFields } from "./user.schema";
 import { UserFiltersType, UserType } from "./user.types";
 
@@ -68,5 +77,12 @@ export function useDeleteUser() {
   return useApiMutation({
     mutationFn: deleteUser,
     invalidateQueries: [userKeys.all],
+  });
+}
+
+export function useResendUserConfirmation() {
+  return useApiMutation({
+    mutationFn: resendUserConfirmation,
+    successMessage: "E-mail de confirmação reenviado",
   });
 }

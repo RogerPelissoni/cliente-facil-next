@@ -43,3 +43,13 @@ export function findDeadLetterStats() {
 export function resolveDeadLetter(id: IdentifierType) {
   return api.patch<NotificationDeadLetterType>(`${RESOURCE}/${id}/resolve`);
 }
+
+// Dispara uma falha deliberada (ver POST .../simulate-failure/*) pra provar, sob demanda, que o
+// pipeline de retry+DLQ+alerta está funcionando de ponta a ponta.
+export function simulateNotificationFailure() {
+  return api.post<void>(`${RESOURCE}/simulate-failure/notification`);
+}
+
+export function simulateEmailFailure() {
+  return api.post<void>(`${RESOURCE}/simulate-failure/email`);
+}

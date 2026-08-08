@@ -12,13 +12,13 @@ export async function POST(req: Request) {
       body: JSON.stringify(data),
     });
 
-    const json = await result.json();
+    const json = await result.json().catch(() => null);
     const token = json?.token;
 
     if (!token) {
       return NextResponse.json(
-        { error: "Token not provided" },
-        { status: 400 },
+        { error: json?.message ?? json?.error ?? "Não foi possível entrar." },
+        { status: result.status !== 200 ? result.status : 400 },
       );
     }
 

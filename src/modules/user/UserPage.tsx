@@ -15,7 +15,7 @@ import { useTableState } from "@/src/shared/hooks/useTableState";
 import { PageBreadcrumb } from "@/src/shared/layout/PageBreadcrumb";
 import { PageContainer } from "@/src/shared/layout/PageContainer";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
-import { useDeleteUser, useUserScreen } from "./user.hooks";
+import { useDeleteUser, useResendUserConfirmation, useUserScreen } from "./user.hooks";
 
 export default function UserPage() {
   const table = useTableState<UserFiltersType>({
@@ -39,6 +39,7 @@ export default function UserPage() {
   });
 
   const deleteUser = useDeleteUser();
+  const resendConfirmation = useResendUserConfirmation();
 
   return (
     <QueryState query={query}>
@@ -71,6 +72,7 @@ export default function UserPage() {
               onSortingChange={table.changeSorting}
               onEdit={crud.edit}
               onDelete={(user) => deleteUser.mutateAsync(user.id)}
+              onResendConfirmation={(user) => resendConfirmation.mutateAsync(user.id)}
             />
 
             <div className="flex justify-between">

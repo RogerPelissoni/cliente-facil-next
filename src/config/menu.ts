@@ -37,6 +37,9 @@ export const menuConfig: MenuItem[] = [
   },
   {
     label: "Administração",
-    children: [{ label: "Mensageria (DLQ)", href: "/dashboard/admin/dead-letters", authority: "DEAD_LETTER_VIEW" }],
+    children: [
+      { label: "Mensageria (DLQ)", href: "/dashboard/admin/dead-letters", authority: "DEAD_LETTER_VIEW" },
+      { label: "Config. de E-mail (Base)", href: "/dashboard/admin/mail-config", authority: "MAIL_CONFIG_VIEW" },
+    ],
   },
 ];

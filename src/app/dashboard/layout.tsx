@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/sonner";
 import { NotificationBell } from "@/src/modules/notification/NotificationBell";
 import { ColorModeComponent } from "@/src/shared/components/ColorModeComponent";
@@ -7,9 +8,10 @@ import { QueryProvider } from "@/src/shared/providers/QueryProvider";
 import { StompProvider } from "@/src/shared/providers/StompProvider";
 import { ThemeProvider } from "@/src/shared/providers/ThemeProvider";
 import { cn } from "@/src/shared/utils/util";
-import { Gem } from "lucide-react";
+import { Gem, Settings } from "lucide-react";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import Link from "next/link";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -41,6 +43,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </div>
                 <div className="flex items-center px-2 gap-2">
                   <NotificationBell />
+
+                  <Button variant="outline" size="icon" asChild>
+                    <Link href="/dashboard/settings">
+                      <Settings className="h-[1.2rem] w-[1.2rem]" />
+                      <span className="sr-only">Configurações</span>
+                    </Link>
+                  </Button>
+
                   <ColorModeComponent />
                   <SideMenuComponent />
                 </div>
