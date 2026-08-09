@@ -12,4 +12,4 @@ export type ProfilePermissionType = {
   hasPermission: boolean;
 };
 
-export interface ProfilePermissionFiltersType {}
+export type ProfilePermissionFiltersType = object;

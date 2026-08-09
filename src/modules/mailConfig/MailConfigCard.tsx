@@ -40,7 +40,13 @@ export function MailConfigCard({ scope = "COMPANY" }: Props) {
   const upsertMailConfig = useUpsertMailConfig(scope);
   const testMailConfigDraft = useTestMailConfigDraft(scope);
 
-  const [testTo, setTestTo] = useState("");
+  // "Enviar teste para" nasce preenchido com o e-mail do usuário logado assim que a query resolve,
+  // mas continua editável — em vez de copiar pra um state próprio via efeito (setState síncrono
+  // dentro de effect, cascata de render), o valor exibido é derivado: só usa o e-mail do usuário
+  // enquanto ele não tiver digitado nada; a partir da primeira edição (mesmo apagando tudo), o que
+  // ele digitou manda.
+  const [testToOverride, setTestToOverride] = useState<string | undefined>(undefined);
+  const testTo = testToOverride ?? currentUser.data?.email ?? "";
 
   const form = useForm<MailConfigFormInput>({
     resolver: zodResolver(mailConfigSchema),
@@ -52,12 +58,6 @@ export function MailConfigCard({ scope = "COMPANY" }: Props) {
       form.reset(mapMailConfigToForm(query.data));
     }
   }, [query.data, form]);
-
-  useEffect(() => {
-    if (currentUser.data?.email && !testTo) {
-      setTestTo(currentUser.data.email);
-    }
-  }, [currentUser.data, testTo]);
 
   async function onSubmit(payload: MailConfigFormSchemaFields) {
     await upsertMailConfig.mutateAsync(payload);
@@ -109,7 +109,11 @@ export function MailConfigCard({ scope = "COMPANY" }: Props) {
             <FormGrid>
               <div className="col-span-12 space-y-2 md:col-span-8">
                 <label className="text-sm font-medium">Enviar teste para</label>
-                <Input value={testTo} onChange={(e) => setTestTo(e.target.value)} placeholder="destinatario@exemplo.com" />
+                <Input
+                  value={testTo}
+                  onChange={(e) => setTestToOverride(e.target.value)}
+                  placeholder="destinatario@exemplo.com"
+                />
               </div>
             </FormGrid>
           )}

@@ -23,16 +23,15 @@ export function EventCalendar() {
 
     const eventScreenQuery = useEventScreen();
 
-    if (eventScreenQuery.data?.obEvent) {
-        eventScreenQuery.data.obEvent = eventScreenQuery.data.obEvent.map((event) => {
-            return {
-                ...event,
-                title: event.dsTitle,
-                start: new Date(event.dtStart),
-                end: new Date(event.dtEnd)
-            }
-        });
-    }
+    // Não mutar `eventScreenQuery.data.obEvent` diretamente (era o comportamento anterior) — é o
+    // mesmo objeto guardado no cache do React Query; mutar em vez de derivar um array novo mexe com
+    // a comparação estrutural que a lib usa internamente pra decidir se algo mudou de fato.
+    const events = eventScreenQuery.data?.obEvent?.map((event) => ({
+        ...event,
+        title: event.dsTitle,
+        start: new Date(event.dtStart),
+        end: new Date(event.dtEnd),
+    }));
 
     const onSuccessSubmitEvent = () => {
         setIsOpenForm(false);
@@ -67,7 +66,7 @@ export function EventCalendar() {
                 editable
                 selectable
                 weekends
-                events={eventScreenQuery.data?.obEvent}
+                events={events}
                 dateClick={(info) => {
                     setEditing({
                         id: undefined,

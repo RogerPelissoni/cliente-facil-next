@@ -26,17 +26,18 @@ Cada item tem uma nota de por que importa e, quando relevante, o que já foi con
 - [ ] **Testes E2E** (Playwright/Cypress) — hoje a validação de fluxo completo (login → ação →
   resultado) é só manual. Cobriria os fluxos mais críticos primeiro: login/confirmação de e-mail/reset
   de senha, CRUD de usuário, agendamento no calendário.
-- [ ] **CI rodando lint/typecheck/testes em cada PR** — não existe `.github/workflows` no repositório
-  hoje; sem isso, nem o `tsc --noEmit` nem `pnpm test` rodam automaticamente antes de mergear.
+- [x] **CI rodando lint/typecheck/testes em cada PR** — `.github/workflows/ci.yml`: `pnpm lint` →
+  `tsc --noEmit` → `pnpm test` a cada push/PR.
 
 ## 🔍 Lint & qualidade estática
 
-- [ ] **Lint quebrado** — `eslint.config.mjs` configura a regra `prettier/prettier`, mas o pacote
-  `eslint-plugin-prettier` não está instalado (`node_modules/eslint-plugin-prettier` não existe); só
-  `prettier-plugin-tailwindcss` está presente, que é um plugin do *Prettier*, não do ESLint — coisas
-  diferentes. Resultado: `pnpm lint` falha com "could not find plugin prettier" antes de checar
-  qualquer arquivo. Corrigir instalando `eslint-plugin-prettier`+`eslint-config-prettier` (ou removendo
-  a regra, se o objetivo for só rodar `prettier --check` separado do ESLint).
+- [x] **Lint quebrado** — corrigido: `eslint-plugin-prettier`+`eslint-config-prettier` instalados e
+  registrados via `eslint-plugin-prettier/recommended` em `eslint.config.mjs`. `pnpm lint` agora roda
+  até o fim (0 erros — os ~700 avisos restantes são só formatação/whitespace do Prettier em código
+  pré-existente, não bloqueiam o CI). Corrigir isso também destravou 3 erros reais que o lint nunca
+  tinha chegado a reportar (estavam atrás do erro de plugin ausente): mutação direta do cache do React
+  Query em `EventCalendar.tsx`, `setState` síncrono dentro de efeito em `MailConfigCard.tsx`, e uma
+  interface vazia em `profilePermission.types.ts` — os três já corrigidos junto.
 - [ ] **Regra `@typescript-eslint/no-explicit-any` desligada** — hoje só 4 usos de `any` no código,
   então o custo de reativar a regra (com exceções pontuais via `// eslint-disable-line`) é baixo
   agora; tende a crescer sem controle se ficar desligada conforme o projeto cresce.
