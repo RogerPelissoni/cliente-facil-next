@@ -17,17 +17,17 @@ Cada item tem uma nota de por que importa e, quando relevante, o que já foi con
 
 ## 🧪 Testes
 
-- [ ] **Nenhuma ferramenta de teste instalada** — sem Jest/Vitest/React Testing Library no
-  `package.json`, e nenhum arquivo `*.test.*`/`*.spec.*` existe hoje no repositório. Mais básico que a
-  lacuna do backend: lá pelo menos existe uma suíte (47 testes); aqui não existe nenhuma. Pra um app
-  com formulários (`react-hook-form` + `zod`), tabelas com filtro/paginação e mutations com efeito
-  colateral (toast, invalidação de cache), vale começar pelos hooks/mappers puros (`search-mapper`,
-  schemas de validação) antes de partir pra teste de componente.
+- [x] **Suíte unitária de lógica pura e hooks compartilhados** (Vitest + Testing Library) —
+  implementada: 56 testes cobrindo os builders de schema, `makeSearchRequest`, o client HTTP
+  (`api.*`), `useDebounce`/`useTableState`/`useApiMutation`. Ver `docs/guides/1_testing-strategy.md`
+  pra detalhes do que é (e não é) coberto e como rodar (`pnpm test`).
+- [ ] **Testes de componente** (formulários, tabelas) — ainda não implementado; entra quando um
+  componente específico acumular lógica que justifique (ver nota no guia de testes).
 - [ ] **Testes E2E** (Playwright/Cypress) — hoje a validação de fluxo completo (login → ação →
   resultado) é só manual. Cobriria os fluxos mais críticos primeiro: login/confirmação de e-mail/reset
   de senha, CRUD de usuário, agendamento no calendário.
 - [ ] **CI rodando lint/typecheck/testes em cada PR** — não existe `.github/workflows` no repositório
-  hoje; sem isso, nem o `tsc --noEmit` roda automaticamente antes de mergear.
+  hoje; sem isso, nem o `tsc --noEmit` nem `pnpm test` rodam automaticamente antes de mergear.
 
 ## 🔍 Lint & qualidade estática
 
@@ -139,3 +139,4 @@ Cada item tem uma nota de por que importa e, quando relevante, o que já foi con
 - `docs/product/3_roadmap.md` (repositório `cliente-facil-java`) — roadmap de backend/infraestrutura,
   não duplicado aqui.
 - `docs/ARCHITECTURE.md` — arquitetura de camadas do front (ver ressalva de desatualização acima).
+- `docs/guides/1_testing-strategy.md` — o que a suíte de testes cobre hoje e como rodar.
