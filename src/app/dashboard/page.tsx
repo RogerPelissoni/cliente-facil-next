@@ -7,7 +7,7 @@ export default function Home() {
       <div className="mx-4">
         <div className="flex justify-center mt-8">
           <h2>
-            Bem vindo ao <b>GesTex</b> - Sistema de Gestão Empresarial
+            Bem vindo ao <b>Cliente Fácil</b> - Sistema de Gestão Empresarial
           </h2>
         </div>
 
