@@ -15,6 +15,12 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
 
+      // O React Compiler não está habilitado neste projeto (sem `reactCompiler: true` no
+      // next.config.ts, sem babel-plugin-react-compiler instalado). Essa regra só teria efeito
+      // prático com o compiler ativo — hoje só gera ruído para APIs que são incompatíveis com
+      // memoização por design (useReactTable do TanStack Table, form.watch do react-hook-form).
+      "react-hooks/incompatible-library": "off",
+
       // As opções de formatação (printWidth, etc.) vêm do .prettierrc, fonte única de verdade
       // para o Prettier — evita duas configs divergindo com o tempo.
       "prettier/prettier": "warn",

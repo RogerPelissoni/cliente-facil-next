@@ -34,7 +34,7 @@ export function PersonPhoneForm({ personPhone, onCancel, onSubmit }: Props) {
     } else {
       form.reset(createPersonPhoneDefaultValues());
     }
-  }, [personPhone]);
+  }, [personPhone, form]);
 
   const onError = (errors: FieldErrors<PersonPhoneFormInput>) => {
     console.log("Erros:", errors);

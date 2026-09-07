@@ -34,7 +34,7 @@ export function PersonMailForm({ personMail, onCancel, onSubmit }: Props) {
     } else {
       form.reset(createPersonMailDefaultValues());
     }
-  }, [personMail]);
+  }, [personMail, form]);
 
   const onError = (errors: FieldErrors<PersonMailFormInput>) => {
     console.log("Erros:", errors);
