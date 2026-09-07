@@ -5,7 +5,11 @@ import { EmptyState } from "@/src/shared/components/EmptyState";
 import { TableActionDelete } from "@/src/shared/components/table/TableActionDelete";
 import { TableActionEdit } from "@/src/shared/components/table/TableActionEdit";
 import { TableActions } from "@/src/shared/components/table/TableActions";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { EventMessageType } from "./eventMessage.type";
 
 interface Props {
@@ -15,11 +19,10 @@ interface Props {
 }
 
 export function EventMessageTable({ data, onEdit, onDelete }: Props) {
-
   const columns: ColumnDef<EventMessageType>[] = [
     {
       accessorKey: "dsMessage",
-      header: 'Mensagem',
+      header: "Mensagem",
     },
     {
       id: "actions",

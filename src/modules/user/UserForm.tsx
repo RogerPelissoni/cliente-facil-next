@@ -8,7 +8,11 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
+import {
+  createSubmitHandler,
+  parseSubmit,
+  resetForm,
+} from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -31,7 +35,14 @@ interface Props {
   onSuccess: () => void;
 }
 
-export function UserForm({ id, companies, profiles, people, onCancel, onSuccess }: Props) {
+export function UserForm({
+  id,
+  companies,
+  profiles,
+  people,
+  onCancel,
+  onSuccess,
+}: Props) {
   const createUser = useCreateUser();
   const updateUser = useUpdateUser();
 
@@ -73,26 +84,68 @@ export function UserForm({ id, companies, profiles, people, onCancel, onSuccess 
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, parseSubmit(userSchema, onSubmit), onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(userSchema, onSubmit),
+            onError,
+          )}
+          className="space-y-6"
+        >
           <FormGrid>
-            <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
-            <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />
+            <FormInput
+              form={form}
+              name="name"
+              label="Nome"
+              placeholder="Digite o nome"
+            />
+            <FormInput
+              form={form}
+              name="email"
+              label="E-mail"
+              placeholder="Digite o e-mail"
+            />
 
             <FormInput
               form={form}
               name="password"
               type="password"
               label={id ? "Nova senha" : "Senha"}
-              placeholder={id ? "Informe apenas para alterar" : "Digite a senha"}
+              placeholder={
+                id ? "Informe apenas para alterar" : "Digite a senha"
+              }
             />
 
-            <FormSelect form={form} name="role" label="Cargo" options={toOptions(RoleEnum)} />
-            <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />
-            <FormSelect form={form} name="profileId" label="Perfil" options={toOptions(profiles)} />
-            <FormSelect form={form} name="companyId" label="Empresa" options={toOptions(companies)} />
+            <FormSelect
+              form={form}
+              name="role"
+              label="Cargo"
+              options={toOptions(RoleEnum)}
+            />
+            <FormSelect
+              form={form}
+              name="personId"
+              label="Pessoa"
+              options={toOptions(people)}
+            />
+            <FormSelect
+              form={form}
+              name="profileId"
+              label="Perfil"
+              options={toOptions(profiles)}
+            />
+            <FormSelect
+              form={form}
+              name="companyId"
+              label="Empresa"
+              options={toOptions(companies)}
+            />
           </FormGrid>
 
-          <FormActions onCancel={onCancel} loading={createUser.isPending || updateUser.isPending} />
+          <FormActions
+            onCancel={onCancel}
+            loading={createUser.isPending || updateUser.isPending}
+          />
         </form>
       </CardContent>
     </Card>

@@ -31,16 +31,16 @@ export function createEventDefaultValues(): EventFormInput {
     dsDescription: "",
     dtStart: undefined,
     dtEnd: undefined,
-    tpStatus: 'SCHEDULED',
-    tpEvent: 'APPOINTMENT',
+    tpStatus: "SCHEDULED",
+    tpEvent: "APPOINTMENT",
     eventService: {
-      clientId: '',
-      professionalId: '',
+      clientId: "",
+      professionalId: "",
     },
     accountReceivable: {
       vlTotal: 0,
       daDue: undefined,
-    }
+    },
   };
 }
 

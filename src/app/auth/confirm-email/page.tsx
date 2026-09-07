@@ -55,19 +55,29 @@ function ConfirmEmailContent() {
   }, [token]);
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh]">
+    <div className="flex min-h-[80vh] items-center justify-center">
       <CardComponent
         divClass="w-fit"
         title="Confirmação de e-mail"
         content={
           <div className="space-y-4">
-            {status === "loading" && <p className="text-sm text-muted-foreground">Confirmando seu e-mail...</p>}
-
-            {status === "success" && (
-              <p className="text-sm text-muted-foreground">E-mail confirmado com sucesso. Você já pode entrar.</p>
+            {status === "loading" && (
+              <p className="text-muted-foreground text-sm">
+                Confirmando seu e-mail...
+              </p>
             )}
 
-            {status === "error" && <p className="text-sm text-red-500">{error ?? "Link inválido — falta o token de confirmação."}</p>}
+            {status === "success" && (
+              <p className="text-muted-foreground text-sm">
+                E-mail confirmado com sucesso. Você já pode entrar.
+              </p>
+            )}
+
+            {status === "error" && (
+              <p className="text-sm text-red-500">
+                {error ?? "Link inválido — falta o token de confirmação."}
+              </p>
+            )}
 
             <Link href="/auth/login" className="text-sm underline">
               Ir para o login

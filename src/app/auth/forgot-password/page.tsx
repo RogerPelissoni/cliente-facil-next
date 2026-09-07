@@ -46,15 +46,16 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh]">
+    <div className="flex min-h-[80vh] items-center justify-center">
       <CardComponent
         divClass="w-fit"
         title="Esqueci minha senha"
         content={
           sent ? (
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">
-                Se o e-mail informado tiver uma conta, enviamos um link para redefinir a senha.
+              <p className="text-muted-foreground text-sm">
+                Se o e-mail informado tiver uma conta, enviamos um link para
+                redefinir a senha.
               </p>
               <Link href="/auth/login" className="text-sm underline">
                 Voltar para o login
@@ -62,11 +63,16 @@ export default function ForgotPasswordPage() {
             </div>
           ) : (
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" />
+              <FormInput
+                form={form}
+                name="email"
+                label="E-mail"
+                placeholder="Digite o e-mail"
+              />
 
               {error && <p className="text-sm text-red-500">{error}</p>}
 
-              <div className="flex items-center justify-between mt-2">
+              <div className="mt-2 flex items-center justify-between">
                 <Link href="/auth/login" className="text-sm underline">
                   Voltar para o login
                 </Link>

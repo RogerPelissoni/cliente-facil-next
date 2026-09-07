@@ -32,7 +32,9 @@ export default function LoginPage() {
 
     if (!response.ok) {
       const json = await response.json().catch(() => null);
-      setError(json?.error ?? "Não foi possível entrar. Verifique suas credenciais.");
+      setError(
+        json?.error ?? "Não foi possível entrar. Verifique suas credenciais.",
+      );
       return;
     }
 
@@ -44,30 +46,42 @@ export default function LoginPage() {
       <div className="flex w-full max-w-4xl overflow-hidden rounded-2xl border shadow-sm">
         {/* Painel de marca — só em telas médias+, a tela de login em si continua funcional (e mais
             simples) no celular sem esse painel competindo por espaço com o formulário. */}
-        <div className="hidden flex-col justify-between bg-primary p-10 text-primary-foreground md:flex md:w-1/2">
+        <div className="bg-primary text-primary-foreground hidden flex-col justify-between p-10 md:flex md:w-1/2">
           <Logo inverted iconClassName="h-10 w-10" textClassName="text-2xl" />
 
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">Bem-vindo ao Cliente Fácil</h1>
-            <p className="mt-2 text-primary-foreground/80">Sistema de Gestão Empresarial</p>
+            <h1 className="text-3xl font-bold tracking-tight">
+              Bem-vindo ao Cliente Fácil
+            </h1>
+            <p className="text-primary-foreground/80 mt-2">
+              Sistema de Gestão Empresarial
+            </p>
           </div>
 
-          <p className="text-sm text-primary-foreground/60">© {actualYear} Cliente Fácil</p>
+          <p className="text-primary-foreground/60 text-sm">
+            © {actualYear} Cliente Fácil
+          </p>
         </div>
 
-        <div className="flex w-full items-center justify-center bg-background p-8 md:w-1/2">
+        <div className="bg-background flex w-full items-center justify-center p-8 md:w-1/2">
           <div className="w-full max-w-sm">
             <div className="mb-8 md:hidden">
               <Logo />
             </div>
 
             <h2 className="text-xl font-semibold">Entrar</h2>
-            <p className="mt-1 mb-6 text-sm text-muted-foreground">
+            <p className="text-muted-foreground mt-1 mb-6 text-sm">
               Acesse sua conta pra continuar
             </p>
 
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormInput form={form} name="email" label="E-mail" placeholder="Digite o e-mail" size={12} />
+              <FormInput
+                form={form}
+                name="email"
+                label="E-mail"
+                placeholder="Digite o e-mail"
+                size={12}
+              />
 
               <FormInput
                 form={form}
@@ -81,7 +95,10 @@ export default function LoginPage() {
               {error && <p className="text-sm text-red-500">{error}</p>}
 
               <div className="mt-4 flex items-center justify-between">
-                <Link href="/auth/forgot-password" className="text-sm underline">
+                <Link
+                  href="/auth/forgot-password"
+                  className="text-sm underline"
+                >
                   Esqueci minha senha
                 </Link>
 

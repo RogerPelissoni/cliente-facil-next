@@ -1,10 +1,24 @@
 import { PersonGenderEnum } from "@/src/enum/personGender.enum";
 import { BooleanEnum, toBooleanEnum } from "@/src/shared/enum/boolean.enum";
-import { toOptionalFormIdentifier, zEnum, zOptionalIdentifier, zString } from "@/src/shared/utils/schema.util";
+import {
+  toOptionalFormIdentifier,
+  zEnum,
+  zOptionalIdentifier,
+  zString,
+} from "@/src/shared/utils/schema.util";
 import { z } from "zod";
-import { mapPersonAddressToForm, personAddressSchema } from "../personAddress/personAddress.schema";
-import { mapPersonMailToForm, personMailSchema } from "../personMail/personMail.schema";
-import { mapPersonPhoneToForm, personPhoneSchema } from "../personPhone/personPhone.schema";
+import {
+  mapPersonAddressToForm,
+  personAddressSchema,
+} from "../personAddress/personAddress.schema";
+import {
+  mapPersonMailToForm,
+  personMailSchema,
+} from "../personMail/personMail.schema";
+import {
+  mapPersonPhoneToForm,
+  personPhoneSchema,
+} from "../personPhone/personPhone.schema";
 import { PersonType } from "./person.types";
 
 export const personSchema = z.object({

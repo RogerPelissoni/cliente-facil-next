@@ -7,13 +7,22 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { QueryState } from "@/src/shared/components/QueryState";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
+import {
+  createSubmitHandler,
+  parseSubmit,
+  resetForm,
+} from "@/src/shared/utils/form.util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { ProfilePermissionTable } from "../profilePermission/ProfilePermissionTable";
 import { mapProfilePermissionToForm } from "../profilePermission/profilePermission.schema";
-import { useCreateProfile, useProfile, useProfilePermission, useUpdateProfile } from "./profile.hooks";
+import {
+  useCreateProfile,
+  useProfile,
+  useProfilePermission,
+  useUpdateProfile,
+} from "./profile.hooks";
 import {
   createProfileDefaultValues,
   mapProfileToForm,
@@ -81,12 +90,27 @@ export function ProfileForm({ id, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, parseSubmit(profileSchema, onSubmit), onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(profileSchema, onSubmit),
+            onError,
+          )}
+          className="space-y-6"
+        >
           <FormGrid>
-            <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
+            <FormInput
+              form={form}
+              name="name"
+              label="Nome"
+              placeholder="Digite o nome"
+            />
           </FormGrid>
 
-          <QueryState query={profilePermissionQuery} loadingMessage="Carregando Permissões...">
+          <QueryState
+            query={profilePermissionQuery}
+            loadingMessage="Carregando Permissões..."
+          >
             <PageHeader title="Permissões" />
 
             <ProfilePermissionTable
@@ -97,14 +121,19 @@ export function ProfileForm({ id, onCancel, onSuccess }: Props) {
                 form.setValue(
                   "profilePermissions",
                   permissions.map((permission) =>
-                    permission.resourceId === resourceId ? { ...permission, hasPermission: checked } : permission,
+                    permission.resourceId === resourceId
+                      ? { ...permission, hasPermission: checked }
+                      : permission,
                   ),
                 );
               }}
             />
           </QueryState>
 
-          <FormActions onCancel={onCancel} loading={createProfile.isPending || updateProfile.isPending} />
+          <FormActions
+            onCancel={onCancel}
+            loading={createProfile.isPending || updateProfile.isPending}
+          />
         </form>
       </CardContent>
     </Card>

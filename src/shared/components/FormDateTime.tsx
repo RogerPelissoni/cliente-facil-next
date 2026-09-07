@@ -156,9 +156,7 @@ export function FormDateTime<TFieldValues extends FieldValues>({
         }}
       />
 
-      <p className="text-sm text-red-500">
-        {error?.message}
-      </p>
+      <p className="text-sm text-red-500">{error?.message}</p>
     </div>
   );
 }

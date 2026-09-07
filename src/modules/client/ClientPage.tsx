@@ -44,7 +44,14 @@ export default function ClientPage() {
       <PageContainer>
         <PageBreadcrumb items={["Cadastros", "Clientes"]} />
 
-        <PageHeader title="Perfis" actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>} />
+        <PageHeader
+          title="Perfis"
+          actions={
+            !crud.open && (
+              <Button onClick={crud.create}>Adicionar Registro</Button>
+            )
+          }
+        />
 
         {crud.open ? (
           <ClientForm
@@ -56,7 +63,10 @@ export default function ClientPage() {
         ) : (
           <>
             <DataTableToolbar>
-              <ClientFilters filters={table.filters} onChange={table.changeFilters} />
+              <ClientFilters
+                filters={table.filters}
+                onChange={table.changeFilters}
+              />
             </DataTableToolbar>
 
             <ClientTable
@@ -68,7 +78,10 @@ export default function ClientPage() {
             />
 
             <div className="flex justify-between">
-              <DataTablePageSize value={table.size} onChange={table.changePageSize} />
+              <DataTablePageSize
+                value={table.size}
+                onChange={table.changePageSize}
+              />
 
               <DataTablePagination
                 page={table.page}

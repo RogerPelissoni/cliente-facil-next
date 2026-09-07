@@ -8,7 +8,11 @@ import { TableActionEdit } from "@/src/shared/components/table/TableActionEdit";
 import { TableActions } from "@/src/shared/components/table/TableActions";
 import { Sorting } from "@/src/shared/types/table.type";
 import { nextSorting } from "@/src/shared/utils/table.util";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { PersonType } from "./person.types";
 
 interface Props {
@@ -19,7 +23,13 @@ interface Props {
   onDelete(person: PersonType): void;
 }
 
-export function PersonTable({ data, sorting, onSortingChange, onEdit, onDelete }: Props) {
+export function PersonTable({
+  data,
+  sorting,
+  onSortingChange,
+  onEdit,
+  onDelete,
+}: Props) {
   function handleSort(field: string) {
     onSortingChange(nextSorting(sorting, field));
   }
@@ -27,23 +37,58 @@ export function PersonTable({ data, sorting, onSortingChange, onEdit, onDelete }
   const columns: ColumnDef<PersonType>[] = [
     {
       accessorKey: "id",
-      header: () => <SortableHeader label="#" field="id" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="#"
+          field="id"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "name",
-      header: () => <SortableHeader label="Nome" field="name" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Nome"
+          field="name"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "dsDocument",
-      header: () => <SortableHeader label="Documento" field="dsDocument" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Documento"
+          field="dsDocument"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "tpGender",
-      header: () => <SortableHeader label="Gênero" field="tpGender" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Gênero"
+          field="tpGender"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "flActive",
-      header: () => <SortableHeader label="Ativo" field="flActive" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Ativo"
+          field="flActive"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
       cell: ({ row }) => (row.original.flActive ? "Sim" : "Não"),
     },
     {

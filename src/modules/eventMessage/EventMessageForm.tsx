@@ -9,8 +9,18 @@ import { createSubmitHandler, parseSubmit } from "@/src/shared/utils/form.util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useCreateEventMessage, useEventMessage, useUpdateEventMessage } from "./eventMessage.hooks";
-import { createEventMessageDefaultValues, EventMessageFormInput, EventMessageFormSchemaFields, eventMessageSchema, mapEventMessageToForm } from "./eventMessage.schema";
+import {
+  useCreateEventMessage,
+  useEventMessage,
+  useUpdateEventMessage,
+} from "./eventMessage.hooks";
+import {
+  createEventMessageDefaultValues,
+  EventMessageFormInput,
+  EventMessageFormSchemaFields,
+  eventMessageSchema,
+  mapEventMessageToForm,
+} from "./eventMessage.schema";
 
 interface Props {
   id?: IdentifierType;
@@ -63,12 +73,24 @@ export function EventMessageForm({ id, eventId, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, parseSubmit(eventMessageSchema, onSubmit), onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(eventMessageSchema, onSubmit),
+            onError,
+          )}
+          className="space-y-6"
+        >
           <FormGrid>
             <FormInput form={form} name="dsMessage" label="Mensagem" />
           </FormGrid>
 
-          <FormActions onCancel={onCancel} loading={createEventMessage.isPending || updateEventMessage.isPending} />
+          <FormActions
+            onCancel={onCancel}
+            loading={
+              createEventMessage.isPending || updateEventMessage.isPending
+            }
+          />
         </form>
       </CardContent>
     </Card>

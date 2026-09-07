@@ -15,12 +15,9 @@ const eslintConfig = defineConfig([
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
 
-      "prettier/prettier": [
-        "warn",
-        {
-          printWidth: 120,
-        },
-      ],
+      // As opções de formatação (printWidth, etc.) vêm do .prettierrc, fonte única de verdade
+      // para o Prettier — evita duas configs divergindo com o tempo.
+      "prettier/prettier": "warn",
     },
   },
   globalIgnores([
@@ -29,6 +26,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Gerados pelo shadcn (`pnpm dlx shadcn add/diff`) — mantidos o mais próximo possível do
+    // original para não gerar ruído de diff nas atualizações do shadcn.
+    "components/ui/**",
   ]),
 ]);
 

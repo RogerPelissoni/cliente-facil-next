@@ -87,7 +87,10 @@ export default function NotificationDeadLetterPage() {
         <NotificationDeadLetterStats stats={statsQuery.data} />
 
         <DataTableToolbar>
-          <NotificationDeadLetterFilters filters={table.filters} onChange={table.changeFilters} />
+          <NotificationDeadLetterFilters
+            filters={table.filters}
+            onChange={table.changeFilters}
+          />
         </DataTableToolbar>
 
         <NotificationDeadLetterTable
@@ -95,11 +98,16 @@ export default function NotificationDeadLetterPage() {
           sorting={table.sorting}
           onSortingChange={table.changeSorting}
           canResolve={canResolve}
-          onResolve={(deadLetter) => resolveDeadLetter.mutateAsync(deadLetter.id)}
+          onResolve={(deadLetter) =>
+            resolveDeadLetter.mutateAsync(deadLetter.id)
+          }
         />
 
         <div className="flex justify-between">
-          <DataTablePageSize value={table.size} onChange={table.changePageSize} />
+          <DataTablePageSize
+            value={table.size}
+            onChange={table.changePageSize}
+          />
 
           <DataTablePagination
             page={table.page}

@@ -16,7 +16,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { MailConfigScope } from "./mailConfig.api";
-import { useMailConfig, useTestMailConfigDraft, useUpsertMailConfig } from "./mailConfig.hooks";
+import {
+  useMailConfig,
+  useTestMailConfigDraft,
+  useUpsertMailConfig,
+} from "./mailConfig.hooks";
 import {
   createMailConfigDefaultValues,
   MailConfigFormInput,
@@ -45,7 +49,9 @@ export function MailConfigCard({ scope = "COMPANY" }: Props) {
   // dentro de effect, cascata de render), o valor exibido é derivado: só usa o e-mail do usuário
   // enquanto ele não tiver digitado nada; a partir da primeira edição (mesmo apagando tudo), o que
   // ele digitou manda.
-  const [testToOverride, setTestToOverride] = useState<string | undefined>(undefined);
+  const [testToOverride, setTestToOverride] = useState<string | undefined>(
+    undefined,
+  );
   const testTo = testToOverride ?? currentUser.data?.email ?? "";
 
   const form = useForm<MailConfigFormInput>({
@@ -82,27 +88,77 @@ export function MailConfigCard({ scope = "COMPANY" }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{scope === "BASE" ? "Configuração de E-mail — Base do Sistema" : "Configurações de E-mail"}</CardTitle>
+        <CardTitle>
+          {scope === "BASE"
+            ? "Configuração de E-mail — Base do Sistema"
+            : "Configurações de E-mail"}
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, parseSubmit(mailConfigSchema, onSubmit), onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(mailConfigSchema, onSubmit),
+            onError,
+          )}
+          className="space-y-6"
+        >
           <FormGrid>
-            <FormInput form={form} name="dsHost" label="Host SMTP" placeholder="smtp.exemplo.com" size={8} />
-            <FormNumberInput form={form} name="nrPort" label="Porta" size={4} min={1} max={65535} />
+            <FormInput
+              form={form}
+              name="dsHost"
+              label="Host SMTP"
+              placeholder="smtp.exemplo.com"
+              size={8}
+            />
+            <FormNumberInput
+              form={form}
+              name="nrPort"
+              label="Porta"
+              size={4}
+              min={1}
+              max={65535}
+            />
             <FormInput form={form} name="dsUsername" label="Usuário" size={6} />
             <FormInput
               form={form}
               name="dsPassword"
               label="Senha"
               type="password"
-              placeholder={query.data?.hasPassword ? "Deixe em branco para manter a atual" : ""}
+              placeholder={
+                query.data?.hasPassword
+                  ? "Deixe em branco para manter a atual"
+                  : ""
+              }
               size={6}
             />
-            <FormSelect form={form} name="tpEncryption" label="Criptografia" options={toOptions(MailEncryptionEnum)} size={4} />
-            <FormInput form={form} name="dsFromName" label="Nome do remetente" size={4} />
-            <FormInput form={form} name="dsFromAddress" label="E-mail do remetente" size={4} />
-            <FormSelect form={form} name="flActive" label="Ativo" options={toOptions(BooleanEnum)} size={4} />
+            <FormSelect
+              form={form}
+              name="tpEncryption"
+              label="Criptografia"
+              options={toOptions(MailEncryptionEnum)}
+              size={4}
+            />
+            <FormInput
+              form={form}
+              name="dsFromName"
+              label="Nome do remetente"
+              size={4}
+            />
+            <FormInput
+              form={form}
+              name="dsFromAddress"
+              label="E-mail do remetente"
+              size={4}
+            />
+            <FormSelect
+              form={form}
+              name="flActive"
+              label="Ativo"
+              options={toOptions(BooleanEnum)}
+              size={4}
+            />
           </FormGrid>
 
           {canManage && (

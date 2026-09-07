@@ -20,7 +20,10 @@ export async function GET() {
   });
 
   if (!response.ok) {
-    return NextResponse.json({ message: "Failed to issue ws ticket" }, { status: response.status });
+    return NextResponse.json(
+      { message: "Failed to issue ws ticket" },
+      { status: response.status },
+    );
   }
 
   const data: { ticket: string } = await response.json();

@@ -54,23 +54,33 @@ function ResetPasswordForm() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[80vh]">
+    <div className="flex min-h-[80vh] items-center justify-center">
       <CardComponent
         divClass="w-fit"
         title="Redefinir senha"
         content={
           !token ? (
-            <p className="text-sm text-red-500">Link inválido — falta o token de redefinição.</p>
+            <p className="text-sm text-red-500">
+              Link inválido — falta o token de redefinição.
+            </p>
           ) : done ? (
             <div className="space-y-4">
-              <p className="text-sm text-muted-foreground">Senha alterada com sucesso.</p>
+              <p className="text-muted-foreground text-sm">
+                Senha alterada com sucesso.
+              </p>
               <Link href="/auth/login" className="text-sm underline">
                 Ir para o login
               </Link>
             </div>
           ) : (
             <form onSubmit={form.handleSubmit(onSubmit)}>
-              <FormInput form={form} type="password" name="newPassword" label="Nova senha" placeholder="Digite a nova senha" />
+              <FormInput
+                form={form}
+                type="password"
+                name="newPassword"
+                label="Nova senha"
+                placeholder="Digite a nova senha"
+              />
               <FormInput
                 form={form}
                 type="password"
@@ -81,7 +91,7 @@ function ResetPasswordForm() {
 
               {error && <p className="text-sm text-red-500">{error}</p>}
 
-              <div className="flex justify-end mt-2">
+              <div className="mt-2 flex justify-end">
                 <CoreButton type="submit">Redefinir senha</CoreButton>
               </div>
             </form>

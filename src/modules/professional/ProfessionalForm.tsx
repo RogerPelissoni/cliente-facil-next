@@ -6,12 +6,20 @@ import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
+import {
+  createSubmitHandler,
+  parseSubmit,
+  resetForm,
+} from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useCreateProfessional, useProfessional, useUpdateProfessional } from "./professional.hooks";
+import {
+  useCreateProfessional,
+  useProfessional,
+  useUpdateProfessional,
+} from "./professional.hooks";
 import {
   createProfessionalDefaultValues,
   mapProfessionalToForm,
@@ -65,19 +73,35 @@ export function ProfessionalForm({ id, people, onCancel, onSuccess }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{id ? "Editar Profissional" : "Novo Profissional"}</CardTitle>
+        <CardTitle>
+          {id ? "Editar Profissional" : "Novo Profissional"}
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
         <form
-          onSubmit={createSubmitHandler(form, parseSubmit(professionalSchema, onSubmit), onError)}
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(professionalSchema, onSubmit),
+            onError,
+          )}
           className="space-y-6"
         >
           <FormGrid>
-            <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />
+            <FormSelect
+              form={form}
+              name="personId"
+              label="Pessoa"
+              options={toOptions(people)}
+            />
           </FormGrid>
 
-          <FormActions onCancel={onCancel} loading={createProfessional.isPending || updateProfessional.isPending} />
+          <FormActions
+            onCancel={onCancel}
+            loading={
+              createProfessional.isPending || updateProfessional.isPending
+            }
+          />
         </form>
       </CardContent>
     </Card>

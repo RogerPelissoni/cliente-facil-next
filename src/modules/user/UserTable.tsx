@@ -10,7 +10,11 @@ import { TableActionEdit } from "@/src/shared/components/table/TableActionEdit";
 import { TableActions } from "@/src/shared/components/table/TableActions";
 import { Sorting } from "@/src/shared/types/table.type";
 import { nextSorting } from "@/src/shared/utils/table.util";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Mail } from "lucide-react";
 import { UserType } from "./user.types";
 
@@ -23,7 +27,14 @@ interface Props {
   onResendConfirmation(user: UserType): void;
 }
 
-export function UserTable({ data, sorting, onSortingChange, onEdit, onDelete, onResendConfirmation }: Props) {
+export function UserTable({
+  data,
+  sorting,
+  onSortingChange,
+  onEdit,
+  onDelete,
+  onResendConfirmation,
+}: Props) {
   function handleSort(field: string) {
     onSortingChange(nextSorting(sorting, field));
   }
@@ -31,32 +42,81 @@ export function UserTable({ data, sorting, onSortingChange, onEdit, onDelete, on
   const columns: ColumnDef<UserType>[] = [
     {
       accessorKey: "id",
-      header: () => <SortableHeader label="#" field="id" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="#"
+          field="id"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "name",
-      header: () => <SortableHeader label="Nome" field="name" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Nome"
+          field="name"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "email",
-      header: () => <SortableHeader label="Email" field="email" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Email"
+          field="email"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "role",
-      header: () => <SortableHeader label="Cargo" field="role" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Cargo"
+          field="role"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
       cell: ({ row }) => RoleEnum[row.original.role] ?? row.original.role,
     },
     {
       accessorKey: "personName",
-      header: () => <SortableHeader label="Pessoa" field="personName" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Pessoa"
+          field="personName"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "profileName",
-      header: () => <SortableHeader label="Perfil" field="profileName" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Perfil"
+          field="profileName"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "companyName",
-      header: () => <SortableHeader label="Empresa" field="companyName" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Empresa"
+          field="companyName"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       id: "emailStatus",
@@ -88,7 +148,11 @@ export function UserTable({ data, sorting, onSortingChange, onEdit, onDelete, on
             <TableActionEdit onClick={() => onEdit(user)} />
 
             {!user.dtEmailConfirmedAt && (
-              <Button size="sm" variant="outline" onClick={() => onResendConfirmation(user)}>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => onResendConfirmation(user)}
+              >
                 <Mail className="h-3.5 w-3.5" />
                 Reenviar confirmação
               </Button>

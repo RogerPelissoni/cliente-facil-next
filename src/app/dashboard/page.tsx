@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <>
       <div className="mx-4">
-        <div className="flex justify-center mt-8">
+        <div className="mt-8 flex justify-center">
           <h2>
             Bem vindo ao <b>Cliente Fácil</b> - Sistema de Gestão Empresarial
           </h2>

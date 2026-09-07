@@ -1,0 +1,3 @@
+# Scripts do husky são executados por um shell POSIX (sh) — precisam de final de linha LF
+# mesmo em ambientes Windows/WSL com core.autocrlf=true, senão o \r sobrando quebra o comando.
+.husky/* text eol=lf

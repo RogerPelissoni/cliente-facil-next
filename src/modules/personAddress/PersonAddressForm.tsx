@@ -26,7 +26,11 @@ interface Props {
   onSubmit(data: PersonAddressFormSchemaFields): void;
 }
 
-export function PersonAddressForm({ personAddress, onCancel, onSubmit }: Props) {
+export function PersonAddressForm({
+  personAddress,
+  onCancel,
+  onSubmit,
+}: Props) {
   const form = useForm<PersonAddressFormInput>({
     resolver: zodResolver(personAddressSchema),
     defaultValues: createPersonAddressDefaultValues(),
@@ -47,23 +51,69 @@ export function PersonAddressForm({ personAddress, onCancel, onSubmit }: Props) 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{personAddress ? "Editar Endereço" : "Novo Endereço"}</CardTitle>
+        <CardTitle>
+          {personAddress ? "Editar Endereço" : "Novo Endereço"}
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
         <form
-          onSubmit={createSubmitHandler(form, parseSubmit(personAddressSchema, onSubmit), onError)}
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(personAddressSchema, onSubmit),
+            onError,
+          )}
           className="space-y-6"
         >
           <FormGrid>
-            <FormInput form={form} name="dsStreet" label="Rua" placeholder="Digite a rua" />
-            <FormInput form={form} name="dsNumber" label="Número" placeholder="Digite o número" />
-            <FormInput form={form} name="dsComplement" label="Complemento" placeholder="Digite o complemento" />
-            <FormInput form={form} name="dsDistrict" label="Bairro" placeholder="Digite o bairro" />
-            <FormInput form={form} name="dsCity" label="Cidade" placeholder="Digite a cidade" />
-            <FormInput form={form} name="dsState" label="UF" placeholder="Ex.: RS" />
-            <FormInput form={form} name="dsZipCode" label="CEP" placeholder="00000-000" />
-            <FormSelect form={form} name="flMain" label="Principal" options={toOptions(BooleanEnum)} />
+            <FormInput
+              form={form}
+              name="dsStreet"
+              label="Rua"
+              placeholder="Digite a rua"
+            />
+            <FormInput
+              form={form}
+              name="dsNumber"
+              label="Número"
+              placeholder="Digite o número"
+            />
+            <FormInput
+              form={form}
+              name="dsComplement"
+              label="Complemento"
+              placeholder="Digite o complemento"
+            />
+            <FormInput
+              form={form}
+              name="dsDistrict"
+              label="Bairro"
+              placeholder="Digite o bairro"
+            />
+            <FormInput
+              form={form}
+              name="dsCity"
+              label="Cidade"
+              placeholder="Digite a cidade"
+            />
+            <FormInput
+              form={form}
+              name="dsState"
+              label="UF"
+              placeholder="Ex.: RS"
+            />
+            <FormInput
+              form={form}
+              name="dsZipCode"
+              label="CEP"
+              placeholder="00000-000"
+            />
+            <FormSelect
+              form={form}
+              name="flMain"
+              label="Principal"
+              options={toOptions(BooleanEnum)}
+            />
           </FormGrid>
 
           <FormActions onCancel={onCancel} />

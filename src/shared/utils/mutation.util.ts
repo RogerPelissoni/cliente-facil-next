@@ -1,4 +1,9 @@
-import { MutationFunction, QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  MutationFunction,
+  QueryKey,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { toast } from "sonner";
 
 interface MutationOptions<TData, TVariables> {

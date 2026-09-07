@@ -5,7 +5,11 @@ import { ProfilePermissionType } from "../profilePermission/profilePermission.ty
 import { ProfileFormSchemaFields } from "./profile.schema";
 import { ProfileFiltersType, ProfileType } from "./profile.types";
 
-const profileApi = createCrudApi<ProfileType, ProfileFormSchemaFields, ProfileFiltersType>("/profile");
+const profileApi = createCrudApi<
+  ProfileType,
+  ProfileFormSchemaFields,
+  ProfileFiltersType
+>("/profile");
 
 export const searchProfiles = profileApi.search;
 export const findProfileById = profileApi.findById;
@@ -14,5 +18,7 @@ export const updateProfile = profileApi.update;
 export const deleteProfile = profileApi.delete;
 
 export function findProfilePermissionsByProfile(id: IdentifierType = "0") {
-  return api.get<ProfilePermissionType[]>(`/profile/permissionsByProfile/${id}`);
+  return api.get<ProfilePermissionType[]>(
+    `/profile/permissionsByProfile/${id}`,
+  );
 }

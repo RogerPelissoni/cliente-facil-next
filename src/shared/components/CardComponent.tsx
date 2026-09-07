@@ -24,8 +24,8 @@ export default function CardComponent({
 }: CoreCardProps) {
   return (
     <div className={`flex ${divClass}`}>
-      <Card className="w-full m-6 pt-0 gap-0">
-        <CardHeader className="flex justify-between items-center my-4">
+      <Card className="m-6 w-full gap-0 pt-0">
+        <CardHeader className="my-4 flex items-center justify-between">
           <CardTitle>{title}</CardTitle>
 
           <CardAction>{actions}</CardAction>

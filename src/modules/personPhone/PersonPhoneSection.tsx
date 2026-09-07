@@ -66,12 +66,25 @@ export function PersonPhoneSection({ form }: Props) {
         </CardHeader>
 
         <CardContent>
-          <PersonPhoneTable data={phones} onEdit={handleEdit} onDelete={handleDelete} />
+          <PersonPhoneTable
+            data={phones}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         </CardContent>
       </Card>
 
-      <CoreModal open={isOpenForm} title="Novo Telefone" size="lg" onOpenChange={setIsOpenForm}>
-        <PersonPhoneForm personPhone={editing?.phone} onCancel={() => setIsOpenForm(false)} onSubmit={handleSubmit} />
+      <CoreModal
+        open={isOpenForm}
+        title="Novo Telefone"
+        size="lg"
+        onOpenChange={setIsOpenForm}
+      >
+        <PersonPhoneForm
+          personPhone={editing?.phone}
+          onCancel={() => setIsOpenForm(false)}
+          onSubmit={handleSubmit}
+        />
       </CoreModal>
     </>
   );

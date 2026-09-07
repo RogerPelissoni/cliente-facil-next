@@ -12,7 +12,11 @@ interface Props<TData = unknown, TError = Error> {
   children: ReactNode;
 }
 
-export function QueryState<TData = unknown, TError = Error>({ query, loadingMessage, children }: Props<TData, TError>) {
+export function QueryState<TData = unknown, TError = Error>({
+  query,
+  loadingMessage,
+  children,
+}: Props<TData, TError>) {
   if (query.isLoading) {
     return <Loading message={loadingMessage} />;
   }

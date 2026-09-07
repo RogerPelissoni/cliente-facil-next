@@ -17,9 +17,12 @@ describe("useDebounce", () => {
   });
 
   it("só reflete um novo valor depois do delay", () => {
-    const { result, rerender } = renderHook(({ value }) => useDebounce(value, 500), {
-      initialProps: { value: "a" },
-    });
+    const { result, rerender } = renderHook(
+      ({ value }) => useDebounce(value, 500),
+      {
+        initialProps: { value: "a" },
+      },
+    );
 
     rerender({ value: "b" });
     // ainda não passou o delay — deve continuar com o valor anterior.
@@ -37,9 +40,12 @@ describe("useDebounce", () => {
   });
 
   it("reinicia o timer a cada mudança (só o último valor dentro da janela vence)", () => {
-    const { result, rerender } = renderHook(({ value }) => useDebounce(value, 500), {
-      initialProps: { value: "a" },
-    });
+    const { result, rerender } = renderHook(
+      ({ value }) => useDebounce(value, 500),
+      {
+        initialProps: { value: "a" },
+      },
+    );
 
     rerender({ value: "b" });
     act(() => {

@@ -30,9 +30,7 @@ export function FormInput<TFieldValues extends FieldValues>({
 
       <Input type={type} placeholder={placeholder} {...form.register(name)} />
 
-      <p className="text-sm text-red-500">
-        {error?.message}
-      </p>
+      <p className="text-sm text-red-500">{error?.message}</p>
     </div>
   );
 }

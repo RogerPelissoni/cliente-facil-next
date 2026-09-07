@@ -3,4 +3,5 @@ export const PersonGenderEnum = {
   M: "Masculino",
 } as const;
 
-export type PersonGenderEnumType = (typeof PersonGenderEnum)[keyof typeof PersonGenderEnum];
+export type PersonGenderEnumType =
+  (typeof PersonGenderEnum)[keyof typeof PersonGenderEnum];

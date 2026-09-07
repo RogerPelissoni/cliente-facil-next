@@ -15,7 +15,11 @@ import { useTableState } from "@/src/shared/hooks/useTableState";
 import { PageBreadcrumb } from "@/src/shared/layout/PageBreadcrumb";
 import { PageContainer } from "@/src/shared/layout/PageContainer";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
-import { useDeleteUser, useResendUserConfirmation, useUserScreen } from "./user.hooks";
+import {
+  useDeleteUser,
+  useResendUserConfirmation,
+  useUserScreen,
+} from "./user.hooks";
 
 export default function UserPage() {
   const table = useTableState<UserFiltersType>({
@@ -48,7 +52,11 @@ export default function UserPage() {
 
         <PageHeader
           title="Usuários"
-          actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>}
+          actions={
+            !crud.open && (
+              <Button onClick={crud.create}>Adicionar Registro</Button>
+            )
+          }
         />
 
         {crud.open ? (
@@ -63,7 +71,10 @@ export default function UserPage() {
         ) : (
           <>
             <DataTableToolbar>
-              <UserFilters filters={table.filters} onChange={table.changeFilters} />
+              <UserFilters
+                filters={table.filters}
+                onChange={table.changeFilters}
+              />
             </DataTableToolbar>
 
             <UserTable
@@ -72,11 +83,16 @@ export default function UserPage() {
               onSortingChange={table.changeSorting}
               onEdit={crud.edit}
               onDelete={(user) => deleteUser.mutateAsync(user.id)}
-              onResendConfirmation={(user) => resendConfirmation.mutateAsync(user.id)}
+              onResendConfirmation={(user) =>
+                resendConfirmation.mutateAsync(user.id)
+              }
             />
 
             <div className="flex justify-between">
-              <DataTablePageSize value={table.size} onChange={table.changePageSize} />
+              <DataTablePageSize
+                value={table.size}
+                onChange={table.changePageSize}
+              />
 
               <DataTablePagination
                 page={table.page}

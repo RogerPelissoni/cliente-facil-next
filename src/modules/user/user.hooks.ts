@@ -21,23 +21,41 @@ export const userKeys = {
 
   keyValue: ["users", "keyValue"] as const,
 
-  list: (filters: UserFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["users", "list", filters, page, size, sorting] as const,
+  list: (
+    filters: UserFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["users", "list", filters, page, size, sorting] as const,
 
-  screen: (filters: UserFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["users", "screen", filters, page, size, sorting] as const,
+  screen: (
+    filters: UserFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["users", "screen", filters, page, size, sorting] as const,
 
   detail: (id?: IdentifierType) => ["users", "detail", id] as const,
 };
 
-export function useUserScreen({ filters, page, size, sorting }: QueryParamsType<UserFiltersType>) {
+export function useUserScreen({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<UserFiltersType>) {
   return useQuery({
     queryKey: userKeys.screen(filters, page, size, sorting),
     queryFn: () => screenUsers(filters, page, size, sorting),
   });
 }
 
-export function useUsers({ filters, page, size, sorting }: QueryParamsType<UserFiltersType>) {
+export function useUsers({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<UserFiltersType>) {
   return useQuery({
     queryKey: userKeys.list(filters, page, size, sorting),
     queryFn: () => searchUsers(filters, page, size, sorting),
@@ -67,7 +85,10 @@ export function useCreateUser() {
 }
 
 export function useUpdateUser() {
-  return useApiMutation<UserType, { id: IdentifierType; data: UserFormSchemaFields }>({
+  return useApiMutation<
+    UserType,
+    { id: IdentifierType; data: UserFormSchemaFields }
+  >({
     mutationFn: ({ id, data }) => updateUser(id, data),
     invalidateQueries: [userKeys.all],
   });

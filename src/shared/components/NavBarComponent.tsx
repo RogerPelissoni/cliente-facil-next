@@ -16,7 +16,9 @@ export function NavBarComponent() {
   const { data: currentUser } = useCurrentUser();
 
   function isAllowed(authority?: string) {
-    return !authority || (currentUser?.authorities.includes(authority) ?? false);
+    return (
+      !authority || (currentUser?.authorities.includes(authority) ?? false)
+    );
   }
 
   const visibleMenu = menuConfig
@@ -28,7 +30,7 @@ export function NavBarComponent() {
     .filter((menu) => menu.href || (menu.children && menu.children.length > 0));
 
   return (
-    <div className="px-2 z-[5]">
+    <div className="z-[5] px-2">
       <NavigationMenu viewport={false}>
         <NavigationMenuList>
           {visibleMenu.map((menu) => (
@@ -37,7 +39,7 @@ export function NavBarComponent() {
                 <NavigationMenuLink asChild>
                   <Link
                     href={menu.href}
-                    className="px-3 py-2 rounded-md hover:bg-accent"
+                    className="hover:bg-accent rounded-md px-3 py-2"
                   >
                     {menu.label}
                   </Link>
@@ -48,12 +50,12 @@ export function NavBarComponent() {
                 <>
                   <NavigationMenuTrigger>{menu.label}</NavigationMenuTrigger>
 
-                  <NavigationMenuContent className="p-2 grid gap-1">
+                  <NavigationMenuContent className="grid gap-1 p-2">
                     {menu.children.map((child) => (
                       <NavigationMenuLink asChild key={child.label}>
                         <Link
                           href={child.href}
-                          className="block px-2 py-1 hover:bg-accent rounded-md"
+                          className="hover:bg-accent block rounded-md px-2 py-1"
                         >
                           {child.label}
                         </Link>

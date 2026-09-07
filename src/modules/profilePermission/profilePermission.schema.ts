@@ -1,4 +1,8 @@
-import { toFormIdentifier, zIdentifier, zString } from "@/src/shared/utils/schema.util";
+import {
+  toFormIdentifier,
+  zIdentifier,
+  zString,
+} from "@/src/shared/utils/schema.util";
 import { DefaultValues } from "react-hook-form";
 import { z } from "zod";
 import { ProfilePermissionType } from "./profilePermission.types";
@@ -12,8 +16,12 @@ export const profilePermissionSchema = z.object({
   hasPermission: z.boolean(),
 });
 
-export type ProfilePermissionFormInput = z.input<typeof profilePermissionSchema>;
-export type ProfilePermissionFormOutput = z.output<typeof profilePermissionSchema>;
+export type ProfilePermissionFormInput = z.input<
+  typeof profilePermissionSchema
+>;
+export type ProfilePermissionFormOutput = z.output<
+  typeof profilePermissionSchema
+>;
 
 export function createProfilePermissionDefaultValues(): DefaultValues<ProfilePermissionFormInput> {
   return {
@@ -26,7 +34,9 @@ export function createProfilePermissionDefaultValues(): DefaultValues<ProfilePer
   };
 }
 
-export function mapProfilePermissionToForm(profilePermission: ProfilePermissionType): ProfilePermissionFormInput {
+export function mapProfilePermissionToForm(
+  profilePermission: ProfilePermissionType,
+): ProfilePermissionFormInput {
   return {
     resourceId: toFormIdentifier(profilePermission.resourceId),
     resourceName: profilePermission.resourceName,

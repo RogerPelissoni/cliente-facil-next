@@ -19,8 +19,10 @@ import { NotificationTypeEnum } from "./notification.type";
 
 const typeStyles: Record<NotificationTypeEnum, string> = {
   INFO: "border-blue-500/40 bg-blue-500/10 text-blue-700 dark:text-blue-300",
-  SUCCESS: "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
-  WARNING: "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+  SUCCESS:
+    "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+  WARNING:
+    "border-amber-500/40 bg-amber-500/10 text-amber-700 dark:text-amber-300",
   ERROR: "border-red-500/40 bg-red-500/10 text-red-700 dark:text-red-300",
 };
 
@@ -41,7 +43,9 @@ export function NotificationBell() {
 
   useStompSubscription("/user/queue/notifications", handleNewNotification);
 
-  const unreadCount = notifications.filter((notification) => notification.tpStatus === "UNREAD").length;
+  const unreadCount = notifications.filter(
+    (notification) => notification.tpStatus === "UNREAD",
+  ).length;
 
   function handleNotificationsOpenChange(open: boolean) {
     setIsNotificationsOpen(open);
@@ -78,16 +82,23 @@ export function NotificationBell() {
       >
         <div className="flex flex-col gap-3">
           {canSendNotification && (
-            <Button type="button" variant="outline" className="self-end" onClick={() => setIsSendOpen(true)}>
+            <Button
+              type="button"
+              variant="outline"
+              className="self-end"
+              onClick={() => setIsSendOpen(true)}
+            >
               <Send className="h-4 w-4" />
               Enviar notificação
             </Button>
           )}
 
           {notifications.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nenhuma notificação recebida ainda.</p>
+            <p className="text-muted-foreground text-sm">
+              Nenhuma notificação recebida ainda.
+            </p>
           ) : (
-            <ul className="flex flex-col gap-2 max-h-80 overflow-y-auto">
+            <ul className="flex max-h-80 flex-col gap-2 overflow-y-auto">
               {notifications.map((notification) => (
                 <li
                   key={notification.id}
@@ -96,7 +107,9 @@ export function NotificationBell() {
                   <div>
                     <p className="font-medium">{notification.dsTitle}</p>
                     <p>{notification.dsMessage}</p>
-                    <p className="text-xs opacity-70">{new Date(notification.createdAt).toLocaleString("pt-BR")}</p>
+                    <p className="text-xs opacity-70">
+                      {new Date(notification.createdAt).toLocaleString("pt-BR")}
+                    </p>
                   </div>
 
                   <div className="flex shrink-0 gap-1">

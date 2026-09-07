@@ -16,7 +16,12 @@ export async function POST(req: Request) {
       const json = await result.json().catch(() => null);
 
       return NextResponse.json(
-        { error: json?.message ?? json?.error ?? "Não foi possível confirmar o e-mail." },
+        {
+          error:
+            json?.message ??
+            json?.error ??
+            "Não foi possível confirmar o e-mail.",
+        },
         { status: result.status },
       );
     }

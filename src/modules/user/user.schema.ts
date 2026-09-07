@@ -1,5 +1,10 @@
 import { RoleEnum } from "@/src/enum/role.enum";
-import { toFormIdentifier, zEnum, zIdentifier, zString } from "@/src/shared/utils/schema.util";
+import {
+  toFormIdentifier,
+  zEnum,
+  zIdentifier,
+  zString,
+} from "@/src/shared/utils/schema.util";
 import { z } from "zod";
 import { UserType } from "./user.types";
 

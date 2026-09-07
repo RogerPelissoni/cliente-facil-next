@@ -23,7 +23,12 @@ const notificationApi = {
     return api.post<void>("/notifications/test", data);
   },
 
-  send(data: { userIds: IdentifierType[]; title: string; message: string; type?: NotificationTypeEnum }) {
+  send(data: {
+    userIds: IdentifierType[];
+    title: string;
+    message: string;
+    type?: NotificationTypeEnum;
+  }) {
     return api.post<void>("/notifications/send", data);
   },
 };

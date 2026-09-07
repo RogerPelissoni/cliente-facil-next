@@ -6,4 +6,5 @@ export const AccountReceivableStatusEnum = {
   CANCELLED: "Cancelado",
 } as const;
 
-export type AccountReceivableStatusEnumType = (typeof AccountReceivableStatusEnum)[keyof typeof AccountReceivableStatusEnum];
+export type AccountReceivableStatusEnumType =
+  (typeof AccountReceivableStatusEnum)[keyof typeof AccountReceivableStatusEnum];

@@ -1,6 +1,12 @@
 "use client";
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { CSSProperties, ReactNode } from "react";
 
 type ModalSize = "sm" | "md" | "lg" | "xl" | "full";
@@ -23,7 +29,15 @@ const modalSizes: Record<ModalSize, CSSProperties> = {
   full: { maxWidth: "95vw" },
 };
 
-export function CoreModal({ open, title, description, loading = false, size = "md", children, onOpenChange }: Props) {
+export function CoreModal({
+  open,
+  title,
+  description,
+  loading = false,
+  size = "md",
+  children,
+  onOpenChange,
+}: Props) {
   function handleOpenChange(value: boolean) {
     if (loading) {
       return;

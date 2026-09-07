@@ -3,7 +3,11 @@
 import { Switch } from "@/components/ui/switch";
 import { DataTable } from "@/src/shared/components/DataTable";
 import { EmptyState } from "@/src/shared/components/EmptyState";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { ProfilePermissionFormInput } from "./profilePermission.schema";
 
 interface Props {
@@ -30,7 +34,9 @@ export function ProfilePermissionTable({ data, onPermissionChange }: Props) {
         return (
           <Switch
             checked={profilePermission.hasPermission}
-            onCheckedChange={(checked) => onPermissionChange(profilePermission.resourceId, checked)}
+            onCheckedChange={(checked) =>
+              onPermissionChange(profilePermission.resourceId, checked)
+            }
           />
         );
       },

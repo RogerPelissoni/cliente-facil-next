@@ -1,5 +1,8 @@
 import { api } from "@/src/shared/utils/http.util";
-import { MailConfigFormSchemaFields, toMailConfigRequest } from "./mailConfig.schema";
+import {
+  MailConfigFormSchemaFields,
+  toMailConfigRequest,
+} from "./mailConfig.schema";
 import { MailConfigType } from "./mailConfig.type";
 
 const RESOURCE = "/mail-configs";
@@ -24,8 +27,16 @@ const mailConfigApi = {
 
   // Testa os dados ATUAIS do formulário (possivelmente não salvos), não a config persistida —
   // ver POST /mail-configs/test-draft no backend.
-  testDraft(scope: MailConfigScope, data: MailConfigFormSchemaFields, to: string) {
-    return api.post<void>(`${RESOURCE}/test-draft`, { ...toMailConfigRequest(data), scope, to });
+  testDraft(
+    scope: MailConfigScope,
+    data: MailConfigFormSchemaFields,
+    to: string,
+  ) {
+    return api.post<void>(`${RESOURCE}/test-draft`, {
+      ...toMailConfigRequest(data),
+      scope,
+      to,
+    });
   },
 };
 

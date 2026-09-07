@@ -11,8 +11,14 @@ import { useTableState } from "@/src/shared/hooks/useTableState";
 import { PageBreadcrumb } from "@/src/shared/layout/PageBreadcrumb";
 import { PageContainer } from "@/src/shared/layout/PageContainer";
 import { PageHeader } from "@/src/shared/layout/PageHeader";
-import { useDeleteProfessional, useProfessionalsScreen } from "./professional.hooks";
-import { ProfessionalFiltersType, ProfessionalType } from "./professional.types";
+import {
+  useDeleteProfessional,
+  useProfessionalsScreen,
+} from "./professional.hooks";
+import {
+  ProfessionalFiltersType,
+  ProfessionalType,
+} from "./professional.types";
 import { ProfessionalFilters } from "./ProfessionalFilters";
 import { ProfessionalForm } from "./ProfessionalForm";
 import { ProfessionalTable } from "./ProfessionalTable";
@@ -46,7 +52,11 @@ export default function ProfessionalPage() {
 
         <PageHeader
           title="Profissionais"
-          actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>}
+          actions={
+            !crud.open && (
+              <Button onClick={crud.create}>Adicionar Registro</Button>
+            )
+          }
         />
 
         {crud.open ? (
@@ -59,7 +69,10 @@ export default function ProfessionalPage() {
         ) : (
           <>
             <DataTableToolbar>
-              <ProfessionalFilters filters={table.filters} onChange={table.changeFilters} />
+              <ProfessionalFilters
+                filters={table.filters}
+                onChange={table.changeFilters}
+              />
             </DataTableToolbar>
 
             <ProfessionalTable
@@ -67,11 +80,16 @@ export default function ProfessionalPage() {
               sorting={table.sorting}
               onSortingChange={table.changeSorting}
               onEdit={crud.edit}
-              onDelete={(professional) => deleteProfessional.mutateAsync(professional.id)}
+              onDelete={(professional) =>
+                deleteProfessional.mutateAsync(professional.id)
+              }
             />
 
             <div className="flex justify-between">
-              <DataTablePageSize value={table.size} onChange={table.changePageSize} />
+              <DataTablePageSize
+                value={table.size}
+                onChange={table.changePageSize}
+              />
 
               <DataTablePagination
                 page={table.page}

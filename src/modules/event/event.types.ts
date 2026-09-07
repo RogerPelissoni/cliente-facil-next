@@ -1,4 +1,7 @@
-import { EventStatusEnum, EventStatusEnumType } from "@/src/enum/eventStatus.enum";
+import {
+  EventStatusEnum,
+  EventStatusEnumType,
+} from "@/src/enum/eventStatus.enum";
 import { EventTypeEnum, EventTypeEnumType } from "@/src/enum/eventType.enum";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
@@ -24,8 +27,8 @@ export type EventWithRelationsType = EventType & {
     id: IdentifierType;
     vlTotal: number;
     daDue: Date;
-  }
-}
+  };
+};
 
 export interface EventFiltersType {
   dsTitle: string;

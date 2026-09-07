@@ -5,7 +5,11 @@ import { EventMessageFormSchemaFields } from "./eventMessage.schema";
 import { EventMessageFiltersType, EventMessageType } from "./eventMessage.type";
 
 const eventMessageApi = {
-  ...createCrudApi<EventMessageType, EventMessageFormSchemaFields, EventMessageFiltersType>("/eventMessage"),
+  ...createCrudApi<
+    EventMessageType,
+    EventMessageFormSchemaFields,
+    EventMessageFiltersType
+  >("/eventMessage"),
 
   findByEvent(eventId?: IdentifierType) {
     return api.get<EventMessageType[]>(`/eventMessage/event/${eventId}`);

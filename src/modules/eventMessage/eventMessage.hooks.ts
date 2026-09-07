@@ -1,7 +1,13 @@
 import { IdentifierType } from "@/src/shared/types/form.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
-import { createEventMessage, deleteEventMessage, findEventMessageById, findEventMessagesByEvent, updateEventMessage } from "./eventMessage.api";
+import {
+  createEventMessage,
+  deleteEventMessage,
+  findEventMessageById,
+  findEventMessagesByEvent,
+  updateEventMessage,
+} from "./eventMessage.api";
 import { EventMessageFormSchemaFields } from "./eventMessage.schema";
 import { EventMessageType } from "./eventMessage.type";
 
@@ -34,7 +40,10 @@ export function useCreateEventMessage() {
 }
 
 export function useUpdateEventMessage() {
-  return useApiMutation<EventMessageType, { id: IdentifierType; data: EventMessageFormSchemaFields }>({
+  return useApiMutation<
+    EventMessageType,
+    { id: IdentifierType; data: EventMessageFormSchemaFields }
+  >({
     mutationFn: ({ id, data }) => updateEventMessage(id, data),
     invalidateQueries: [eventMessageKeys.byEvent, eventMessageKeys.byId],
   });

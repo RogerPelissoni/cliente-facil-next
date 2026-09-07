@@ -1,7 +1,14 @@
 "use client";
 
 import { Client, type IMessage, type StompSubscription } from "@stomp/stompjs";
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 type MessageHandler = (message: IMessage) => void;
 
@@ -34,7 +41,9 @@ export function StompProvider({ children }: React.PropsWithChildren) {
       }
 
       const subscription = client.subscribe(destination, (message) => {
-        handlersRef.current.get(destination)?.forEach((handler) => handler(message));
+        handlersRef.current
+          .get(destination)
+          ?.forEach((handler) => handler(message));
       });
 
       activeSubscriptionsRef.current.set(destination, subscription);
@@ -43,6 +52,7 @@ export function StompProvider({ children }: React.PropsWithChildren) {
 
   useEffect(() => {
     let cancelled = false;
+    const activeSubscriptions = activeSubscriptionsRef.current;
 
     fetch("/api/ws-token")
       .then((response) => (response.ok ? response.json() : null))
@@ -70,7 +80,7 @@ export function StompProvider({ children }: React.PropsWithChildren) {
       cancelled = true;
       clientRef.current?.deactivate();
       clientRef.current = null;
-      activeSubscriptionsRef.current.clear();
+      activeSubscriptions.clear();
     };
   }, [subscribeAllPending]);
 
@@ -98,14 +108,20 @@ export function StompProvider({ children }: React.PropsWithChildren) {
     [subscribeAllPending],
   );
 
-  return <StompContext.Provider value={{ connected, subscribe }}>{children}</StompContext.Provider>;
+  return (
+    <StompContext.Provider value={{ connected, subscribe }}>
+      {children}
+    </StompContext.Provider>
+  );
 }
 
 export function useStompContext() {
   const context = useContext(StompContext);
 
   if (!context) {
-    throw new Error("useStompContext deve ser usado dentro de um StompProvider");
+    throw new Error(
+      "useStompContext deve ser usado dentro de um StompProvider",
+    );
   }
 
   return context;

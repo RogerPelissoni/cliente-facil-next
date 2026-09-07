@@ -9,7 +9,11 @@ import { FormSelect } from "@/src/shared/components/FormSelect";
 import { QueryState } from "@/src/shared/components/QueryState";
 import { BooleanEnum } from "@/src/shared/enum/boolean.enum";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
+import {
+  createSubmitHandler,
+  parseSubmit,
+  resetForm,
+} from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
@@ -76,10 +80,27 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={createSubmitHandler(form, parseSubmit(personSchema, onSubmit), onError)} className="space-y-6">
+            <form
+              onSubmit={createSubmitHandler(
+                form,
+                parseSubmit(personSchema, onSubmit),
+                onError,
+              )}
+              className="space-y-6"
+            >
               <FormGrid>
-                <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
-                <FormInput form={form} name="dsDocument" label="Documento" placeholder="Digite o CPF ou CNPJ" />
+                <FormInput
+                  form={form}
+                  name="name"
+                  label="Nome"
+                  placeholder="Digite o nome"
+                />
+                <FormInput
+                  form={form}
+                  name="dsDocument"
+                  label="Documento"
+                  placeholder="Digite o CPF ou CNPJ"
+                />
 
                 <FormSelect
                   form={form}
@@ -89,14 +110,22 @@ export function PersonForm({ id, onCancel, onSuccess }: Props) {
                   options={toOptions(PersonGenderEnum)}
                 />
 
-                <FormSelect form={form} name="flActive" label="Ativo" options={toOptions(BooleanEnum)} />
+                <FormSelect
+                  form={form}
+                  name="flActive"
+                  label="Ativo"
+                  options={toOptions(BooleanEnum)}
+                />
               </FormGrid>
 
               <PersonAddressSection form={form} />
               <PersonMailSection form={form} />
               <PersonPhoneSection form={form} />
 
-              <FormActions onCancel={onCancel} loading={createPerson.isPending || updatePerson.isPending} />
+              <FormActions
+                onCancel={onCancel}
+                loading={createPerson.isPending || updatePerson.isPending}
+              />
             </form>
           </CardContent>
         </Card>

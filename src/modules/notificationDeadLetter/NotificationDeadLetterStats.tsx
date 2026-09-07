@@ -37,11 +37,17 @@ export function NotificationDeadLetterStats({ stats }: Props) {
       {items.map((item) => (
         <Card key={item.label}>
           <CardHeader className="flex-row items-center justify-between space-y-0">
-            <CardTitle className="text-sm font-medium text-muted-foreground">{item.label}</CardTitle>
+            <CardTitle className="text-muted-foreground text-sm font-medium">
+              {item.label}
+            </CardTitle>
             <item.icon className={`h-4 w-4 ${item.className}`} />
           </CardHeader>
 
-          <div className={`px-(--card-spacing) text-2xl font-bold ${item.className}`}>{item.value}</div>
+          <div
+            className={`px-(--card-spacing) text-2xl font-bold ${item.className}`}
+          >
+            {item.value}
+          </div>
         </Card>
       ))}
     </div>

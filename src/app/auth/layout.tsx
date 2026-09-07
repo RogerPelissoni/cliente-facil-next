@@ -17,20 +17,20 @@ export default function RootLayout({
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className="min-h-screen flex flex-col">
+      <body className="flex min-h-screen flex-col">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <header className="flex justify-end p-2 border-b">
+          <header className="flex justify-end border-b p-2">
             <ColorModeComponent />
           </header>
 
           <main className="flex-1">{children}</main>
 
-          <footer className="flex items-center p-2 border-t">
+          <footer className="flex items-center border-t p-2">
             <small>
               Desenvolvido por <b>Roger Pelissoni</b> ©{actualYear}
             </small>

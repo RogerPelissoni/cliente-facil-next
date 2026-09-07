@@ -1,5 +1,9 @@
 import { MailEncryptionEnum } from "@/src/enum/mailEncryption.enum";
-import { BooleanEnum, fromBooleanEnum, toBooleanEnum } from "@/src/shared/enum/boolean.enum";
+import {
+  BooleanEnum,
+  fromBooleanEnum,
+  toBooleanEnum,
+} from "@/src/shared/enum/boolean.enum";
 import { zEnum, zString } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
 import { MailConfigType } from "./mailConfig.type";
@@ -13,7 +17,9 @@ export const mailConfigSchema = z.object({
   dsPassword: z.string().trim().optional(),
   tpEncryption: zEnum(MailEncryptionEnum),
   dsFromName: zString("Informe o nome do remetente"),
-  dsFromAddress: zString("Informe o e-mail do remetente").email("E-mail inválido"),
+  dsFromAddress: zString("Informe o e-mail do remetente").email(
+    "E-mail inválido",
+  ),
   flActive: zEnum(BooleanEnum),
 });
 
@@ -33,7 +39,9 @@ export function createMailConfigDefaultValues(): MailConfigFormInput {
   };
 }
 
-export function mapMailConfigToForm(config: MailConfigType): MailConfigFormInput {
+export function mapMailConfigToForm(
+  config: MailConfigType,
+): MailConfigFormInput {
   return {
     dsHost: config.dsHost,
     nrPort: config.nrPort,

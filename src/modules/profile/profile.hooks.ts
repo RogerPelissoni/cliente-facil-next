@@ -17,15 +17,25 @@ import { ProfileFiltersType, ProfileType } from "./profile.types";
 export const profileKeys = {
   all: ["profile"] as const,
 
-  list: (filters: ProfileFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["profile", "list", filters, page, size, sorting] as const,
+  list: (
+    filters: ProfileFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["profile", "list", filters, page, size, sorting] as const,
 
   detail: (id?: IdentifierType) => ["profile", "detail", id] as const,
 
-  profilePermission: (id: IdentifierType | undefined) => ["profile", "profilePermission", id] as const,
+  profilePermission: (id: IdentifierType | undefined) =>
+    ["profile", "profilePermission", id] as const,
 };
 
-export function useProfiles({ filters, page, size, sorting }: QueryParamsType<ProfileFiltersType>) {
+export function useProfiles({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<ProfileFiltersType>) {
   return useQuery({
     queryKey: profileKeys.list(filters, page, size, sorting),
     queryFn: () => searchProfiles(filters, page, size, sorting),
@@ -55,7 +65,10 @@ export function useCreateProfile() {
 }
 
 export function useUpdateProfile() {
-  return useApiMutation<ProfileType, { id: IdentifierType; data: ProfileFormSchemaFields }>({
+  return useApiMutation<
+    ProfileType,
+    { id: IdentifierType; data: ProfileFormSchemaFields }
+  >({
     mutationFn: ({ id, data }) => updateProfile(id, data),
     invalidateQueries: [profileKeys.all],
   });

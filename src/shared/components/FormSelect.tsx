@@ -1,8 +1,21 @@
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/src/shared/utils/util";
-import { Controller, FieldPath, FieldValues, get, UseFormReturn, useWatch } from "react-hook-form";
+import {
+  Controller,
+  FieldPath,
+  FieldValues,
+  get,
+  UseFormReturn,
+  useWatch,
+} from "react-hook-form";
 import { GRID_SIZE, GridSize } from "../utils/form.util";
 
 interface Option {
@@ -51,7 +64,9 @@ export function FormSelect<T extends FieldValues>({
             onValueChange={(value) => field.onChange(String(value))}
           >
             <SelectTrigger className="w-full" aria-invalid={!!fieldState.error}>
-              <SelectValue placeholder={placeholder}>{selectedOption?.label}</SelectValue>
+              <SelectValue placeholder={placeholder}>
+                {selectedOption?.label}
+              </SelectValue>
             </SelectTrigger>
 
             <SelectContent position="popper">
@@ -63,9 +78,7 @@ export function FormSelect<T extends FieldValues>({
             </SelectContent>
           </Select>
 
-          <p className="text-sm text-red-500">
-            {error?.message}
-          </p>
+          <p className="text-sm text-red-500">{error?.message}</p>
         </div>
       )}
     />

@@ -43,13 +43,23 @@ export function PersonPhoneForm({ personPhone, onCancel, onSubmit }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{personPhone ? "Editar Telefone" : "Novo Telefone"}</CardTitle>
+        <CardTitle>
+          {personPhone ? "Editar Telefone" : "Novo Telefone"}
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(form, onSubmit, onError)}
+          className="space-y-6"
+        >
           <FormGrid>
-            <FormInput form={form} name="dsPhone" label="Telefone" placeholder="Digite o telefone" />
+            <FormInput
+              form={form}
+              name="dsPhone"
+              label="Telefone"
+              placeholder="Digite o telefone"
+            />
           </FormGrid>
 
           <FormActions onCancel={onCancel} />

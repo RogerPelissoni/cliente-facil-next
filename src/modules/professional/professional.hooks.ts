@@ -12,28 +12,49 @@ import {
   updateProfessional,
 } from "./professional.api";
 import { ProfessionalFormSchemaFields } from "./professional.schema";
-import { ProfessionalFiltersType, ProfessionalType } from "./professional.types";
+import {
+  ProfessionalFiltersType,
+  ProfessionalType,
+} from "./professional.types";
 
 export const professionalKeys = {
   all: ["professional"] as const,
 
-  list: (filters: ProfessionalFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["professional", "list", filters, page, size, sorting] as const,
+  list: (
+    filters: ProfessionalFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["professional", "list", filters, page, size, sorting] as const,
 
-  screen: (filters: ProfessionalFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["professional", "screen", filters, page, size, sorting] as const,
+  screen: (
+    filters: ProfessionalFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["professional", "screen", filters, page, size, sorting] as const,
 
   detail: (id?: IdentifierType) => ["professional", "detail", id] as const,
 };
 
-export function useProfessionalsScreen({ filters, page, size, sorting }: QueryParamsType<ProfessionalFiltersType>) {
+export function useProfessionalsScreen({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<ProfessionalFiltersType>) {
   return useQuery({
     queryKey: professionalKeys.screen(filters, page, size, sorting),
     queryFn: () => screenProfessionals(filters, page, size, sorting),
   });
 }
 
-export function useProfessionals({ filters, page, size, sorting }: QueryParamsType<ProfessionalFiltersType>) {
+export function useProfessionals({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<ProfessionalFiltersType>) {
   return useQuery({
     queryKey: professionalKeys.list(filters, page, size, sorting),
     queryFn: () => searchProfessionals(filters, page, size, sorting),
@@ -56,7 +77,10 @@ export function useCreateProfessional() {
 }
 
 export function useUpdateProfessional() {
-  return useApiMutation<ProfessionalType, { id: IdentifierType; data: ProfessionalFormSchemaFields }>({
+  return useApiMutation<
+    ProfessionalType,
+    { id: IdentifierType; data: ProfessionalFormSchemaFields }
+  >({
     mutationFn: ({ id, data }) => updateProfessional(id, data),
     invalidateQueries: [professionalKeys.all],
   });

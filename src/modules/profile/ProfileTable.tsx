@@ -8,7 +8,11 @@ import { TableActionEdit } from "@/src/shared/components/table/TableActionEdit";
 import { TableActions } from "@/src/shared/components/table/TableActions";
 import { Sorting } from "@/src/shared/types/table.type";
 import { nextSorting } from "@/src/shared/utils/table.util";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { ProfileType } from "./profile.types";
 
 interface Props {
@@ -19,7 +23,13 @@ interface Props {
   onDelete(profile: ProfileType): void;
 }
 
-export function ProfileTable({ data, sorting, onSortingChange, onEdit, onDelete }: Props) {
+export function ProfileTable({
+  data,
+  sorting,
+  onSortingChange,
+  onEdit,
+  onDelete,
+}: Props) {
   function handleSort(field: string) {
     onSortingChange(nextSorting(sorting, field));
   }
@@ -27,11 +37,25 @@ export function ProfileTable({ data, sorting, onSortingChange, onEdit, onDelete 
   const columns: ColumnDef<ProfileType>[] = [
     {
       accessorKey: "id",
-      header: () => <SortableHeader label="#" field="id" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="#"
+          field="id"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "name",
-      header: () => <SortableHeader label="Nome" field="name" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Nome"
+          field="name"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       id: "actions",

@@ -16,7 +16,7 @@ export function ErrorState({
 }: Props) {
   return (
     <div className="flex flex-col items-center justify-center gap-4 py-10">
-      <TriangleAlert className="h-10 w-10 text-destructive" />
+      <TriangleAlert className="text-destructive h-10 w-10" />
 
       <div className="text-center">
         <h3 className="font-semibold">{title}</h3>

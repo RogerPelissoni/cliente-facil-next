@@ -4,4 +4,5 @@ export const MailEncryptionEnum = {
   TLS: "TLS (STARTTLS)",
 } as const;
 
-export type MailEncryptionEnumType = (typeof MailEncryptionEnum)[keyof typeof MailEncryptionEnum];
+export type MailEncryptionEnumType =
+  (typeof MailEncryptionEnum)[keyof typeof MailEncryptionEnum];

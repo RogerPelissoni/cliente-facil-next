@@ -28,7 +28,11 @@ function isFormData(value: unknown): value is FormData {
   return value instanceof FormData;
 }
 
-async function request<T>(method: HttpMethod, path: string, options?: RequestOptions): Promise<T> {
+async function request<T>(
+  method: HttpMethod,
+  path: string,
+  options?: RequestOptions,
+): Promise<T> {
   const headers = new Headers(options?.headers);
 
   let body: BodyInit | undefined;
@@ -43,23 +47,30 @@ async function request<T>(method: HttpMethod, path: string, options?: RequestOpt
     }
   }
 
-  const response = await fetch(`/api/proxy${path}${buildQuery(options?.params)}`, {
-    method,
-    credentials: "include",
-    headers,
-    body,
-    cache: options?.cache ?? "no-store",
-  });
+  const response = await fetch(
+    `/api/proxy${path}${buildQuery(options?.params)}`,
+    {
+      method,
+      credentials: "include",
+      headers,
+      body,
+      cache: options?.cache ?? "no-store",
+    },
+  );
 
   const contentType = response.headers.get("content-type");
 
-  const data = contentType?.includes("application/json") ? await response.json() : await response.text();
+  const data = contentType?.includes("application/json")
+    ? await response.json()
+    : await response.text();
 
   if (!response.ok) {
     const message =
       data?.message ??
       data?.error ??
-      (Array.isArray(data?.errors) ? data.errors.join("\n") : "Erro ao realizar requisição.");
+      (Array.isArray(data?.errors)
+        ? data.errors.join("\n")
+        : "Erro ao realizar requisição.");
 
     throw new ApiError(response.status, message, data);
   }

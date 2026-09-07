@@ -39,11 +39,36 @@ export function ChangePasswordCard() {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, parseSubmit(changePasswordSchema, onSubmit), onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(changePasswordSchema, onSubmit),
+            onError,
+          )}
+          className="space-y-6"
+        >
           <FormGrid>
-            <FormInput form={form} name="currentPassword" label="Senha atual" type="password" size={12} />
-            <FormInput form={form} name="newPassword" label="Nova senha" type="password" size={6} />
-            <FormInput form={form} name="confirmPassword" label="Confirmar nova senha" type="password" size={6} />
+            <FormInput
+              form={form}
+              name="currentPassword"
+              label="Senha atual"
+              type="password"
+              size={12}
+            />
+            <FormInput
+              form={form}
+              name="newPassword"
+              label="Nova senha"
+              type="password"
+              size={6}
+            />
+            <FormInput
+              form={form}
+              name="confirmPassword"
+              label="Confirmar nova senha"
+              type="password"
+              size={6}
+            />
           </FormGrid>
 
           <div className="flex justify-end">

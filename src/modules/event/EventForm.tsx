@@ -13,21 +13,36 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
+import {
+  createSubmitHandler,
+  parseSubmit,
+  resetForm,
+} from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { EventMessageSection } from "../eventMessage/EventMessageSection";
-import { useCreateEvent, useDeleteEvent, useEvent, useUpdateEvent } from "./event.hooks";
-import { createEventDefaultValues, EventFormInput, EventFormSchemaFields, eventSchema, mapEventToForm } from "./event.schema";
+import {
+  useCreateEvent,
+  useDeleteEvent,
+  useEvent,
+  useUpdateEvent,
+} from "./event.hooks";
+import {
+  createEventDefaultValues,
+  EventFormInput,
+  EventFormSchemaFields,
+  eventSchema,
+  mapEventToForm,
+} from "./event.schema";
 
 export type EventFormInitialDataType = {
-  id?: IdentifierType,
-  start?: Date,
-  end?: Date
-}
+  id?: IdentifierType;
+  start?: Date;
+  end?: Date;
+};
 
 interface Props {
   initialData: EventFormInitialDataType;
@@ -37,7 +52,13 @@ interface Props {
   onSuccess: () => void;
 }
 
-export function EventForm({ initialData, kvClient, kvProfessional, onCancel, onSuccess }: Props) {
+export function EventForm({
+  initialData,
+  kvClient,
+  kvProfessional,
+  onCancel,
+  onSuccess,
+}: Props) {
   const createEvent = useCreateEvent();
   const updateEvent = useUpdateEvent();
   const deleteEvent = useDeleteEvent();
@@ -77,53 +98,87 @@ export function EventForm({ initialData, kvClient, kvProfessional, onCancel, onS
   };
 
   const onConfirmDelete = () => {
-    if (!initialData.id) return toast.error('Identificador não encontrado');
+    if (!initialData.id) return toast.error("Identificador não encontrado");
     deleteEvent.mutateAsync(initialData.id);
-  }
+  };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{initialData.id ? `Editar Evento #${initialData.id}` : "Novo Evento"}</CardTitle>
+        <CardTitle>
+          {initialData.id ? `Editar Evento #${initialData.id}` : "Novo Evento"}
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, parseSubmit(eventSchema, onSubmit), onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(eventSchema, onSubmit),
+            onError,
+          )}
+          className="space-y-6"
+        >
           <FormGrid>
             <FormInput form={form} name="dsTitle" label="Título" />
             <FormInput form={form} name="dsDescription" label="Descrição" />
             <FormDate form={form} name="dtStart" label="Data de Início" />
             <FormDate form={form} name="dtEnd" label="Data de Término" />
-            <FormSelect form={form} name="tpStatus" label="Status" options={toOptions(EventStatusEnum)} />
-            <FormSelect form={form} name="tpEvent" label="Tipo de Evento" options={toOptions(EventTypeEnum)} />
+            <FormSelect
+              form={form}
+              name="tpStatus"
+              label="Status"
+              options={toOptions(EventStatusEnum)}
+            />
+            <FormSelect
+              form={form}
+              name="tpEvent"
+              label="Tipo de Evento"
+              options={toOptions(EventTypeEnum)}
+            />
 
-            {form.watch('tpEvent') === 'SERVICE' && (
+            {form.watch("tpEvent") === "SERVICE" && (
               <>
-                <FormSelect form={form} name="eventService.clientId" label="Cliente" options={toOptions(kvClient)} />
-                <FormSelect form={form} name="eventService.professionalId" label="Profissional" options={toOptions(kvProfessional)} />
-                <FormDecimalInput form={form} name="accountReceivable.vlTotal" label="Valor" />
-                <FormDate form={form} name="accountReceivable.daDue" label="Vencimento" />
+                <FormSelect
+                  form={form}
+                  name="eventService.clientId"
+                  label="Cliente"
+                  options={toOptions(kvClient)}
+                />
+                <FormSelect
+                  form={form}
+                  name="eventService.professionalId"
+                  label="Profissional"
+                  options={toOptions(kvProfessional)}
+                />
+                <FormDecimalInput
+                  form={form}
+                  name="accountReceivable.vlTotal"
+                  label="Valor"
+                />
+                <FormDate
+                  form={form}
+                  name="accountReceivable.daDue"
+                  label="Vencimento"
+                />
               </>
             )}
           </FormGrid>
 
           {initialData.id && <EventMessageSection eventId={initialData.id} />}
 
-          <FormActions onCancel={onCancel} loading={createEvent.isPending || updateEvent.isPending} >
-
+          <FormActions
+            onCancel={onCancel}
+            loading={createEvent.isPending || updateEvent.isPending}
+          >
             {initialData.id && (
               <ConfirmDialog
                 title="Atenção"
                 description="Deseja remover o evento?"
                 onConfirm={onConfirmDelete}
-                trigger={
-                  <Button variant="destructive">
-                    Excluir
-                  </Button>
-                }
+                trigger={<Button variant="destructive">Excluir</Button>}
               />
             )}
-
           </FormActions>
         </form>
       </CardContent>

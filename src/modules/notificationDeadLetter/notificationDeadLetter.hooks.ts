@@ -10,7 +10,10 @@ import {
   simulateEmailFailure,
   simulateNotificationFailure,
 } from "./notificationDeadLetter.api";
-import { NotificationDeadLetterFiltersType, NotificationDeadLetterType } from "./notificationDeadLetter.types";
+import {
+  NotificationDeadLetterFiltersType,
+  NotificationDeadLetterType,
+} from "./notificationDeadLetter.types";
 
 // Falha simulada é assíncrona: publica na fila e só cai na DLQ depois do retry esgotar (~3s, ver
 // application.yml). Reinvalida a lista um pouco depois do sucesso da chamada, pra já puxar o
@@ -20,13 +23,23 @@ const SIMULATE_FAILURE_DELAY_MS = 4000;
 export const deadLetterKeys = {
   all: ["notificationDeadLetter"] as const,
 
-  list: (filters: NotificationDeadLetterFiltersType, page: number, size: number, sorting: Sorting) =>
+  list: (
+    filters: NotificationDeadLetterFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) =>
     ["notificationDeadLetter", "list", filters, page, size, sorting] as const,
 
   stats: ["notificationDeadLetter", "stats"] as const,
 };
 
-export function useDeadLetters({ filters, page, size, sorting }: QueryParamsType<NotificationDeadLetterFiltersType>) {
+export function useDeadLetters({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<NotificationDeadLetterFiltersType>) {
   return useQuery({
     queryKey: deadLetterKeys.list(filters, page, size, sorting),
     queryFn: () => searchDeadLetters(filters, page, size, sorting),
@@ -53,9 +66,13 @@ export function useSimulateNotificationFailure() {
 
   return useApiMutation<void, void>({
     mutationFn: simulateNotificationFailure,
-    successMessage: "Falha simulada disparada — deve aparecer na lista em alguns segundos",
+    successMessage:
+      "Falha simulada disparada — deve aparecer na lista em alguns segundos",
     onSuccess: () => {
-      setTimeout(() => queryClient.invalidateQueries({ queryKey: deadLetterKeys.all }), SIMULATE_FAILURE_DELAY_MS);
+      setTimeout(
+        () => queryClient.invalidateQueries({ queryKey: deadLetterKeys.all }),
+        SIMULATE_FAILURE_DELAY_MS,
+      );
     },
   });
 }
@@ -65,9 +82,13 @@ export function useSimulateEmailFailure() {
 
   return useApiMutation<void, void>({
     mutationFn: simulateEmailFailure,
-    successMessage: "Falha simulada disparada — deve aparecer na lista em alguns segundos",
+    successMessage:
+      "Falha simulada disparada — deve aparecer na lista em alguns segundos",
     onSuccess: () => {
-      setTimeout(() => queryClient.invalidateQueries({ queryKey: deadLetterKeys.all }), SIMULATE_FAILURE_DELAY_MS);
+      setTimeout(
+        () => queryClient.invalidateQueries({ queryKey: deadLetterKeys.all }),
+        SIMULATE_FAILURE_DELAY_MS,
+      );
     },
   });
 }

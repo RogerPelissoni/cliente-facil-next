@@ -73,7 +73,7 @@ export function DataTablePagination({
 
   return (
     <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-      <div className="text-sm text-muted-foreground">
+      <div className="text-muted-foreground text-sm">
         Mostrando {start}-{end} de {totalElements} registros
       </div>
 

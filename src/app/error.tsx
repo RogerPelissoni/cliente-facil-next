@@ -2,9 +2,9 @@
 
 export default function Error({ reset }: { reset: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-center h-[60vh] text-center">
-      <h1 className="text-4xl font-bold mb-4">Algo deu errado</h1>
-      <button onClick={() => reset()} className="px-4 py-2 border rounded">
+    <div className="flex h-[60vh] flex-col items-center justify-center text-center">
+      <h1 className="mb-4 text-4xl font-bold">Algo deu errado</h1>
+      <button onClick={() => reset()} className="rounded border px-4 py-2">
         Tentar novamente
       </button>
     </div>

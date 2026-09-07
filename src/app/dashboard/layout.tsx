@@ -24,23 +24,37 @@ const geist = Geist({
   subsets: ["latin"],
 });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const actualYear = new Date().getFullYear();
 
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className={cn(geist.className, "antialiased min-h-screen flex flex-col")}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+      <body
+        className={cn(
+          geist.className,
+          "flex min-h-screen flex-col antialiased",
+        )}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
           {/* <SwalConfirmProvider> */}
           <QueryProvider>
             <StompProvider>
-              <header className="flex justify-between p-2 border-b">
+              <header className="flex justify-between border-b p-2">
                 <div className="flex items-center gap-4">
                   <Logo className="ml-2" />
 
                   <NavBarComponent />
                 </div>
-                <div className="flex items-center px-2 gap-2">
+                <div className="flex items-center gap-2 px-2">
                   <NotificationBell />
 
                   <Button variant="outline" size="icon" asChild>
@@ -61,7 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <Toaster position="top-right" richColors closeButton />
 
-          <footer className="flex items-center p-2 border-t">
+          <footer className="flex items-center border-t p-2">
             <small>
               Desenvolvido por <b>Roger Pelissoni</b> ©{actualYear}
             </small>

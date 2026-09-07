@@ -1,8 +1,17 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DeadLetterStatusFilter, NotificationDeadLetterFiltersType } from "./notificationDeadLetter.types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DeadLetterStatusFilter,
+  NotificationDeadLetterFiltersType,
+} from "./notificationDeadLetter.types";
 
 interface Props {
   filters: NotificationDeadLetterFiltersType;
@@ -15,12 +24,16 @@ export function NotificationDeadLetterFilters({ filters, onChange }: Props) {
       <Input
         placeholder="Motivo (ex: rejected, expired)"
         value={filters.dsErrorReason}
-        onChange={(event) => onChange({ ...filters, dsErrorReason: event.target.value })}
+        onChange={(event) =>
+          onChange({ ...filters, dsErrorReason: event.target.value })
+        }
       />
 
       <Select
         value={filters.status}
-        onValueChange={(value) => onChange({ ...filters, status: value as DeadLetterStatusFilter })}
+        onValueChange={(value) =>
+          onChange({ ...filters, status: value as DeadLetterStatusFilter })
+        }
       >
         <SelectTrigger>
           <SelectValue />

@@ -4,7 +4,9 @@ import { IdentifierType } from "../types/form.type";
 import { makeSearchRequest } from "./form.util";
 import { api } from "./http.util";
 
-export function createCrudApi<TEntity, TCreate, TFilters extends object>(resource: string) {
+export function createCrudApi<TEntity, TCreate, TFilters extends object>(
+  resource: string,
+) {
   return {
     findAll() {
       return api.get<TEntity[]>(resource);
@@ -27,15 +29,23 @@ export function createCrudApi<TEntity, TCreate, TFilters extends object>(resourc
     },
 
     search(filters: TFilters, page: number, size: number, sorting: Sorting) {
-      return api.post<PageResponse<TEntity>>(`${resource}/search`, makeSearchRequest(filters, page, size, sorting));
+      return api.post<PageResponse<TEntity>>(
+        `${resource}/search`,
+        makeSearchRequest(filters, page, size, sorting),
+      );
     },
   };
 }
 
-export function createScreenApi<TFilters extends object, TScreen>(resource: string) {
+export function createScreenApi<TFilters extends object, TScreen>(
+  resource: string,
+) {
   return {
     screen(filters: TFilters, page: number, size: number, sorting: Sorting) {
-      return api.post<TScreen>(`${resource}/screen`, makeSearchRequest(filters, page, size, sorting));
+      return api.post<TScreen>(
+        `${resource}/screen`,
+        makeSearchRequest(filters, page, size, sorting),
+      );
     },
   };
 }

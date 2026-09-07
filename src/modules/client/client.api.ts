@@ -1,9 +1,15 @@
 import { createCrudApi, createScreenApi } from "@/src/shared/utils/api.util";
 import { ClientFormSchemaFields } from "./client.schema";
-import { ClientFiltersType, ClientScreenDataType, ClientType } from "./client.types";
+import {
+  ClientFiltersType,
+  ClientScreenDataType,
+  ClientType,
+} from "./client.types";
 
 const clientApi = {
-  ...createCrudApi<ClientType, ClientFormSchemaFields, ClientFiltersType>("/client"),
+  ...createCrudApi<ClientType, ClientFormSchemaFields, ClientFiltersType>(
+    "/client",
+  ),
   ...createScreenApi<ClientFiltersType, ClientScreenDataType>("/client"),
 };
 

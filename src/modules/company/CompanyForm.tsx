@@ -7,12 +7,20 @@ import { FormInput } from "@/src/shared/components/FormInput";
 import { FormSelect } from "@/src/shared/components/FormSelect";
 import { KeyValueType } from "@/src/shared/types/core.type";
 import { IdentifierType } from "@/src/shared/types/form.type";
-import { createSubmitHandler, parseSubmit, resetForm } from "@/src/shared/utils/form.util";
+import {
+  createSubmitHandler,
+  parseSubmit,
+  resetForm,
+} from "@/src/shared/utils/form.util";
 import { toOptions } from "@/src/shared/utils/util";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { FieldErrors, useForm } from "react-hook-form";
-import { useCompany, useCreateCompany, useUpdateCompany } from "./company.hooks";
+import {
+  useCompany,
+  useCreateCompany,
+  useUpdateCompany,
+} from "./company.hooks";
 import {
   CompanyFormInput,
   CompanyFormSchemaFields,
@@ -70,13 +78,33 @@ export function CompanyForm({ id, people, onCancel, onSuccess }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, parseSubmit(companySchema, onSubmit), onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(
+            form,
+            parseSubmit(companySchema, onSubmit),
+            onError,
+          )}
+          className="space-y-6"
+        >
           <FormGrid>
-            <FormInput form={form} name="name" label="Nome" placeholder="Digite o nome" />
-            <FormSelect form={form} name="personId" label="Pessoa" options={toOptions(people)} />
+            <FormInput
+              form={form}
+              name="name"
+              label="Nome"
+              placeholder="Digite o nome"
+            />
+            <FormSelect
+              form={form}
+              name="personId"
+              label="Pessoa"
+              options={toOptions(people)}
+            />
           </FormGrid>
 
-          <FormActions onCancel={onCancel} loading={createCompany.isPending || updateCompany.isPending} />
+          <FormActions
+            onCancel={onCancel}
+            loading={createCompany.isPending || updateCompany.isPending}
+          />
         </form>
       </CardContent>
     </Card>

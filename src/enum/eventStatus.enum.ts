@@ -7,4 +7,5 @@ export const EventStatusEnum = {
   MISSED: "Não compareceu",
 } as const;
 
-export type EventStatusEnumType = (typeof EventStatusEnum)[keyof typeof EventStatusEnum];
+export type EventStatusEnumType =
+  (typeof EventStatusEnum)[keyof typeof EventStatusEnum];

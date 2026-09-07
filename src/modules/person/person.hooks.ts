@@ -3,20 +3,35 @@ import { IdentifierType } from "@/src/shared/types/form.type";
 import { Sorting } from "@/src/shared/types/table.type";
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
-import { createPerson, deletePerson, findPersonById, searchPersons, updatePerson } from "./person.api";
+import {
+  createPerson,
+  deletePerson,
+  findPersonById,
+  searchPersons,
+  updatePerson,
+} from "./person.api";
 import { PersonFormSchemaFields } from "./person.schema";
 import { PersonFiltersType, PersonType } from "./person.types";
 
 export const personKeys = {
   all: ["person"] as const,
 
-  list: (filters: PersonFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["person", "list", filters, page, size, sorting] as const,
+  list: (
+    filters: PersonFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["person", "list", filters, page, size, sorting] as const,
 
   detail: (id?: IdentifierType) => ["person", "detail", id] as const,
 };
 
-export function usePersons({ filters, page, size, sorting }: QueryParamsType<PersonFiltersType>) {
+export function usePersons({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<PersonFiltersType>) {
   return useQuery({
     queryKey: personKeys.list(filters, page, size, sorting),
     queryFn: () => searchPersons(filters, page, size, sorting),
@@ -39,7 +54,10 @@ export function useCreatePerson() {
 }
 
 export function useUpdatePerson() {
-  return useApiMutation<PersonType, { id: IdentifierType; data: PersonFormSchemaFields }>({
+  return useApiMutation<
+    PersonType,
+    { id: IdentifierType; data: PersonFormSchemaFields }
+  >({
     mutationFn: ({ id, data }) => updatePerson(id, data),
     invalidateQueries: [personKeys.all],
   });

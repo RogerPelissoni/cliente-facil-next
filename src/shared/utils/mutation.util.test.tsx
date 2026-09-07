@@ -10,7 +10,9 @@ vi.mock("sonner", () => ({
 
 function wrapper(queryClient: QueryClient) {
   function Wrapper({ children }: { children: React.ReactNode }) {
-    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+    return (
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    );
   }
 
   return Wrapper;
@@ -22,7 +24,9 @@ describe("useApiMutation", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     // sem retry aqui: o wiring de sucesso/erro do hook é o alvo, não o retry do react-query em si.
-    queryClient = new QueryClient({ defaultOptions: { mutations: { retry: false } } });
+    queryClient = new QueryClient({
+      defaultOptions: { mutations: { retry: false } },
+    });
   });
 
   it("no sucesso: mostra toast de sucesso, invalida as queries informadas e chama onSuccess", async () => {
@@ -32,7 +36,8 @@ describe("useApiMutation", () => {
     const { result } = renderHook(
       () =>
         useApiMutation<{ id: number }, { name: string }>({
-          mutationFn: async (vars) => ({ id: 1, ...vars }) as unknown as { id: number },
+          mutationFn: async (vars) =>
+            ({ id: 1, ...vars }) as unknown as { id: number },
           successMessage: "Usuário criado",
           invalidateQueries: [["users"]],
           onSuccess,
@@ -52,7 +57,9 @@ describe("useApiMutation", () => {
   it("usa a mensagem de sucesso padrão quando nenhuma é informada", async () => {
     const { result } = renderHook(
       () => useApiMutation({ mutationFn: async () => "ok" }),
-      { wrapper: wrapper(queryClient) },
+      {
+        wrapper: wrapper(queryClient),
+      },
     );
 
     result.current.mutate(undefined);
@@ -87,9 +94,12 @@ describe("useApiMutation", () => {
   it("não invalida nenhuma query quando invalidateQueries não é informado", async () => {
     const invalidateSpy = vi.spyOn(queryClient, "invalidateQueries");
 
-    const { result } = renderHook(() => useApiMutation({ mutationFn: async () => "ok" }), {
-      wrapper: wrapper(queryClient),
-    });
+    const { result } = renderHook(
+      () => useApiMutation({ mutationFn: async () => "ok" }),
+      {
+        wrapper: wrapper(queryClient),
+      },
+    );
 
     result.current.mutate(undefined);
 

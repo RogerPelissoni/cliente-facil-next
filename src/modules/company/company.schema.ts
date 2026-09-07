@@ -1,4 +1,8 @@
-import { toFormIdentifier, zIdentifier, zString } from "@/src/shared/utils/schema.util";
+import {
+  toFormIdentifier,
+  zIdentifier,
+  zString,
+} from "@/src/shared/utils/schema.util";
 import { z } from "zod";
 import { CompanyType } from "./company.types";
 

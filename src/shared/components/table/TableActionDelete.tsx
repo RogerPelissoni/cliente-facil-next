@@ -10,7 +10,12 @@ interface Props {
   disabled?: boolean;
 }
 
-export function TableActionDelete({ title, description, onConfirm, disabled }: Props) {
+export function TableActionDelete({
+  title,
+  description,
+  onConfirm,
+  disabled,
+}: Props) {
   return (
     <ConfirmDialog
       title={title}

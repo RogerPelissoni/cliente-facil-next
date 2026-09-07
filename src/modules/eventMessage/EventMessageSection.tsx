@@ -3,7 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CoreModal } from "@/src/shared/components/CoreModal";
 import { IdentifierType } from "@/src/shared/types/form.type";
 import { useState } from "react";
-import { useDeleteEventMessage, useEventMessagesByEvent } from "./eventMessage.hooks";
+import {
+  useDeleteEventMessage,
+  useEventMessagesByEvent,
+} from "./eventMessage.hooks";
 import { EventMessageType } from "./eventMessage.type";
 import { EventMessageForm } from "./EventMessageForm";
 import { EventMessageTable } from "./EventMessageTable";
@@ -32,10 +35,11 @@ export function EventMessageSection({ eventId }: Props) {
     setIsOpenForm(true);
   };
 
-  const handleDelete = (eventMessage: EventMessageType) => deleteEventMessage.mutateAsync(eventMessage.id);
+  const handleDelete = (eventMessage: EventMessageType) =>
+    deleteEventMessage.mutateAsync(eventMessage.id);
 
   if (!eventMessages.data) {
-    return (<>Carregando...</>)
+    return <>Carregando...</>;
   }
 
   return (
@@ -49,11 +53,20 @@ export function EventMessageSection({ eventId }: Props) {
         </CardHeader>
 
         <CardContent>
-          <EventMessageTable data={eventMessages.data} onEdit={handleEdit} onDelete={handleDelete} />
+          <EventMessageTable
+            data={eventMessages.data}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         </CardContent>
       </Card>
 
-      <CoreModal open={isOpenForm} title="Nova Mensagem" size="lg" onOpenChange={setIsOpenForm}>
+      <CoreModal
+        open={isOpenForm}
+        title="Nova Mensagem"
+        size="lg"
+        onOpenChange={setIsOpenForm}
+      >
         <EventMessageForm
           id={editing?.id}
           eventId={eventId}

@@ -5,15 +5,24 @@ import { makeSearchRequest, parseSubmit, resetForm } from "./form.util";
 
 describe("makeSearchRequest", () => {
   it("mapeia sorting 'asc'/'desc' para 'ASC'/'DESC' esperado pelo backend", () => {
-    const request = makeSearchRequest({}, 0, 10, { field: "name", direction: "asc" });
+    const request = makeSearchRequest({}, 0, 10, {
+      field: "name",
+      direction: "asc",
+    });
     expect(request.sorts).toEqual([{ field: "name", direction: "ASC" }]);
 
-    const desc = makeSearchRequest({}, 0, 10, { field: "name", direction: "desc" });
+    const desc = makeSearchRequest({}, 0, 10, {
+      field: "name",
+      direction: "desc",
+    });
     expect(desc.sorts).toEqual([{ field: "name", direction: "DESC" }]);
   });
 
   it("repassa page e size sem transformação", () => {
-    const request = makeSearchRequest({}, 2, 25, { field: "name", direction: "asc" });
+    const request = makeSearchRequest({}, 2, 25, {
+      field: "name",
+      direction: "asc",
+    });
     expect(request.page).toBe(2);
     expect(request.size).toBe(25);
   });
@@ -23,7 +32,10 @@ describe("makeSearchRequest", () => {
       { name: "Roger", email: "", document: null, active: undefined, age: 0 },
       0,
       10,
-      { field: "name", direction: "asc" },
+      {
+        field: "name",
+        direction: "asc",
+      },
     );
 
     // age: 0 é um valor "presente" (só '' e null/undefined são descartados) — 0 sobrevive ao filtro.

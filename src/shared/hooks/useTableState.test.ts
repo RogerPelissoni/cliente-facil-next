@@ -39,9 +39,14 @@ describe("useTableState", () => {
     const { result } = setup();
 
     act(() => result.current.setPage(2));
-    act(() => result.current.changeSorting({ field: "email", direction: "desc" }));
+    act(() =>
+      result.current.changeSorting({ field: "email", direction: "desc" }),
+    );
 
-    expect(result.current.sorting).toEqual({ field: "email", direction: "desc" });
+    expect(result.current.sorting).toEqual({
+      field: "email",
+      direction: "desc",
+    });
     expect(result.current.page).toBe(0);
   });
 

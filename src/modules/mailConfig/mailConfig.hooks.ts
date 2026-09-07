@@ -1,6 +1,11 @@
 import { useApiMutation } from "@/src/shared/utils/mutation.util";
 import { useQuery } from "@tanstack/react-query";
-import { findMailConfig, MailConfigScope, testMailConfigDraft, upsertMailConfig } from "./mailConfig.api";
+import {
+  findMailConfig,
+  MailConfigScope,
+  testMailConfigDraft,
+  upsertMailConfig,
+} from "./mailConfig.api";
 import { MailConfigFormSchemaFields } from "./mailConfig.schema";
 
 export const mailConfigKeys = {
@@ -26,15 +31,18 @@ export function useMailConfig(scope: MailConfigScope) {
 
 export function useUpsertMailConfig(scope: MailConfigScope) {
   return useApiMutation({
-    mutationFn: (data: MailConfigFormSchemaFields) => upsertMailConfig(scope, data),
+    mutationFn: (data: MailConfigFormSchemaFields) =>
+      upsertMailConfig(scope, data),
     invalidateQueries: [mailConfigKeys.detail(scope)],
     successMessage: "Configuração de e-mail salva com sucesso",
   });
 }
 
 export function useTestMailConfigDraft(scope: MailConfigScope) {
-  return useApiMutation<void, { data: MailConfigFormSchemaFields; to: string }>({
-    mutationFn: ({ data, to }) => testMailConfigDraft(scope, data, to),
-    successMessage: "E-mail de teste enviado com sucesso",
-  });
+  return useApiMutation<void, { data: MailConfigFormSchemaFields; to: string }>(
+    {
+      mutationFn: ({ data, to }) => testMailConfigDraft(scope, data, to),
+      successMessage: "E-mail de teste enviado com sucesso",
+    },
+  );
 }

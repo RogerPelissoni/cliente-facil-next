@@ -18,8 +18,12 @@ import { EventFiltersType, EventType } from "./event.types";
 export const eventKeys = {
   all: ["event"] as const,
 
-  list: (filters: EventFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["event", "list", filters, page, size, sorting] as const,
+  list: (
+    filters: EventFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["event", "list", filters, page, size, sorting] as const,
 
   screen: () => ["users", "screen"] as const,
 
@@ -35,7 +39,12 @@ export function useEventScreen() {
   });
 }
 
-export function useEvents({ filters, page, size, sorting }: QueryParamsType<EventFiltersType>) {
+export function useEvents({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<EventFiltersType>) {
   return useQuery({
     queryKey: eventKeys.list(filters, page, size, sorting),
     queryFn: () => searchEvents(filters, page, size, sorting),
@@ -54,7 +63,7 @@ export function useEventByAuthUser() {
   return useQuery({
     queryKey: eventKeys.byAuthUser(),
     queryFn: () => findEventByAuthUser(),
-  })
+  });
 }
 
 export function useCreateEvent() {
@@ -65,7 +74,10 @@ export function useCreateEvent() {
 }
 
 export function useUpdateEvent() {
-  return useApiMutation<EventType, { id: IdentifierType; data: EventFormSchemaFields }>({
+  return useApiMutation<
+    EventType,
+    { id: IdentifierType; data: EventFormSchemaFields }
+  >({
     mutationFn: ({ id, data }) => updateEvent(id, data),
     invalidateQueries: [eventKeys.all, eventKeys.byAuthUser()],
   });

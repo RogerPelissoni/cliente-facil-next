@@ -45,14 +45,28 @@ export default function PersonPage() {
       <PageContainer>
         <PageBreadcrumb items={["Cadastros", "Pessoas"]} />
 
-        <PageHeader title="Pessoas" actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>} />
+        <PageHeader
+          title="Pessoas"
+          actions={
+            !crud.open && (
+              <Button onClick={crud.create}>Adicionar Registro</Button>
+            )
+          }
+        />
 
         {crud.open ? (
-          <PersonForm id={crud.item?.id} onCancel={crud.close} onSuccess={crud.close} />
+          <PersonForm
+            id={crud.item?.id}
+            onCancel={crud.close}
+            onSuccess={crud.close}
+          />
         ) : (
           <>
             <DataTableToolbar>
-              <PersonFilters filters={table.filters} onChange={table.changeFilters} />
+              <PersonFilters
+                filters={table.filters}
+                onChange={table.changeFilters}
+              />
             </DataTableToolbar>
 
             <PersonTable
@@ -64,7 +78,10 @@ export default function PersonPage() {
             />
 
             <div className="flex justify-between">
-              <DataTablePageSize value={table.size} onChange={table.changePageSize} />
+              <DataTablePageSize
+                value={table.size}
+                onChange={table.changePageSize}
+              />
 
               <DataTablePagination
                 page={table.page}

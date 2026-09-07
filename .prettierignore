@@ -1,0 +1,3 @@
+# Gerados pelo shadcn (`pnpm dlx shadcn add/diff`) — mantidos o mais próximo possível do
+# original para não gerar ruído de diff nas atualizações do shadcn.
+components/ui/

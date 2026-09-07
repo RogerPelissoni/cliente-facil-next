@@ -43,14 +43,28 @@ export default function ProfilePage() {
       <PageContainer>
         <PageBreadcrumb items={["Cadastros", "Perfis"]} />
 
-        <PageHeader title="Perfis" actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>} />
+        <PageHeader
+          title="Perfis"
+          actions={
+            !crud.open && (
+              <Button onClick={crud.create}>Adicionar Registro</Button>
+            )
+          }
+        />
 
         {crud.open ? (
-          <ProfileForm id={crud.item?.id} onCancel={crud.close} onSuccess={crud.close} />
+          <ProfileForm
+            id={crud.item?.id}
+            onCancel={crud.close}
+            onSuccess={crud.close}
+          />
         ) : (
           <>
             <DataTableToolbar>
-              <ProfileFilters filters={table.filters} onChange={table.changeFilters} />
+              <ProfileFilters
+                filters={table.filters}
+                onChange={table.changeFilters}
+              />
             </DataTableToolbar>
 
             <ProfileTable
@@ -62,7 +76,10 @@ export default function ProfilePage() {
             />
 
             <div className="flex justify-between">
-              <DataTablePageSize value={table.size} onChange={table.changePageSize} />
+              <DataTablePageSize
+                value={table.size}
+                onChange={table.changePageSize}
+              />
 
               <DataTablePagination
                 page={table.page}

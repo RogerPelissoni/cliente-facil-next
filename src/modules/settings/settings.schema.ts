@@ -13,7 +13,9 @@ export const changePasswordSchema = z
   });
 
 export type ChangePasswordFormInput = z.input<typeof changePasswordSchema>;
-export type ChangePasswordFormSchemaFields = z.output<typeof changePasswordSchema>;
+export type ChangePasswordFormSchemaFields = z.output<
+  typeof changePasswordSchema
+>;
 
 export function createChangePasswordDefaultValues(): ChangePasswordFormInput {
   return {

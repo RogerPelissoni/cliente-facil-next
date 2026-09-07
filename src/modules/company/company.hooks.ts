@@ -17,23 +17,41 @@ import { CompanyFiltersType, CompanyType } from "./company.types";
 export const companyKeys = {
   all: ["company"] as const,
 
-  list: (filters: CompanyFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["company", "list", filters, page, size, sorting] as const,
+  list: (
+    filters: CompanyFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["company", "list", filters, page, size, sorting] as const,
 
-  screen: (filters: CompanyFiltersType, page: number, size: number, sorting: Sorting) =>
-    ["company", "screen", filters, page, size, sorting] as const,
+  screen: (
+    filters: CompanyFiltersType,
+    page: number,
+    size: number,
+    sorting: Sorting,
+  ) => ["company", "screen", filters, page, size, sorting] as const,
 
   detail: (id?: IdentifierType) => ["company", "detail", id] as const,
 };
 
-export function useCompanysScreen({ filters, page, size, sorting }: QueryParamsType<CompanyFiltersType>) {
+export function useCompanysScreen({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<CompanyFiltersType>) {
   return useQuery({
     queryKey: companyKeys.screen(filters, page, size, sorting),
     queryFn: () => screenCompanys(filters, page, size, sorting),
   });
 }
 
-export function useCompanys({ filters, page, size, sorting }: QueryParamsType<CompanyFiltersType>) {
+export function useCompanys({
+  filters,
+  page,
+  size,
+  sorting,
+}: QueryParamsType<CompanyFiltersType>) {
   return useQuery({
     queryKey: companyKeys.list(filters, page, size, sorting),
     queryFn: () => searchCompanys(filters, page, size, sorting),
@@ -56,7 +74,10 @@ export function useCreateCompany() {
 }
 
 export function useUpdateCompany() {
-  return useApiMutation<CompanyType, { id: IdentifierType; data: CompanyFormSchemaFields }>({
+  return useApiMutation<
+    CompanyType,
+    { id: IdentifierType; data: CompanyFormSchemaFields }
+  >({
     mutationFn: ({ id, data }) => updateCompany(id, data),
     invalidateQueries: [companyKeys.all],
   });

@@ -7,7 +7,11 @@ import SortableHeader from "@/src/shared/components/SortableHeader";
 import { TableActions } from "@/src/shared/components/table/TableActions";
 import { Sorting } from "@/src/shared/types/table.type";
 import { nextSorting } from "@/src/shared/utils/table.util";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { Check } from "lucide-react";
 import { NotificationDeadLetterType } from "./notificationDeadLetter.types";
 
@@ -23,7 +27,13 @@ function formatDate(value: string | null) {
   return value ? new Date(value).toLocaleString("pt-BR") : "-";
 }
 
-export function NotificationDeadLetterTable({ data, sorting, onSortingChange, canResolve, onResolve }: Props) {
+export function NotificationDeadLetterTable({
+  data,
+  sorting,
+  onSortingChange,
+  canResolve,
+  onResolve,
+}: Props) {
   function handleSort(field: string) {
     onSortingChange(nextSorting(sorting, field));
   }
@@ -31,7 +41,14 @@ export function NotificationDeadLetterTable({ data, sorting, onSortingChange, ca
   const columns: ColumnDef<NotificationDeadLetterType>[] = [
     {
       accessorKey: "id",
-      header: () => <SortableHeader label="#" field="id" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="#"
+          field="id"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
     },
     {
       accessorKey: "dsErrorReason",
@@ -40,21 +57,38 @@ export function NotificationDeadLetterTable({ data, sorting, onSortingChange, ca
     },
     {
       accessorKey: "nrDeathCount",
-      header: () => <SortableHeader label="Tentativas" field="nrDeathCount" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Tentativas"
+          field="nrDeathCount"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
       cell: ({ row }) => row.original.nrDeathCount ?? "-",
     },
     {
       accessorKey: "dsPayload",
       header: "Payload",
       cell: ({ row }) => (
-        <span className="block max-w-xs truncate font-mono text-xs" title={row.original.dsPayload}>
+        <span
+          className="block max-w-xs truncate font-mono text-xs"
+          title={row.original.dsPayload}
+        >
           {row.original.dsPayload}
         </span>
       ),
     },
     {
       accessorKey: "dtFailedAt",
-      header: () => <SortableHeader label="Falhou em" field="dtFailedAt" sorting={sorting} onSort={handleSort} />,
+      header: () => (
+        <SortableHeader
+          label="Falhou em"
+          field="dtFailedAt"
+          sorting={sorting}
+          onSort={handleSort}
+        />
+      ),
       cell: ({ row }) => formatDate(row.original.dtFailedAt),
     },
     {
@@ -88,7 +122,11 @@ export function NotificationDeadLetterTable({ data, sorting, onSortingChange, ca
 
         return (
           <TableActions>
-            <Button size="sm" variant="outline" onClick={() => onResolve(deadLetter)}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onResolve(deadLetter)}
+            >
               <Check className="h-3.5 w-3.5" />
               Resolver
             </Button>

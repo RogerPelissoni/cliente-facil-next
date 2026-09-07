@@ -46,7 +46,9 @@ describe("api client (http.util)", () => {
   });
 
   it("monta a querystring a partir de params, ignorando null/undefined", async () => {
-    await api.get("/users", { params: { name: "Roger", active: undefined, page: 0 } });
+    await api.get("/users", {
+      params: { name: "Roger", active: undefined, page: 0 },
+    });
 
     const [url] = fetchMock.mock.calls[0];
     expect(url).toBe("/api/proxy/users?name=Roger&page=0");
@@ -114,9 +116,13 @@ describe("api client (http.util)", () => {
   });
 
   it("lança ApiError com a mensagem de `message` do backend quando a resposta falha", async () => {
-    fetchMock.mockResolvedValue(jsonResponse(400, { message: "E-mail já cadastrado" }));
+    fetchMock.mockResolvedValue(
+      jsonResponse(400, { message: "E-mail já cadastrado" }),
+    );
 
-    await expect(api.post("/users", { email: "a@a.com" })).rejects.toMatchObject({
+    await expect(
+      api.post("/users", { email: "a@a.com" }),
+    ).rejects.toMatchObject({
       status: 400,
       message: "E-mail já cadastrado",
     });

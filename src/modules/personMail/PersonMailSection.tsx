@@ -66,12 +66,25 @@ export function PersonMailSection({ form }: Props) {
         </CardHeader>
 
         <CardContent>
-          <PersonMailTable data={mails} onEdit={handleEdit} onDelete={handleDelete} />
+          <PersonMailTable
+            data={mails}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
         </CardContent>
       </Card>
 
-      <CoreModal open={isOpenForm} title="Novo Email" size="lg" onOpenChange={setIsOpenForm}>
-        <PersonMailForm personMail={editing?.mail} onCancel={() => setIsOpenForm(false)} onSubmit={handleSubmit} />
+      <CoreModal
+        open={isOpenForm}
+        title="Novo Email"
+        size="lg"
+        onOpenChange={setIsOpenForm}
+      >
+        <PersonMailForm
+          personMail={editing?.mail}
+          onCancel={() => setIsOpenForm(false)}
+          onSubmit={handleSubmit}
+        />
       </CoreModal>
     </>
   );

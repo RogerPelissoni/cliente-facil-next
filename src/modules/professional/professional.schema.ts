@@ -15,7 +15,9 @@ export function createProfessionalDefaultValues(): ProfessionalFormInput {
   };
 }
 
-export function mapProfessionalToForm(professional: ProfessionalType): ProfessionalFormInput {
+export function mapProfessionalToForm(
+  professional: ProfessionalType,
+): ProfessionalFormInput {
   return {
     personId: toFormIdentifier(professional.personId),
   };

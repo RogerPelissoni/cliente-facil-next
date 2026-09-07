@@ -47,9 +47,17 @@ export function PersonMailForm({ personMail, onCancel, onSubmit }: Props) {
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={createSubmitHandler(form, onSubmit, onError)} className="space-y-6">
+        <form
+          onSubmit={createSubmitHandler(form, onSubmit, onError)}
+          className="space-y-6"
+        >
           <FormGrid>
-            <FormInput form={form} name="dsMail" label="Email" placeholder="Digite o email" />
+            <FormInput
+              form={form}
+              name="dsMail"
+              label="Email"
+              placeholder="Digite o email"
+            />
           </FormGrid>
 
           <FormActions onCancel={onCancel} />

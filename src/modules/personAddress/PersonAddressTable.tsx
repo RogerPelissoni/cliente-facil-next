@@ -6,7 +6,11 @@ import { TableActionDelete } from "@/src/shared/components/table/TableActionDele
 import { TableActionEdit } from "@/src/shared/components/table/TableActionEdit";
 import { TableActions } from "@/src/shared/components/table/TableActions";
 import { fromBooleanEnum } from "@/src/shared/enum/boolean.enum";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { PersonAddressType } from "./personAddress.type";
 
 interface Props {

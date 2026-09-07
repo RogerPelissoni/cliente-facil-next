@@ -2,7 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { CoreModal } from "@/src/shared/components/CoreModal";
 import { IdentifierType } from "@/src/shared/types/form.type";
@@ -23,7 +29,11 @@ const typeOptions: { value: NotificationTypeEnum; label: string }[] = [
   { value: "ERROR", label: "Erro" },
 ];
 
-const emptyForm = { title: "", message: "", type: "INFO" as NotificationTypeEnum };
+const emptyForm = {
+  title: "",
+  message: "",
+  type: "INFO" as NotificationTypeEnum,
+};
 
 export function SendNotificationModal({ open, onOpenChange }: Props) {
   const { data: users = {} } = useUsersKeyValue();
@@ -33,7 +43,9 @@ export function SendNotificationModal({ open, onOpenChange }: Props) {
   const [form, setForm] = useState(emptyForm);
 
   function toggleUser(userId: IdentifierType, checked: boolean) {
-    setSelectedUserIds((current) => (checked ? [...current, userId] : current.filter((id) => id !== userId)));
+    setSelectedUserIds((current) =>
+      checked ? [...current, userId] : current.filter((id) => id !== userId),
+    );
   }
 
   function handleOpenChange(value: boolean) {
@@ -47,12 +59,20 @@ export function SendNotificationModal({ open, onOpenChange }: Props) {
 
   function handleSubmit() {
     send(
-      { userIds: selectedUserIds, title: form.title, message: form.message, type: form.type },
+      {
+        userIds: selectedUserIds,
+        title: form.title,
+        message: form.message,
+        type: form.type,
+      },
       { onSuccess: () => handleOpenChange(false) },
     );
   }
 
-  const canSubmit = selectedUserIds.length > 0 && form.title.trim() !== "" && form.message.trim() !== "";
+  const canSubmit =
+    selectedUserIds.length > 0 &&
+    form.title.trim() !== "" &&
+    form.message.trim() !== "";
 
   return (
     <CoreModal
@@ -69,7 +89,10 @@ export function SendNotificationModal({ open, onOpenChange }: Props) {
 
           <ul className="flex max-h-40 flex-col gap-1 overflow-y-auto rounded-md border p-2">
             {Object.entries(users).map(([userId, name]) => (
-              <li key={userId} className="flex items-center justify-between gap-2 py-1 text-sm">
+              <li
+                key={userId}
+                className="flex items-center justify-between gap-2 py-1 text-sm"
+              >
                 <span>{name}</span>
                 <Switch
                   checked={selectedUserIds.includes(userId)}
@@ -83,7 +106,15 @@ export function SendNotificationModal({ open, onOpenChange }: Props) {
         <div className="flex flex-col gap-1">
           <span className="text-sm font-medium">Tipo</span>
 
-          <Select value={form.type} onValueChange={(value) => setForm((current) => ({ ...current, type: value as NotificationTypeEnum }))}>
+          <Select
+            value={form.type}
+            onValueChange={(value) =>
+              setForm((current) => ({
+                ...current,
+                type: value as NotificationTypeEnum,
+              }))
+            }
+          >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
@@ -100,23 +131,38 @@ export function SendNotificationModal({ open, onOpenChange }: Props) {
 
         <div className="flex flex-col gap-1">
           <span className="text-sm font-medium">Título</span>
-          <Input value={form.title} onChange={(e) => setForm((current) => ({ ...current, title: e.target.value }))} />
+          <Input
+            value={form.title}
+            onChange={(e) =>
+              setForm((current) => ({ ...current, title: e.target.value }))
+            }
+          />
         </div>
 
         <div className="flex flex-col gap-1">
           <span className="text-sm font-medium">Mensagem</span>
           <textarea
-            className="min-h-20 w-full rounded-lg border border-input bg-transparent px-2.5 py-1.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-input/30"
+            className="border-input focus-visible:border-ring focus-visible:ring-ring/50 dark:bg-input/30 min-h-20 w-full rounded-lg border bg-transparent px-2.5 py-1.5 text-sm outline-none focus-visible:ring-3"
             value={form.message}
-            onChange={(e) => setForm((current) => ({ ...current, message: e.target.value }))}
+            onChange={(e) =>
+              setForm((current) => ({ ...current, message: e.target.value }))
+            }
           />
         </div>
 
         <div className="flex justify-end gap-2">
-          <Button type="button" variant="outline" onClick={() => handleOpenChange(false)}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleOpenChange(false)}
+          >
             Cancelar
           </Button>
-          <Button type="button" disabled={!canSubmit || isPending} onClick={handleSubmit}>
+          <Button
+            type="button"
+            disabled={!canSubmit || isPending}
+            onClick={handleSubmit}
+          >
             Enviar
           </Button>
         </div>

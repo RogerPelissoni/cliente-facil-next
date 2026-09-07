@@ -47,7 +47,11 @@ export default function CompanyPage() {
 
         <PageHeader
           title="Empresas"
-          actions={!crud.open && <Button onClick={crud.create}>Adicionar Registro</Button>}
+          actions={
+            !crud.open && (
+              <Button onClick={crud.create}>Adicionar Registro</Button>
+            )
+          }
         />
 
         {crud.open ? (
@@ -60,7 +64,10 @@ export default function CompanyPage() {
         ) : (
           <>
             <DataTableToolbar>
-              <CompanyFilters filters={table.filters} onChange={table.changeFilters} />
+              <CompanyFilters
+                filters={table.filters}
+                onChange={table.changeFilters}
+              />
             </DataTableToolbar>
 
             <CompanyTable
@@ -72,7 +79,10 @@ export default function CompanyPage() {
             />
 
             <div className="flex justify-between">
-              <DataTablePageSize value={table.size} onChange={table.changePageSize} />
+              <DataTablePageSize
+                value={table.size}
+                onChange={table.changePageSize}
+              />
 
               <DataTablePagination
                 page={table.page}

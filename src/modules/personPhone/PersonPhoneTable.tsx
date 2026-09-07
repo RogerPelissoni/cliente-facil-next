@@ -5,7 +5,11 @@ import { EmptyState } from "@/src/shared/components/EmptyState";
 import { TableActionDelete } from "@/src/shared/components/table/TableActionDelete";
 import { TableActionEdit } from "@/src/shared/components/table/TableActionEdit";
 import { TableActions } from "@/src/shared/components/table/TableActions";
-import { ColumnDef, getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  ColumnDef,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import { PersonPhoneType } from "./personPhone.type";
 
 interface Props {
