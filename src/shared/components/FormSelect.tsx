@@ -23,23 +23,52 @@ interface Option {
   value: string;
 }
 
-interface Props<T extends FieldValues> {
-  form: UseFormReturn<T>;
-  name: FieldPath<T>;
+interface BaseProps {
   label: string;
   options: Option[];
   placeholder?: string;
   size?: GridSize;
 }
 
-export function FormSelect<T extends FieldValues>({
+interface FieldBoundProps<T extends FieldValues> extends BaseProps {
+  form: UseFormReturn<T>;
+  name: FieldPath<T>;
+  value?: never;
+  onChange?: never;
+}
+
+interface ControlledProps extends BaseProps {
+  value: string;
+  onChange(value: string): void;
+  form?: never;
+  name?: never;
+}
+
+type Props<T extends FieldValues> = FieldBoundProps<T> | ControlledProps;
+
+/**
+ * Select com label + grid, no padrão do projeto. Preso a um react-hook-form
+ * (form + name, com validação/erro) ou controlado (value + onChange, como
+ * nos filtros de tabela).
+ */
+export function FormSelect<T extends FieldValues = FieldValues>(
+  props: Props<T>,
+) {
+  if ("form" in props && props.form) {
+    return <BoundFormSelect {...props} />;
+  }
+
+  return <ControlledFormSelect {...props} />;
+}
+
+function BoundFormSelect<T extends FieldValues>({
   form,
   name,
   label,
   options,
   placeholder = "Selecione",
   size = 4,
-}: Props<T>) {
+}: FieldBoundProps<T>) {
   const error = get(form.formState.errors, name);
 
   const watchedValue = useWatch({
@@ -78,9 +107,42 @@ export function FormSelect<T extends FieldValues>({
             </SelectContent>
           </Select>
 
-          <p className="text-sm text-red-500">{error?.message}</p>
+          <p className="text-sm text-red-500">{error?.message as string}</p>
         </div>
       )}
     />
+  );
+}
+
+function ControlledFormSelect({
+  value,
+  onChange,
+  label,
+  options,
+  placeholder = "Selecione",
+  size = 4,
+}: ControlledProps) {
+  const selectedOption = options.find((option) => option.value === value);
+
+  return (
+    <div className={cn("col-span-12 space-y-2", GRID_SIZE[size])}>
+      <label className="text-sm font-medium">{label}</label>
+
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder={placeholder}>
+            {selectedOption?.label}
+          </SelectValue>
+        </SelectTrigger>
+
+        <SelectContent position="popper">
+          {options.map((option) => (
+            <SelectItem key={option.value} value={option.value}>
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }

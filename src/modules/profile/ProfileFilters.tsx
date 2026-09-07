@@ -1,6 +1,7 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { FormGrid } from "@/src/shared/components/FormGrid";
+import { FormInput } from "@/src/shared/components/FormInput";
 import { ProfileFiltersType } from "./profile.types";
 
 interface Props {
@@ -10,17 +11,14 @@ interface Props {
 
 export function ProfileFilters({ filters, onChange }: Props) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <Input
+    <FormGrid>
+      <FormInput
+        label="Nome"
         placeholder="Nome"
+        size={6}
         value={filters.name}
-        onChange={(event) =>
-          onChange({
-            ...filters,
-            name: event.target.value,
-          })
-        }
+        onChange={(name) => onChange({ ...filters, name })}
       />
-    </div>
+    </FormGrid>
   );
 }

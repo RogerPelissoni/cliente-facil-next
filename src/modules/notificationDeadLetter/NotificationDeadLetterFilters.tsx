@@ -1,13 +1,8 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FormGrid } from "@/src/shared/components/FormGrid";
+import { FormInput } from "@/src/shared/components/FormInput";
+import { FormSelect } from "@/src/shared/components/FormSelect";
 import {
   DeadLetterStatusFilter,
   NotificationDeadLetterFiltersType,
@@ -18,33 +13,32 @@ interface Props {
   onChange(filters: NotificationDeadLetterFiltersType): void;
 }
 
+const STATUS_OPTIONS = [
+  { value: "ALL", label: "Todos os status" },
+  { value: "PENDING", label: "Pendentes" },
+  { value: "RESOLVED", label: "Resolvidos" },
+];
+
 export function NotificationDeadLetterFilters({ filters, onChange }: Props) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <Input
+    <FormGrid>
+      <FormInput
+        label="Motivo"
         placeholder="Motivo (ex: rejected, expired)"
+        size={6}
         value={filters.dsErrorReason}
-        onChange={(event) =>
-          onChange({ ...filters, dsErrorReason: event.target.value })
-        }
+        onChange={(dsErrorReason) => onChange({ ...filters, dsErrorReason })}
       />
 
-      <Select
+      <FormSelect
+        label="Status"
+        size={6}
         value={filters.status}
-        onValueChange={(value) =>
-          onChange({ ...filters, status: value as DeadLetterStatusFilter })
+        options={STATUS_OPTIONS}
+        onChange={(status) =>
+          onChange({ ...filters, status: status as DeadLetterStatusFilter })
         }
-      >
-        <SelectTrigger>
-          <SelectValue />
-        </SelectTrigger>
-
-        <SelectContent>
-          <SelectItem value="ALL">Todos os status</SelectItem>
-          <SelectItem value="PENDING">Pendentes</SelectItem>
-          <SelectItem value="RESOLVED">Resolvidos</SelectItem>
-        </SelectContent>
-      </Select>
-    </div>
+      />
+    </FormGrid>
   );
 }

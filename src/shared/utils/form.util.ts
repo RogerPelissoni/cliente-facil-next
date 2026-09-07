@@ -48,7 +48,7 @@ export function makeSearchRequest<TFilter extends Record<string, any>>(
       .filter(([, value]) => value !== "" && value != null)
       .map(([field, value]) => ({
         field,
-        operator: "LIKE",
+        operator: "CONTAINS",
         value: String(value),
       })),
   };

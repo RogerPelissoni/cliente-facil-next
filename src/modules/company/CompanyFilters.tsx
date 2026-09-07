@@ -1,6 +1,7 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
+import { FormGrid } from "@/src/shared/components/FormGrid";
+import { FormInput } from "@/src/shared/components/FormInput";
 import { CompanyFiltersType } from "./company.types";
 
 interface Props {
@@ -10,27 +11,22 @@ interface Props {
 
 export function CompanyFilters({ filters, onChange }: Props) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
-      <Input
+    <FormGrid>
+      <FormInput
+        label="Empresa"
         placeholder="Empresa"
+        size={6}
         value={filters.name}
-        onChange={(event) =>
-          onChange({
-            ...filters,
-            name: event.target.value,
-          })
-        }
+        onChange={(name) => onChange({ ...filters, name })}
       />
-      <Input
+
+      <FormInput
+        label="Pessoa"
         placeholder="Pessoa"
+        size={6}
         value={filters.personName}
-        onChange={(event) =>
-          onChange({
-            ...filters,
-            personName: event.target.value,
-          })
-        }
+        onChange={(personName) => onChange({ ...filters, personName })}
       />
-    </div>
+    </FormGrid>
   );
 }

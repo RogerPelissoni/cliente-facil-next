@@ -40,8 +40,8 @@ describe("makeSearchRequest", () => {
 
     // age: 0 é um valor "presente" (só '' e null/undefined são descartados) — 0 sobrevive ao filtro.
     expect(request.filters).toEqual([
-      { field: "name", operator: "LIKE", value: "Roger" },
-      { field: "age", operator: "LIKE", value: "0" },
+      { field: "name", operator: "CONTAINS", value: "Roger" },
+      { field: "age", operator: "CONTAINS", value: "0" },
     ]);
   });
 
@@ -53,8 +53,8 @@ describe("makeSearchRequest", () => {
 
     expect(request.filters).toEqual(
       expect.arrayContaining([
-        { field: "active", operator: "LIKE", value: "true" },
-        { field: "count", operator: "LIKE", value: "5" },
+        { field: "active", operator: "CONTAINS", value: "true" },
+        { field: "count", operator: "CONTAINS", value: "5" },
       ]),
     );
   });
