@@ -25,7 +25,7 @@ export const eventKeys = {
     sorting: Sorting,
   ) => ["event", "list", filters, page, size, sorting] as const,
 
-  screen: () => ["users", "screen"] as const,
+  screen: () => ["event", "screen"] as const,
 
   detail: (id?: IdentifierType) => ["event", "detail", id] as const,
 

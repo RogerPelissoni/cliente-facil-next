@@ -7,20 +7,50 @@ import {
   zString,
 } from "@/src/shared/utils/schema.util";
 import { z } from "zod";
-import { accountReceivableEventSchema } from "../accountReceivable/accountReceivable.schema";
-import { eventServiceSchema } from "../eventService/eventService.schema";
 import { EventWithRelationsType } from "./event.types";
 
-export const eventSchema = z.object({
-  dsTitle: zString().max(100),
-  dsDescription: z.string().optional(),
-  dtStart: zDate(),
-  dtEnd: zDate(),
-  tpStatus: zEnum(EventStatusEnum),
-  tpEvent: zEnum(EventTypeEnum),
-  eventService: eventServiceSchema,
-  accountReceivable: accountReceivableEventSchema,
-});
+export const eventSchema = z
+  .object({
+    dsTitle: zString().max(100),
+    dsDescription: z.string().optional(),
+    dtStart: zDate(),
+    dtEnd: zDate(),
+    tpStatus: zEnum(EventStatusEnum),
+    tpEvent: zEnum(EventTypeEnum),
+    eventService: z.object({
+      clientId: z.string().trim().optional(),
+      professionalId: z.string().trim().optional(),
+    }),
+    accountReceivable: z.object({
+      vlTotal: z.number().optional(),
+      daDue: z.date().optional(),
+    }),
+  })
+  .superRefine((data, ctx) => {
+    if (data.tpEvent !== "SERVICE") return;
+
+    if (!data.eventService.clientId) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Campo obrigatório",
+        path: ["eventService", "clientId"],
+      });
+    }
+    if (!data.eventService.professionalId) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Campo obrigatório",
+        path: ["eventService", "professionalId"],
+      });
+    }
+    if (data.accountReceivable.daDue === undefined) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Campo obrigatório",
+        path: ["accountReceivable", "daDue"],
+      });
+    }
+  });
 
 export type EventFormInput = z.input<typeof eventSchema>;
 export type EventFormSchemaFields = z.output<typeof eventSchema>;
