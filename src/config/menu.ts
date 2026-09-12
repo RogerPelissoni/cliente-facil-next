@@ -1,14 +1,13 @@
+export type MenuAuthority = string | string[];
+
 export interface MenuItem {
   label: string;
   href?: string;
-  // Se definido, o item só aparece para quem tem essa authority (ver `/auth/me`,
-  // useHasAuthority). Itens sem `authority` continuam visíveis pra qualquer usuário logado,
-  // igual sempre foi — o backend segue sendo quem realmente impõe a permissão.
-  authority?: string;
+  authority?: MenuAuthority;
   children?: {
     label: string;
     href: string;
-    authority?: string;
+    authority?: MenuAuthority;
   }[];
 }
 
@@ -31,6 +30,11 @@ export const menuConfig: MenuItem[] = [
   {
     label: "Relatórios",
     children: [
+      {
+        label: "Eventos",
+        href: "/dashboard/report/event",
+        authority: ["EVENT_REPORT_VIEW", "EVENT_REPORT_VIEW_ALL"],
+      },
       { label: "Usuários", href: "/dashboard/report/user" },
       { label: "Perfis", href: "/dashboard/report/profile" },
     ],

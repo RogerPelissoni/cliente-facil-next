@@ -8,16 +8,20 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { menuConfig } from "@/src/config/menu";
+import { MenuAuthority, menuConfig } from "@/src/config/menu";
 import { useCurrentUser } from "@/src/modules/auth/auth.hooks";
 import Link from "next/link";
 
 export function NavBarComponent() {
   const { data: currentUser } = useCurrentUser();
 
-  function isAllowed(authority?: string) {
-    return (
-      !authority || (currentUser?.authorities.includes(authority) ?? false)
+  function isAllowed(authority?: MenuAuthority) {
+    if (!authority) return true;
+
+    const required = Array.isArray(authority) ? authority : [authority];
+
+    return required.some(
+      (item) => currentUser?.authorities.includes(item) ?? false,
     );
   }
 

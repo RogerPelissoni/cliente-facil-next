@@ -62,10 +62,11 @@ export function useUsers({
   });
 }
 
-export function useUsersKeyValue() {
+export function useUsersKeyValue(enabled = true) {
   return useQuery({
     queryKey: userKeys.keyValue,
     queryFn: findUsersKeyValue,
+    enabled,
   });
 }
 

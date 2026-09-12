@@ -1,8 +1,18 @@
 "use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      placeholderData: keepPreviousData,
+    },
+  },
+});
 
 export function QueryProvider({ children }: React.PropsWithChildren) {
   return (
