@@ -7,6 +7,7 @@ import { EventTypeEnum } from "@/src/enum/eventType.enum";
 import { ConfirmDialog } from "@/src/shared/components/ConfirmDialog";
 import { FormActions } from "@/src/shared/components/FormActions";
 import { FormDate } from "@/src/shared/components/FormDate";
+import { FormDateTime } from "@/src/shared/components/FormDateTime";
 import { FormDecimalInput } from "@/src/shared/components/FormDecimalInput";
 import { FormGrid } from "@/src/shared/components/FormGrid";
 import { FormInput } from "@/src/shared/components/FormInput";
@@ -122,8 +123,8 @@ export function EventForm({
           <FormGrid>
             <FormInput form={form} name="dsTitle" label="Título" />
             <FormInput form={form} name="dsDescription" label="Descrição" />
-            <FormDate form={form} name="dtStart" label="Data de Início" />
-            <FormDate form={form} name="dtEnd" label="Data de Término" />
+            <FormDateTime form={form} name="dtStart" label="Data de Início" />
+            <FormDateTime form={form} name="dtEnd" label="Data de Término" />
             <FormSelect
               form={form}
               name="tpStatus"
