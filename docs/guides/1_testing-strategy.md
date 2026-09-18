@@ -1,7 +1,7 @@
 # Estratégia de testes (front)
 
 Antes desta suíte, o repositório não tinha nenhuma ferramenta de teste instalada nem um único arquivo
-`*.test.*` (ver `docs/product/1_roadmap.md`, seção "🧪 Testes"). Este documento cobre o que existe
+`*.test.*` (ver `docs/ROADMAP.md`, seção "🧪 Testes"). Este documento cobre o que existe
 hoje, por quê, e como rodar.
 
 ## Stack
@@ -26,22 +26,22 @@ cascata. Não é uma tentativa de cobrir toda tela/formulário do sistema; isso 
 (ainda não implementados, ver roadmap) e de testes de componente pontuais, adicionados quando um
 componente específico acumular lógica complexa o suficiente pra justificar.
 
-| Arquivo testado | O que valida | Por quê importa |
-|---|---|---|
-| `shared/utils/schema.util.ts` | `zIdentifier`, `zString`, `zEnum`, `zDate`, `toFormIdentifier`, `toOptionalFormIdentifier` | Builders reaproveitados pelos 17 `*.schema.ts` do projeto — um bug aqui quebra validação em cascata em todo formulário. Testar os builders substitui um teste por schema (mesmo raciocínio do teste genérico de templates de e-mail no backend). |
-| `shared/utils/form.util.ts` | `makeSearchRequest`, `parseSubmit`, `resetForm` | `makeSearchRequest` é o único ponto que monta o `SearchRequest` (contrato com o backend) a partir dos filtros de tela — usado por toda tabela com busca do sistema. |
-| `shared/utils/table.util.ts` | `nextSorting` | Lógica de alternância de ordenação usada por toda tabela ordenável. |
-| `shared/utils/http.util.ts` | O client HTTP (`api.get/post/put/patch/delete`) | Única porta de saída HTTP do app inteiro (tudo passa por `/api/proxy/*` — ver `docs/ARCHITECTURE.md`). Cobre montagem de querystring, corpo JSON x `FormData`, e extração de mensagem de erro do payload (`message`/`error`/`errors[]`) que todo `useApiMutation` do sistema depende pra mostrar o toast certo. |
-| `shared/hooks/useDebounce.ts` | Debounce de valor (usado por `useTableState` pros filtros) | Timing sutil (cancelar o timer anterior a cada mudança) — fácil de regredir silenciosamente. |
-| `shared/hooks/useTableState.ts` | Estado de paginação/filtro/ordenação de tabela | Resetar a página ao mudar filtro/ordenação/tamanho é comportamento esperado em toda tabela — testado uma vez aqui, não em cada tela que usa o hook. |
-| `shared/utils/mutation.util.ts` | `useApiMutation` (toast de sucesso/erro, `invalidateQueries`, callbacks) | Wrapper usado por praticamente toda mutation do sistema — o "cimento" entre React Query e o feedback visual (toast). |
-| `modules/login/login.schema.ts` | `loginSchema` | Um exemplo concreto de schema composto a partir dos builders acima, validando que a composição funciona de ponta a ponta (não um teste por schema — só uma amostra representativa). |
+| Arquivo testado                 | O que valida                                                                               | Por quê importa                                                                                                                                                                                                                                                                                                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `shared/utils/schema.util.ts`   | `zIdentifier`, `zString`, `zEnum`, `zDate`, `toFormIdentifier`, `toOptionalFormIdentifier` | Builders reaproveitados pelos 17 `*.schema.ts` do projeto — um bug aqui quebra validação em cascata em todo formulário. Testar os builders substitui um teste por schema (mesmo raciocínio do teste genérico de templates de e-mail no backend).                                                                |
+| `shared/utils/form.util.ts`     | `makeSearchRequest`, `parseSubmit`, `resetForm`                                            | `makeSearchRequest` é o único ponto que monta o `SearchRequest` (contrato com o backend) a partir dos filtros de tela — usado por toda tabela com busca do sistema.                                                                                                                                             |
+| `shared/utils/table.util.ts`    | `nextSorting`                                                                              | Lógica de alternância de ordenação usada por toda tabela ordenável.                                                                                                                                                                                                                                             |
+| `shared/utils/http.util.ts`     | O client HTTP (`api.get/post/put/patch/delete`)                                            | Única porta de saída HTTP do app inteiro (tudo passa por `/api/proxy/*` — ver `docs/ARCHITECTURE.md`). Cobre montagem de querystring, corpo JSON x `FormData`, e extração de mensagem de erro do payload (`message`/`error`/`errors[]`) que todo `useApiMutation` do sistema depende pra mostrar o toast certo. |
+| `shared/hooks/useDebounce.ts`   | Debounce de valor (usado por `useTableState` pros filtros)                                 | Timing sutil (cancelar o timer anterior a cada mudança) — fácil de regredir silenciosamente.                                                                                                                                                                                                                    |
+| `shared/hooks/useTableState.ts` | Estado de paginação/filtro/ordenação de tabela                                             | Resetar a página ao mudar filtro/ordenação/tamanho é comportamento esperado em toda tabela — testado uma vez aqui, não em cada tela que usa o hook.                                                                                                                                                             |
+| `shared/utils/mutation.util.ts` | `useApiMutation` (toast de sucesso/erro, `invalidateQueries`, callbacks)                   | Wrapper usado por praticamente toda mutation do sistema — o "cimento" entre React Query e o feedback visual (toast).                                                                                                                                                                                            |
+| `modules/login/login.schema.ts` | `loginSchema`                                                                              | Um exemplo concreto de schema composto a partir dos builders acima, validando que a composição funciona de ponta a ponta (não um teste por schema — só uma amostra representativa).                                                                                                                             |
 
 Fora do escopo por ora (candidatos a próxima rodada, não esquecidos):
 
 - **Testes de componente** (formulários, tabelas) — precisam de mais fixture/mock (React Query,
   Next router) por teste; entram quando um componente específico justificar.
-- **Testes E2E** (Playwright/Cypress) — ver `docs/product/1_roadmap.md`.
+- **Testes E2E** (Playwright/Cypress) — ver `docs/ROADMAP.md`.
 
 ## Como rodar
 
